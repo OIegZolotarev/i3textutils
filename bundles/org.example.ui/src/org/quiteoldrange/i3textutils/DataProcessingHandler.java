@@ -11,14 +11,9 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
@@ -66,61 +61,43 @@ public class DataProcessingHandler
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
-        // получим активный Xtext редактор
-        IWorkbenchPart part = HandlerUtil.getActivePart(event);
-        XtextEditor target = part.getAdapter(XtextEditor.class);
+        IXtextDocument doc = ModuleRefactoringUtils.GetXTextDocumentFromEvent(event);
 
-        if (target != null)
-        {
-            // для полученного редактора убедимся, что под ним лежит файл в
-            // проекте с конфигурацией, иначе это точно не модель объекта
-            // документа
-            if (!(target.getEditorInput() instanceof IFileEditorInput))
-                return null;
-            IFileEditorInput input = (IFileEditorInput)target.getEditorInput();
-            IFile file = input.getFile();
-            if (file == null)
-                return null;
-            IProject project = file.getProject();
-            if (project == null)
-                return null;
-            IXtextDocument doc = target.getDocument();
-
-            // получим объект метаданных, к которому принадлежит модуль, из
-            // которого была вызвана команда
-            EObject moduleOwner = getModuleOwner(doc);
-
-            Module moduleModel = (Module)getModuleModel(doc);
-            var t = BslUtil.getAllRegionPreprocessors(moduleModel);
-
-            RegionPreprocessor region = t.get(0);
-
-            // offset = 0;
-
-            Method method =
-                moduleModel.allMethods().get(moduleModel.allMethods().size() - 1);
-
-            int start = NodeModelUtils.findActualNodeFor(method).getOffset();
-            int length = NodeModelUtils.findActualNodeFor(method).getLength();
-
-            try
-            {
-                String text = "\n" + doc.get(start, length);
-                doc.replace(start, length, "");
-
-                int offset = NodeModelUtils.findActualNodeFor(region.getItem()).getTotalEndOffset();
-                doc.replace(offset, 0, text);
-
-            }
-            catch (BadLocationException e1)
-            {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-
+        if (doc == null)
             return null;
+
+        // получим объект метаданных, к которому принадлежит модуль, из
+        // которого была вызвана команда
+        EObject moduleOwner = getModuleOwner(doc);
+
+        Module moduleModel = (Module)getModuleModel(doc);
+        var t = BslUtil.getAllRegionPreprocessors(moduleModel);
+
+        RegionPreprocessor region = t.get(0);
+
+        // offset = 0;
+
+        Method method = moduleModel.allMethods().get(moduleModel.allMethods().size() - 1);
+
+        int start = NodeModelUtils.findActualNodeFor(method).getOffset();
+        int length = NodeModelUtils.findActualNodeFor(method).getLength();
+
+        try
+        {
+            String text = "\n" + doc.get(start, length);
+            doc.replace(start, length, "");
+
+            int offset = NodeModelUtils.findActualNodeFor(region.getItem()).getTotalEndOffset();
+            doc.replace(offset, 0, text);
+
         }
-        return target;
+        catch (BadLocationException e1)
+        {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        return null;
 
 //            // проверим, что команда была вызвана из правильного модуля и у
 //            // документа есть хотя бы 1 регистр

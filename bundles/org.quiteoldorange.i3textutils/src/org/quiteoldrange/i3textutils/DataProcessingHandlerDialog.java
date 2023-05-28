@@ -212,9 +212,13 @@ public class DataProcessingHandlerDialog
         for (String attr : registerAttr)
         {
             if (documentAttr.contains(attr))
+            {
                 expressionList.add(new Expression(attr, attr));
+            }
             else
+            {
                 expressionList.add(new Expression(attr, "")); //$NON-NLS-1$
+            }
         }
         return expressionList;
     }
@@ -227,13 +231,17 @@ public class DataProcessingHandlerDialog
             for (AccumulationRegisterDimension dimension : ((AccumulationRegister)registerRecords).getDimensions())
             {
                 if (!Strings.isNullOrEmpty(dimension.getName()))
+                {
                     fields.add(dimension.getName());
+                }
             }
 
             for (AccumulationRegisterResource resource : ((AccumulationRegister)registerRecords).getResources())
             {
                 if (!Strings.isNullOrEmpty(resource.getName()))
+                {
                     fields.add(resource.getName());
+                }
             }
             fields.add("Период"); //TODO: сделать поддержку генерации английского варианта обработчика //$NON-NLS-1$
         }
@@ -261,7 +269,9 @@ public class DataProcessingHandlerDialog
         for (BasicRegister register : this.registers)
         {
             if (!Strings.isNullOrEmpty(register.getName()))
+            {
                 registerNames.add(register.getName());
+            }
         }
         return registerNames;
     }
@@ -272,12 +282,16 @@ public class DataProcessingHandlerDialog
         for (DocumentAttribute attr : document.getAttributes())
         {
             if (!Strings.isNullOrEmpty(attr.getName()))
+            {
                 documentAttributes.add(attr.getName());
+            }
         }
         for (Field field : document.getFields())
         {
             if (!Strings.isNullOrEmpty(field.getNameRu()))
+            {
                 documentAttributes.add(field.getNameRu());
+            }
         }
         return documentAttributes;
     }
@@ -332,18 +346,26 @@ public class DataProcessingHandlerDialog
         public String getText(Object element)
         {
             if (isFieldProvider)
+            {
                 return super.getText(((Expression)element).field);
+            }
             else
+            {
                 return super.getText(((Expression)element).expression);
+            }
         }
 
         @Override
         public StyledString getStyledText(Object element)
         {
             if (isFieldProvider)
+            {
                 return new StyledString(super.getText(((Expression)element).field));
+            }
             else
+            {
                 return new StyledString(super.getText(((Expression)element).expression));
+            }
         }
 
         @Override

@@ -3,7 +3,6 @@
  */
 package org.quiteoldrange.i3textutils;
 
-
 import java.util.List;
 
 import org.eclipse.core.commands.ExecutionEvent;
@@ -43,7 +42,9 @@ public class ModuleRefactoringUtils
         for (RegionPreprocessor region : items)
         {
             if (region.getName().equals(name))
+            {
                 return region;
+            }
         }
 
         return null;
@@ -64,7 +65,9 @@ public class ModuleRefactoringUtils
         for (Method method : items)
         {
             if (method.getName().equals(name))
+            {
                 return method;
+            }
         }
 
         return null;
@@ -85,17 +88,23 @@ public class ModuleRefactoringUtils
         if (target != null)
         {
             if (!(target.getEditorInput() instanceof IFileEditorInput))
+            {
                 return null;
+            }
 
             IFileEditorInput input = (IFileEditorInput)target.getEditorInput();
             IFile file = input.getFile();
 
             if (file == null)
+            {
                 return null;
+            }
 
             IProject project = file.getProject();
             if (project == null)
+            {
                 return null;
+            }
 
             IXtextDocument doc = target.getDocument();
             return doc;
@@ -119,13 +128,17 @@ public class ModuleRefactoringUtils
         if (target != null)
         {
             if (!(target.getEditorInput() instanceof IFileEditorInput))
+            {
                 return null;
+            }
 
             IFileEditorInput input = (IFileEditorInput)target.getEditorInput();
             IFile file = input.getFile();
 
             if (file == null)
+            {
                 return null;
+            }
 
             IProject project = file.getProject();
 

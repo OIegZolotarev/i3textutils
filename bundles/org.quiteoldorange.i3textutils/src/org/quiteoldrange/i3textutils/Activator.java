@@ -8,13 +8,9 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
-/**
- * Данный класс представляет собой начальную точку в работе плагина.
- * В нем следует реализовывать логику создания плагина,
- * а так же необходимые действия при завершении работы плагина. <br>
- *
- * Так же данный класс содержит в себе ряд методов для удобного логирования ошибок
- */
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 public class Activator
     extends Plugin
 {
@@ -22,6 +18,8 @@ public class Activator
     private static Activator plugin;
 
     private BundleContext bundleContext;
+
+    private Injector injector;
 
     /**
      * Получить экземпляр плагина. Через экземпляр плагина можно получать доступ к разнообразным механизмам Eclipse,
@@ -92,8 +90,7 @@ public class Activator
      * @param throwable выкинутое исключение, может быть <code>null</code>
      * @return созданное статус событие, не может быть <code>null</code>
      */
-    public static IStatus createWarningStatus(final String message,
-        Exception throwable)
+    public static IStatus createWarningStatus(final String message, Exception throwable)
     {
         return new Status(IStatus.WARNING, PLUGIN_ID, 0, message, throwable);
     }
@@ -123,6 +120,7 @@ public class Activator
     public void stop(BundleContext bundleContext) throws Exception
     {
         plugin = null;
+        injector = null;
         super.stop(bundleContext);
     }
 
@@ -136,5 +134,43 @@ public class Activator
     protected BundleContext getContext()
     {
         return bundleContext;
+    }
+
+    /**
+     * Returns Guice injector for this plugin.
+     *
+     * @return Guice injector for this plugin, never <code>null</code>
+     */
+    /* package */ Injector getInjector()
+    {
+        Injector localInstance = injector;
+        if (localInstance == null)
+        {
+            synchronized (Activator.class)
+            {
+                localInstance = injector;
+                if (localInstance == null)
+                {
+                    localInstance = createInjector();
+                    injector = localInstance;
+                }
+            }
+        }
+        return localInstance;
+    }
+
+    private Injector createInjector()
+    {
+        try
+        {
+            return Guice.createInjector(new ExternalDependenciesModule(this));
+        }
+        catch (Exception e)
+        {
+            log(createErrorStatus("Failed to create injector for " //$NON-NLS-1$
+                + getBundle().getSymbolicName(), e));
+            throw new RuntimeException("Failed to create injector for " //$NON-NLS-1$
+                + getBundle().getSymbolicName(), e);
+        }
     }
 }

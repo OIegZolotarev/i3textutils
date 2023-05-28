@@ -61,10 +61,12 @@ public class DataProcessingHandler
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
-        IXtextDocument doc = ModuleRefactoringUtils.GetXTextDocumentFromEvent(event);
+        IXtextDocument doc = ModuleRefactoringUtils.getXTextDocumentFromEvent(event);
 
         if (doc == null)
+        {
             return null;
+        }
 
         // получим объект метаданных, к которому принадлежит модуль, из
         // которого была вызвана команда
@@ -84,8 +86,8 @@ public class DataProcessingHandler
 
         try
         {
-            String text = "\n" + doc.get(start, length);
-            doc.replace(start, length, "");
+            String text = "\n" + doc.get(start, length); //$NON-NLS-1$
+            doc.replace(start, length, ""); //$NON-NLS-1$
 
             int offset = NodeModelUtils.findActualNodeFor(region.getItem()).getTotalEndOffset();
             doc.replace(offset, 0, text);
@@ -184,7 +186,9 @@ public class DataProcessingHandler
         for (BasicRegister register : registerRecords)
         {
             if (register instanceof AccumulationRegister)
+            {
                 registers.add(register);
+            }
         }
         return registers;
     }
@@ -261,7 +265,9 @@ public class DataProcessingHandler
                     {
                         // интересуют только объектные модули
                         if (((Module)obj).getModuleType() != ModuleType.OBJECT_MODULE)
+                        {
                             return null;
+                        }
                         Module module = (Module)obj;
                         return EcoreUtil.resolve(module.getOwner(), module);
                     }

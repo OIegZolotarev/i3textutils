@@ -36,7 +36,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.example.ui"
+         id="org.quiteoldorange.i3textutils"
          download-size="0"
          install-size="0"
          version="1.0.0.qualifier"

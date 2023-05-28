@@ -8,6 +8,11 @@
             id="org.quiteoldrange.i3textutils.DataProcessingHandler"
             name="%command.name">
       </command>
+      <command
+            defaultHandler="org.quiteoldrange.i3textutils.ModuleStructureFiller"
+            id="org.quiteoldorange.i3textutils.fillModuleStructure"
+            name="%fillModuleStructure.name">
+      </command>
    </extension>
    <extension point="org.eclipse.ui.menus">
     <menuContribution
@@ -19,6 +24,15 @@
                 <reference definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened"/>
             </visibleWhen>
         </command>
+        
+        <command commandId="org.quiteoldorange.i3textutils.fillModuleStructure"
+            style="push"
+            tooltip="%fillModuleStruture.tooltip">
+            <visibleWhen checkEnabled="true">
+                <reference definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened"/>
+            </visibleWhen>
+        </command>
+        
     </menuContribution>
 </extension>
 </plugin>

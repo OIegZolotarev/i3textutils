@@ -6,7 +6,7 @@
       <command
             defaultHandler="org.quiteoldrange.i3textutils.DataProcessingHandler"
             id="org.quiteoldrange.i3textutils.DataProcessingHandler"
-            name="%command.name">
+            name="%addMissingPragmas.name">
       </command>
       <command
             defaultHandler="org.quiteoldrange.i3textutils.ModuleStructureFiller"
@@ -24,7 +24,7 @@
            <command
                  commandId="org.quiteoldrange.i3textutils.DataProcessingHandler"
                  style="push"
-                 tooltip="%command.tooltip">
+                 tooltip="%addMissingPragmas.tooltip">
               <visibleWhen
                     checkEnabled="true">
                  <reference
@@ -35,7 +35,7 @@
            <command
                  commandId="org.quiteoldorange.i3textutils.fillModuleStructure"
                  style="push"
-                 tooltip="%fillModuleStruture.tooltip">
+                 tooltip="%fillModuleStructure.tooltip">
               <visibleWhen
                     checkEnabled="true">
                  <reference
@@ -49,8 +49,7 @@
 </extension>
    <extension
          point="com.e1c.g5.v8.dt.check.fixes">
-      <fix
-            class="org.quiteoldrange.i3textutils.ExecutableExtensionFactory:org.quiteoldrange.i3textutils.MissingPragmaQFix"/>
+        <!-- fix  ="org.quiteoldrange.i3textutils.ExecutableExtensionFactory:org.quiteoldrange.i3textutils.MissingPragmaQFix"/ -->
       
    </extension>
    

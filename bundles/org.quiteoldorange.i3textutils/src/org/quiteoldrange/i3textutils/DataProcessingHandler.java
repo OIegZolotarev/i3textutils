@@ -24,8 +24,6 @@ import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
-import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
-import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.AccumulationRegister;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicRegister;
 import com.google.common.collect.Lists;
@@ -68,38 +66,75 @@ public class DataProcessingHandler
             return null;
         }
 
-        // получим объект метаданных, к которому принадлежит модуль, из
-        // которого была вызвана команда
-        EObject moduleOwner = getModuleOwner(doc);
+        Module moduleModel = ModuleRefactoringUtils.getModuleModel(doc);
 
-        Module moduleModel = (Module)getModuleModel(doc);
-        var t = BslUtil.getAllRegionPreprocessors(moduleModel);
-
-        RegionPreprocessor region = t.get(0);
-
-        // offset = 0;
-
-        Method method = moduleModel.allMethods().get(moduleModel.allMethods().size() - 1);
-
-        int start = NodeModelUtils.findActualNodeFor(method).getOffset();
-        int length = NodeModelUtils.findActualNodeFor(method).getLength();
-
-        try
+        if (moduleModel == null)
         {
-            String text = "\n" + doc.get(start, length); //$NON-NLS-1$
-            doc.replace(start, length, ""); //$NON-NLS-1$
-
-            int offset = NodeModelUtils.findActualNodeFor(region.getItem()).getTotalEndOffset();
-            doc.replace(offset, 0, text);
-
+            return null;
         }
-        catch (BadLocationException e1)
+
+        for (Method method : moduleModel.allMethods())
         {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+            if (method.getPragmas().isEmpty())
+            {
+                var node = NodeModelUtils.findActualNodeFor(method);
+
+
+
+                try
+                {
+                    doc.replace(node.getOffset(), 0, "&НаСервере\n");
+                }
+                catch (BadLocationException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
         }
 
         return null;
+
+/*        IXtextDocument doc = ModuleRefactoringUtils.getXTextDocumentFromEvent(event);
+
+if (doc == null)
+{
+    return null;
+}
+
+
+// получим объект метаданных, к которому принадлежит модуль, из
+// которого была вызвана команда
+EObject moduleOwner = getModuleOwner(doc);
+
+Module moduleModel = (Module)getModuleModel(doc);
+var t = BslUtil.getAllRegionPreprocessors(moduleModel);
+
+RegionPreprocessor region = t.get(0);
+
+// offset = 0;
+
+Method method = moduleModel.allMethods().get(moduleModel.allMethods().size() - 1);
+
+int start = NodeModelUtils.findActualNodeFor(method).getOffset();
+int length = NodeModelUtils.findActualNodeFor(method).getLength();
+
+try
+{
+    String text = "\n" + doc.get(start, length); //$NON-NLS-1$
+    doc.replace(start, length, ""); //$NON-NLS-1$
+
+    int offset = NodeModelUtils.findActualNodeFor(region.getItem()).getTotalEndOffset();
+    doc.replace(offset, 0, text);
+
+}
+catch (BadLocationException e1)
+{
+    // TODO Auto-generated catch block
+    e1.printStackTrace();
+}
+
+return null;*/
 
 //            // проверим, что команда была вызвана из правильного модуля и у
 //            // документа есть хотя бы 1 регистр

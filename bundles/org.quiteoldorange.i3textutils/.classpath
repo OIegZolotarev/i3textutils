@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="resources"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
+	<classpathentry kind="src" path="src" />
+	<classpathentry kind="src" path="resources" />
+	<classpathentry kind="con"
+		path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
 		<attributes>
-			<attribute name="module" value="true"/>
+			<attribute name="module" value="true" />
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="/opt/1C/1CE/components/1c-edt-2022.1.5+13-x86_64/plugins/com._1c.g5.v8.dt.common_8.4.100.v202301130934.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="con"
+		path="org.eclipse.pde.core.requiredPlugins" />
+	<!--  <classpathentry kind="lib"
+		path="/opt/1C/1CE/components/1c-edt-2022.1.5+13-x86_64/plugins/com._1c.g5.v8.dt.common_8.4.100.v202301130934.jar" /> -->
+	<classpathentry kind="lib"
+        path="/home/ozolotarev/.p2/pool/plugins/com._1c.g5.v8.dt.common_8.4.200.v202212261459.jar" />
+	<classpathentry kind="output" path="bin" />
 </classpath>

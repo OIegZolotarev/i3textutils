@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldrange.i3textutils;
+package org.quiteoldorange.i3textutils;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;

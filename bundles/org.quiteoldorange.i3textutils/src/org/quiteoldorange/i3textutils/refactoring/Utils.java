@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldrange.i3textutils;
+package org.quiteoldorange.i3textutils.refactoring;
 
 import java.util.List;
 
@@ -9,9 +9,11 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -26,7 +28,7 @@ import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
  * @author ozolotarev
  *
  */
-public class ModuleRefactoringUtils
+public class Utils
 {
     /**
      * Ищет область модуля по имени
@@ -72,6 +74,43 @@ public class ModuleRefactoringUtils
 
         return null;
 
+    }
+
+    public static MethodSourceInfo getMethodSourceInfo(Method method, IXtextDocument doc) throws BadLocationException
+    {
+        var node = NodeModelUtils.findActualNodeFor(method);
+        int startingLine = 0;
+
+        startingLine = doc.getLineOfOffset(node.getOffset());
+
+        if (startingLine == 0)
+        {
+            return new MethodSourceInfo(node.getOffset(), node.getEndOffset(), node.getText());
+        }
+
+        int endingLine = startingLine;
+
+        while(true)
+        {
+            if (endingLine == 0)
+                break;
+
+            int newOffset = doc.getLineOffset(endingLine - 1);
+
+            if (doc.get(newOffset, 2).equals("//")) //$NON-NLS-1$
+            {
+                endingLine--;
+            }
+            else
+                break;
+        }
+
+        int startingOffset = doc.getLineOffset(endingLine);
+        int endingOffset = node.getEndOffset();
+
+        String sourceText = doc.get(startingOffset, endingOffset - startingOffset);
+
+        return new MethodSourceInfo(startingOffset, endingOffset, sourceText);
     }
 
     /**

@@ -10,34 +10,30 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package org.quiteoldrange.i3textutils;
+package org.quiteoldorange.i3textutils.core;
 
-import org.eclipse.core.runtime.Plugin;
+import org.eclipse.xtext.ui.guice.AbstractGuiceAwareExecutableExtensionFactory;
+import org.osgi.framework.Bundle;
 
-import com._1c.g5.wiring.AbstractServiceAwareModule;
+import com.google.inject.Injector;
 
 /**
- * External services bindings for plugin.
+ * Guice module aware executable extension factory for plugin.
  *
  * @author Dmitriy Marmyshev
- *
  */
-public class ExternalDependenciesModule
-    extends AbstractServiceAwareModule
+public class ExecutableExtensionFactory
+    extends AbstractGuiceAwareExecutableExtensionFactory
 {
-
-    /**
-     * @param plugin
-     */
-    public ExternalDependenciesModule(Plugin plugin)
+    @Override
+    protected Bundle getBundle()
     {
-        super(plugin);
+        return Activator.getDefault().getBundle();
     }
 
     @Override
-    protected void doConfigure()
+    protected Injector getInjector()
     {
-        // empty
+        return Activator.getDefault().getInjector();
     }
-
 }

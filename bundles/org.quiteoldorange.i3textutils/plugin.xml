@@ -4,12 +4,12 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.quiteoldrange.i3textutils.DataProcessingHandler"
+            defaultHandler="org.quiteoldorange.i3textutils.commands.AddMissingPragmas"
             id="org.quiteoldrange.i3textutils.DataProcessingHandler"
             name="%addMissingPragmas.name">
       </command>
       <command
-            defaultHandler="org.quiteoldrange.i3textutils.ModuleStructureFiller"
+            defaultHandler="org.quiteoldorange.i3textutils.commands.FillModuleStructure"
             id="org.quiteoldorange.i3textutils.fillModuleStructure"
             name="%fillModuleStructure.name">
       </command>

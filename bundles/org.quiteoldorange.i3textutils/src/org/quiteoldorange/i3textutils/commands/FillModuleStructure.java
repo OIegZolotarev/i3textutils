@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldrange.i3textutils;
+package org.quiteoldorange.i3textutils.commands;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
+import org.quiteoldorange.i3textutils.refactoring.Utils;
 
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
@@ -24,7 +25,7 @@ import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
  * @author ozolotarev
  *
  */
-public class ModuleStructureFiller
+public class FillModuleStructure
     extends AbstractHandler
 {
 
@@ -33,7 +34,7 @@ public class ModuleStructureFiller
     {
         String codeMarker = "//%CURRENT_CODE%"; //$NON-NLS-1$
 
-        Module moduleModel = ModuleRefactoringUtils.getModuleModel(doc);
+        Module moduleModel = Utils.getModuleModel(doc);
 
         if (moduleModel == null)
         {
@@ -45,7 +46,7 @@ public class ModuleStructureFiller
 
         String templateSource = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
 
-        RegionPreprocessor r = ModuleRefactoringUtils.findModuleRegion("Сборка_Элементов_Интерфейса", moduleModel); //$NON-NLS-1$
+        RegionPreprocessor r = Utils.findModuleRegion("Сборка_Элементов_Интерфейса", moduleModel); //$NON-NLS-1$
 
         if (templateSource.indexOf(codeMarker) > 0)
         {
@@ -128,14 +129,14 @@ public class ModuleStructureFiller
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
-        IProject project = ModuleRefactoringUtils.getProjectFromEvent(event);
+        IProject project = Utils.getProjectFromEvent(event);
 
         if (project == null)
         {
             return null;
         }
 
-        IXtextDocument xTextDocument = ModuleRefactoringUtils.getXTextDocumentFromEvent(event);
+        IXtextDocument xTextDocument = Utils.getXTextDocumentFromEvent(event);
 
         if (xTextDocument == null)
         {

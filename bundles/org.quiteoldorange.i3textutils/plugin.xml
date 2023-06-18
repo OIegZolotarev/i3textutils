@@ -62,11 +62,9 @@
         
     </menuContribution>
 </extension>
-   <extension
-         point="com.e1c.g5.v8.dt.check.fixes">
-        <!-- fix  ="org.quiteoldrange.i3textutils.ExecutableExtensionFactory:org.quiteoldrange.i3textutils.MissingPragmaQFix"/ -->
-      
-   </extension>
    
+<extension point="com.e1c.g5.v8.dt.check.fixes">
+<fix class="org.quiteoldorange.i3textutils.core.ExecutableExtensionFactory:org.quiteoldorange.i3textutils.MissingPragmaQFix"/>
+</extension>   
    
 </plugin>

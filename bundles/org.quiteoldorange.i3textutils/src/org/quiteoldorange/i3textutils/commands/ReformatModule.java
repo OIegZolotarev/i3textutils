@@ -8,8 +8,13 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
+import org.quiteoldorange.i3textutils.core.Activator;
 import org.quiteoldorange.i3textutils.refactoring.ModuleElement;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
+
+import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
+import com.e1c.g5.v8.dt.check.settings.CheckUid;
+import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
 
 /**
  * @author ozolotarev
@@ -27,6 +32,14 @@ public class ReformatModule
 
         if (doc == null)
             return null;
+
+        var proj = Utils.getProjectFromEvent(event);
+
+        ICheckRepository checksRepo = Utils.getServiceInstance(ICheckRepository.class);
+        IFixRepository fixRepo = Utils.getServiceInstance(IFixRepository.class);
+
+        var abc = fixRepo.getFixes(new CheckUid("form-module-missing-pragma", Activator.PLUGIN_ID));
+
 
         var elements = ModuleElement.CollectFromModule(doc);
 

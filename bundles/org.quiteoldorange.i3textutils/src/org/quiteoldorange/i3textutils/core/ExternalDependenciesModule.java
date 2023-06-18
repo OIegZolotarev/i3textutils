@@ -13,13 +13,19 @@
 package org.quiteoldorange.i3textutils.core;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.xtext.resource.IResourceServiceProvider;
 
+import com._1c.g5.v8.dt.bsl.services.BslGrammarAccess;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
+import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
+import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
 
 /**
  * External services bindings for plugin.
  *
- * @author Dmitriy Marmyshev
+ *
  *
  */
 public class ExternalDependenciesModule
@@ -37,7 +43,15 @@ public class ExternalDependenciesModule
     @Override
     protected void doConfigure()
     {
-        // empty
+        // Какая-то java-хуйня
+
+        URI uri = URI.createURI("*.bsl");
+        final IResourceServiceProvider rsp = IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(uri);
+
+        bind(BslGrammarAccess.class).toProvider(() -> rsp.get(BslGrammarAccess.class));
+        bind(IV8ProjectManager.class).toService();
+        bind(ICheckRepository.class).toService();
+        bind(IFixRepository.class).toService();
     }
 
 }

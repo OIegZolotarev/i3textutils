@@ -34,7 +34,7 @@ public class FillModuleStructure
     {
         String codeMarker = "//%CURRENT_CODE%"; //$NON-NLS-1$
 
-        Module moduleModel = Utils.getModuleModel(doc);
+        Module moduleModel = Utils.getModuleFromXTextDocument(doc);
 
         if (moduleModel == null)
         {

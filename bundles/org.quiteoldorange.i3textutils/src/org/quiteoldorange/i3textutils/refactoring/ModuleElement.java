@@ -7,9 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
-import com._1c.g5.v8.dt.bsl.model.Module;
 
 /**
  * @author ozolotarev
@@ -58,15 +59,28 @@ public class ModuleElement
         return mExported;
     }
 
-    public static List<ModuleElement> CollectFromModule(Module module)
+    public static List<ModuleElement> CollectFromModule(IXtextDocument doc)
     {
+        var module = Utils.getModuleFromXTextDocument(doc);
         List<ModuleElement> result = new LinkedList<>();
 
         EList<Method> methods = module.allMethods();
 
         for (Method m : methods)
         {
-            ModuleElement el = new ModuleElement(m.getName(), m.isExport(), "", METHOD);
+            MethodSourceInfo info = null;
+
+            try
+            {
+                info = Utils.getMethodSourceInfo(m, doc);
+            }
+            catch (BadLocationException e)
+            {
+                continue;
+            }
+
+            ModuleElement el = new ModuleElement(m.getName(), m.isExport(), info.getSourceText(), METHOD);
+            result.add(el);
         }
 
         return result;

@@ -188,7 +188,11 @@ public class Utils
 
     }
 
-    public static Module getModuleModel(IXtextDocument doc)
+    /**
+     * @param doc
+     * @return
+     */
+    public static Module getModuleFromXTextDocument(IXtextDocument doc)
     {
         return (Module)doc.readOnly(new IUnitOfWork<EObject, XtextResource>()
         {

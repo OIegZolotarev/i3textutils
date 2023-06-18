@@ -24,7 +24,7 @@ public class AddMissingPragmas
             return null;
         }
 
-        Module moduleModel = Utils.getModuleModel(doc);
+        Module moduleModel = Utils.getModuleFromXTextDocument(doc);
 
         if (moduleModel == null)
         {

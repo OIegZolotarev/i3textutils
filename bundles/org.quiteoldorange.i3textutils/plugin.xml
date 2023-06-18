@@ -5,14 +5,20 @@
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="org.quiteoldorange.i3textutils.commands.AddMissingPragmas"
-            id="org.quiteoldrange.i3textutils.DataProcessingHandler"
+            id="org.quiteoldorange.i3textutils.commands.AddMissingPragmas"
             name="%addMissingPragmas.name">
       </command>
       <command
             defaultHandler="org.quiteoldorange.i3textutils.commands.FillModuleStructure"
-            id="org.quiteoldorange.i3textutils.fillModuleStructure"
+            id="org.quiteoldorange.i3textutils.commands.fillModuleStructure"
             name="%fillModuleStructure.name">
+      </command>      
+            <command
+            defaultHandler="org.quiteoldorange.i3textutils.commands.ReformatModule"
+            id="org.quiteoldorange.i3textutils.commands.ReformatModule"
+            name="%reformatModule.name">
       </command>
+      
    </extension>
    <extension point="org.eclipse.ui.menus">
     <menuContribution
@@ -21,8 +27,17 @@
         <menu
               id="labeli3Tools"
               label="%i3ToolsTextGroup">
+           
+           <command commandId ="org.quiteoldorange.i3textutils.commands.ReformatModule" style="push">
+              <visibleWhen checkEnabled="true">
+                 <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
+                 </reference>
+              </visibleWhen>
+           </command>              
+              
            <command
-                 commandId="org.quiteoldrange.i3textutils.DataProcessingHandler"
+                 commandId="org.quiteoldorange.i3textutils.commands.AddMissingPragmas"
                  style="push"
                  tooltip="%addMissingPragmas.tooltip">
               <visibleWhen
@@ -33,7 +48,7 @@
               </visibleWhen>
            </command>
            <command
-                 commandId="org.quiteoldorange.i3textutils.fillModuleStructure"
+                 commandId="org.quiteoldorange.i3textutils.commands.fillModuleStructure"
                  style="push"
                  tooltip="%fillModuleStructure.tooltip">
               <visibleWhen

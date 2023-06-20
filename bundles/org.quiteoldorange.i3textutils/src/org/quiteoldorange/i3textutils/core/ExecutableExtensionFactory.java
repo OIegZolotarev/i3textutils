@@ -30,12 +30,12 @@ public class ExecutableExtensionFactory
     @Override
     protected Bundle getBundle()
     {
-        return Activator.getDefault().getBundle();
+        return i3TextUtilsPlugin.getDefault().getBundle();
     }
 
     @Override
     protected Injector getInjector()
     {
-        return Activator.getDefault().getInjector();
+        return i3TextUtilsPlugin.getDefault().getInjector();
     }
 }

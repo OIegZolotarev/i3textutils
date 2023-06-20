@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils;
+package org.quiteoldorange.i3textutils.qfix;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.TextEdit;
@@ -11,16 +11,12 @@ import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
 import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
 
-
-
 /**
  * @author ozolotarev
  *
  */
-
-// checkId + supplierId идентифицируют ошибку!
-@QuickFix(checkId = "form-module-missing-pragma11", supplierId = "com.e1c.v8codestyle.bsl")
-public class MissingPragmaQFix
+@QuickFix(checkId = "form-module-missing-pragma", supplierId = "com.e1c.v8codestyle.bsl")
+public class MissingPragmaQFix2
     extends SingleVariantXtextBslModuleFix
 {
 
@@ -35,7 +31,7 @@ public class MissingPragmaQFix
     @Override
     protected void configureFix(FixConfigurer configurer)
     {
-        configurer.interactive(true).description("Насрал").details("Базу");
+        configurer.interactive(true).description("Насрал 2").details("MissingPragmaQFix2");
     }
 
 

@@ -18,7 +18,7 @@ import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
-import org.quiteoldorange.i3textutils.core.Activator;
+import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
@@ -217,7 +217,7 @@ public class Utils
 
     public static <T> T getServiceInstance(Class<?> serviceClass)
     {
-        var bundle = Activator.getDefault().getBundle();
+        var bundle = i3TextUtilsPlugin.getDefault().getBundle();
         var bundleContext = bundle.getBundleContext();
 
         var serviceRef = bundleContext.getServiceReference(serviceClass);

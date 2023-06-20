@@ -14,11 +14,14 @@ import com._1c.g5.wiring.ServiceInitialization;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-public class Activator
+public class i3TextUtilsPlugin
     extends AbstractUIPlugin
 {
     public static final String PLUGIN_ID = "org.quiteoldorange.i3textutils"; //$NON-NLS-1$
-    private static Activator plugin;
+
+    public static final String V8_CODESTYLE_BUNDLE = "com.e1c.v8codestyle.bsl";
+
+    private static i3TextUtilsPlugin plugin;
 
     private BundleContext bundleContext;
     private InjectorAwareServiceRegistrator registrator;
@@ -35,7 +38,7 @@ public class Activator
      *
      * @return экземпляр плагина, никогда не должен возвращать <code>null</code>
      */
-    public static Activator getDefault()
+    public static i3TextUtilsPlugin getDefault()
     {
         return plugin;
     }
@@ -156,7 +159,7 @@ public class Activator
         Injector localInstance = injector;
         if (localInstance == null)
         {
-            synchronized (Activator.class)
+            synchronized (i3TextUtilsPlugin.class)
             {
                 localInstance = injector;
                 if (localInstance == null)

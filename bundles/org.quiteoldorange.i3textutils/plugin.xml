@@ -64,7 +64,7 @@
 </extension>
    
 <extension point="com.e1c.g5.v8.dt.check.fixes">
-<fix class="org.quiteoldorange.i3textutils.core.ExecutableExtensionFactory:org.quiteoldorange.i3textutils.MissingPragmaQFix"/>
+<fix class="org.quiteoldorange.i3textutils.core.ExecutableExtensionFactory:org.quiteoldorange.i3textutils.qfix.MissingPragmaQFix"/>
 </extension>   
    
 </plugin>

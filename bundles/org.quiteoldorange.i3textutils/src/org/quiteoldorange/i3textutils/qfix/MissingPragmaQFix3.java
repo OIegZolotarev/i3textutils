@@ -8,6 +8,7 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
@@ -51,15 +52,15 @@ public class MissingPragmaQFix3
 
         Method m = (Method)model.getElement();
 
+        // EDT BUG: панель с ошибками конфигурации не обновляется и может несколько раз исправлять одну и ту же ошибку.
+        if (!m.getPragmas().isEmpty())
+            return null;
+
         var node = NodeModelUtils.findActualNodeFor(m);
+        var document = (IXtextDocument)model.getDocument();
+        int realOffset = document.get().indexOf(node.getText().trim());
 
-        // Улетают оффсеты напрочь, надо посмотреть MultiTextEdit
-
-        // Может быть делать поиск и замену текста?
-
-
-        // TODO Auto-generated method stub
-        return new ReplaceEdit(node.getOffset(), 0, String.format("%s\n", mPragmaRU)); //$NON-NLS-1$
+        return new ReplaceEdit(realOffset, 0, String.format("%s\n", mPragmaRU)); //$NON-NLS-1$
     }
 
     public MissingPragmaQFix3(CheckUid _checkUid, String id, String pragmaRU, String pragmaEN)

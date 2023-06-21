@@ -11,6 +11,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.Module;
 
 /**
  * @author ozolotarev
@@ -22,8 +23,12 @@ public class ModuleElement
     private String mName;
     private boolean mExported;
 
+    List<ModuleElement> mChidlren = null;
+
     private final static String METHOD = "Method";
     private final static String DECLARATION = "Declaration";
+    private final static String REGION = "Region";
+    private final static String MAINPROGRAM = "MainProgram";
 
     private String mType;
 
@@ -59,11 +64,23 @@ public class ModuleElement
         return mExported;
     }
 
-    public static List<ModuleElement> CollectFromModule(IXtextDocument doc)
+    public static List<ModuleElement> collectFromModule(IXtextDocument doc)
     {
         var module = Utils.getModuleFromXTextDocument(doc);
         List<ModuleElement> result = new LinkedList<>();
 
+        collectMethods(doc, module, result);
+
+        return result;
+    }
+
+    /**
+     * @param doc
+     * @param module
+     * @param result
+     */
+    private static void collectMethods(IXtextDocument doc, Module module, List<ModuleElement> result)
+    {
         EList<Method> methods = module.allMethods();
 
         for (Method m : methods)
@@ -82,8 +99,6 @@ public class ModuleElement
             ModuleElement el = new ModuleElement(m.getName(), m.isExport(), info.getSourceText(), METHOD);
             result.add(el);
         }
-
-        return result;
     }
 
 }

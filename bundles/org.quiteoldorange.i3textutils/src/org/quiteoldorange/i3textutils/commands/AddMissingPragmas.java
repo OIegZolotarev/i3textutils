@@ -40,7 +40,6 @@ public class AddMissingPragmas
             {
                 var node = NodeModelUtils.findActualNodeFor(method);
 
-
                 try
                 {
                     doc.replace(node.getOffset(), 0, "&НаСервере\n");

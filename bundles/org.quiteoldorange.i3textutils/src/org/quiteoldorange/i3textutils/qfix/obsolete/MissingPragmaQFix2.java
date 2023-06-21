@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.qfix;
+package org.quiteoldorange.i3textutils.qfix.obsolete;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.TextEdit;
@@ -9,13 +9,12 @@ import org.eclipse.xtext.resource.XtextResource;
 
 import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
 import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
-import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
 
 /**
  * @author ozolotarev
  *
  */
-@QuickFix(checkId = "form-module-missing-pragma", supplierId = "com.e1c.v8codestyle.bsl")
+//@QuickFix(checkId = "form-module-missing-pragma", supplierId = "com.e1c.v8codestyle.bsl")
 public class MissingPragmaQFix2
     extends SingleVariantXtextBslModuleFix
 {

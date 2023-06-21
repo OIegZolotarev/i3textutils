@@ -7,6 +7,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
+import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextInteractiveBslModuleFixModel;
@@ -16,14 +17,13 @@ import com.e1c.g5.v8.dt.check.qfix.IFixSession;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
 
 
-
 /**
  * @author ozolotarev
  *
  */
 
 // checkId + supplierId идентифицируют ошибку!
-@QuickFix(checkId = "form-module-missing-pragma", supplierId = "com.e1c.v8codestyle.bsl")
+@QuickFix(checkId = "form-module-missing-pragma", supplierId = i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE)
 public class MissingPragmaQFix
     extends MultiVariantXtextBslModuleFix
 {
@@ -103,38 +103,35 @@ public class MissingPragmaQFix
 
         var node = NodeModelUtils.findActualNodeFor(m);
 
-        // Улетают оффсеты напрочь, надо посмотреть MultiTextEdit
+        if (!m.getPragmas().isEmpty())
+            return;
 
+        var document = (IXtextDocument)model.getDocument();
+        int realOffset = document.get().indexOf(node.getText().trim());
 
-        IXtextDocument doc = (IXtextDocument)model.getDocument();
         try
         {
-
-            doc.replace(node.getOffset(), 0, String.format("%s\n", variant.getPragmaRU())); //$NON-NLS-1$
+            document.replace(realOffset, 0, String.format("%s\n", variant.getPragmaRU()));
         }
         catch (BadLocationException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
     @Override
     protected void buildVariants()
     {
-        return;
-/*        for (FixVariant variant : fixVariants)
-{
-    VariantBuilder.create(this)
-        .description(variant.getDescription(), variant.getDetails())
-        .interactive(true)
-    .change((context, session, state, model) -> addPragma(context, session, state,
-            (IXtextInteractiveBslModuleFixModel)model, variant))
-        .build();
-}
-*/
-
+        for (FixVariant variant : fixVariants)
+        {
+            VariantBuilder.create(this)
+                .description(variant.getDescription(), variant.getDetails())
+                .interactive(true)
+                .change((context, session, state, model) -> addPragma(context, session, state,
+                    (IXtextInteractiveBslModuleFixModel)model, variant))
+                .build();
+        }
 
     }
 

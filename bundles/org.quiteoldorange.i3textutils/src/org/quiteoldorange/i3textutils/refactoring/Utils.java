@@ -77,6 +77,14 @@ public class Utils
 
     }
 
+    /**
+     * Получает информацию о методе модуля, с учетом документирующего комментария.
+     *
+     * @param method - метод модуля
+     * @param doc - текущий документ
+     * @return - информация о расположении метода
+     * @throws BadLocationException
+     */
     public static MethodSourceInfo getMethodSourceInfo(Method method, IXtextDocument doc) throws BadLocationException
     {
         var node = NodeModelUtils.findActualNodeFor(method);

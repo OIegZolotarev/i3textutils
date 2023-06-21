@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.qfix;
+package org.quiteoldorange.i3textutils.qfix.obsolete;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.ReplaceEdit;

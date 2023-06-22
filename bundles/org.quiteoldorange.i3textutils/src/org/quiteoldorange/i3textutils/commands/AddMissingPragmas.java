@@ -31,6 +31,7 @@ public class AddMissingPragmas
             return null;
         }
 
+
         var methods = moduleModel.allMethods();
         for (int i = methods.size() - 1; i >= 0; i--)
         {

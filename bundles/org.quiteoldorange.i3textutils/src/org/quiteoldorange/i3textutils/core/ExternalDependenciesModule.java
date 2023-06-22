@@ -45,7 +45,7 @@ public class ExternalDependenciesModule
     {
         // Какая-то java-хуйня
 
-        URI uri = URI.createURI("*.bsl");
+        URI uri = URI.createURI("*.bsl"); //$NON-NLS-1$
         final IResourceServiceProvider rsp = IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(uri);
 
         bind(BslGrammarAccess.class).toProvider(() -> rsp.get(BslGrammarAccess.class));

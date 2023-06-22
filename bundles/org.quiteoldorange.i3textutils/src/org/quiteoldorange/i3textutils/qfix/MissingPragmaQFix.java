@@ -111,7 +111,7 @@ public class MissingPragmaQFix
 
         try
         {
-            document.replace(realOffset, 0, String.format("%s\n", variant.getPragmaRU()));
+            document.replace(realOffset, 0, String.format("%s\n", variant.getPragmaRU())); //$NON-NLS-1$
         }
         catch (BadLocationException e)
         {

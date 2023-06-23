@@ -10,7 +10,7 @@ package org.quiteoldorange.i3textutils.bsl.parser;
 public class Lexer
 {
 
-    public Lexer(String position)
+    public Lexer(String source)
     {
 
     }

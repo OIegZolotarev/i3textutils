@@ -3,6 +3,10 @@
  */
 package org.quiteoldorange.i3textutils.bsl.parser;
 
+import java.util.HashMap;
+
+import org.quiteoldorange.i3textutils.StringUtils;
+
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
@@ -66,7 +70,12 @@ public class Token
         KeywordVar,
         KeywordLoop,
         KeywordEach,
-        KeywordVal
+        KeywordVal,
+        KeywordExcept,
+        ModuloSign,
+        KeywordGoto,
+        Tilde,
+        Colon
 
     }
 
@@ -111,120 +120,130 @@ public class Token
         return mColumn;
     }
 
-    public String toString(ScriptVariant language)
+    public String toString(ScriptVariant scriptLang)
     {
-        switch (mType)
+        var mapping = sTokenDictionary.get(mType);
+
+        if (mapping != null)
         {
-        case Annotation:
-            break;
-        case BeginFunction:
-            break;
-        case BeginProcedure:
-            break;
-        case BooleanConst:
-            break;
-        case ClosingBracket:
-            break;
-        case Comma:
-            break;
-        case Comment:
-            break;
-        case DateConstant:
-            break;
-        case DivisionSign:
-            break;
-        case Dot:
-            break;
-        case EndFunction:
-            break;
-        case EndProcedure:
-            break;
-        case EqualsSign:
-            break;
-        case Export:
-            break;
-        case ExpressionEnd:
-            break;
-        case GreateSign:
-            break;
-        case Identifier:
-            break;
-        case KeywordAnd:
-            break;
-        case KeywordEach:
-            break;
-        case KeywordLoop:
-            break;
-        case KeywordNot:
-            break;
-        case KeywordOr:
-            break;
-        case KeywordVal:
-            break;
-        case KeywordVar:
-            break;
-        case LessSign:
-            break;
-        case MinusSign:
-            break;
-        case MultiplicationSign:
-            break;
-        case NumericConstant:
-            break;
-        case OpeningBracket:
-            break;
-        case OperatorElse:
-            break;
-        case OperatorElseIf:
-            break;
-        case OperatorEndIf:
-            break;
-        case OperatorEndLoop:
-            break;
-        case OperatorEndTry:
-            break;
-        case OperatorFor:
-            break;
-        case OperatorIf:
-            break;
-        case OperatorNew:
-            break;
-        case OperatorThen:
-            break;
-        case OperatorTry:
-            break;
-        case OperatorWhile:
-            break;
-        case PlusSign:
-            break;
-        case PreprocessorElse:
-            break;
-        case PreprocessorElseIf:
-            break;
-        case PreprocessorEndIf:
-            break;
-        case PreprocessorEndInsert:
-            break;
-        case PreprocessorEndRegion:
-            break;
-        case PreprocessorEndRemove:
-            break;
-        case PreprocessorIf:
-            break;
-        case PreprocessorInsert:
-            break;
-        case PreprocessorRegion:
-            break;
-        case PreprocessorRemove:
-            break;
-        case PreprocessorThen:
-            break;
-        case StringConstant:
-            break;
-        default:
-            break;
+            return mapping.getValue(scriptLang);
         }
 
         return mValue;
     }
+
+    final static class KeywordDictionaryEntry
+    {
+        private String mKeywordRU;
+        private String mKeywordEN;
+
+        /**
+         *
+         */
+        public KeywordDictionaryEntry(String keywordRU, String keywordEN)
+        {
+            mKeywordRU = keywordRU;
+            mKeywordEN = keywordEN;
+        }
+
+        String getValue(ScriptVariant scriptVariant)
+        {
+            switch (scriptVariant)
+            {
+            case ENGLISH:
+                return mKeywordEN;
+            case RUSSIAN:
+                return mKeywordRU;
+            default:
+                return mKeywordRU;
+            }
+        }
+    }
+
+
+    public static Type CalculateTokenType(String tokenValue)
+    {
+        Type keywordType = sTokenMappings.get(tokenValue.toUpperCase());
+
+        if (keywordType != null)
+            return keywordType;
+
+        if (StringUtils.isNumeric(tokenValue))
+            return Type.NumericConstant;
+
+        return null;
+    }
+
+    static HashMap<Type, KeywordDictionaryEntry> sTokenDictionary = new HashMap<>();
+    static HashMap<String, Type> sTokenMappings = new HashMap<>();
+
+    static
+    {
+        sTokenDictionary.put(Type.BeginProcedure, new KeywordDictionaryEntry("ПРОЦЕДУРА", "PROCEDURE")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.BeginFunction, new KeywordDictionaryEntry("ФУНКЦИЯ", "FUNCTION")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.EndProcedure, new KeywordDictionaryEntry("КОНЕЦПРОЦЕДУРЫ", "ENDPROCEDURE")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.EndFunction, new KeywordDictionaryEntry("КОНЕЦФУНКЦИИ", "ENDFUNCTION")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.EqualsSign, new KeywordDictionaryEntry("=", "=")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OpeningBracket, new KeywordDictionaryEntry("(", "(")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.ClosingBracket, new KeywordDictionaryEntry(")", ")")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.Export, new KeywordDictionaryEntry("ЭКСПОРТ", "EXPORT")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.Comma, new KeywordDictionaryEntry(",", ",")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.ExpressionEnd, new KeywordDictionaryEntry(";", ";")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PlusSign, new KeywordDictionaryEntry("+", "+")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.MinusSign, new KeywordDictionaryEntry("-", "-")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.MultiplicationSign, new KeywordDictionaryEntry("*", "*")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.DivisionSign, new KeywordDictionaryEntry("/", "/")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.Dot, new KeywordDictionaryEntry(".", ".")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorNew, new KeywordDictionaryEntry("НОВЫЙ", "NEW")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorIf, new KeywordDictionaryEntry("ЕСЛИ", "IF")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorThen, new KeywordDictionaryEntry("ТОГДА", "THEN")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorElse, new KeywordDictionaryEntry("ИНАЧЕ", "ELSE")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorElseIf, new KeywordDictionaryEntry("ИНАЧЕЕСЛИ", "ELSEIF")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorEndIf, new KeywordDictionaryEntry("КОНЕЦЕСЛИ", "ENDIF")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.LessSign, new KeywordDictionaryEntry("<", "<")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.GreateSign, new KeywordDictionaryEntry(">", ">")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorFor, new KeywordDictionaryEntry("ДЛЯ", "FOR")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorWhile, new KeywordDictionaryEntry("ПОКА", "WHILE")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorEndLoop, new KeywordDictionaryEntry("КОНЕЦЦИКЛА", "ENDLOOP")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorTry, new KeywordDictionaryEntry("ПОПЫТКА", "TRY")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorEndTry, new KeywordDictionaryEntry("КОНЕЦПОПЫТКИ", "ENDTRY")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorIf, new KeywordDictionaryEntry("#ЕСЛИ", "#IF")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorThen, new KeywordDictionaryEntry("#ТОГДА", "#THEN")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorElseIf, new KeywordDictionaryEntry("#ИНАЧЕЕСЛИ", "#ELSEIF")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorElse, new KeywordDictionaryEntry("#ИНАЧЕ", "#ELSE")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorEndIf, new KeywordDictionaryEntry("#КОНЕЦЕСЛИ", "#ENDIF")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorInsert, new KeywordDictionaryEntry("#ВСТАВКА", "#INSERT")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorEndInsert, new KeywordDictionaryEntry("#КОНЕЦВСТАВКИ", "#ENDINSERT")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorRemove, new KeywordDictionaryEntry("#УДАЛЕНИЕ", "#DELETE")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorEndRemove, new KeywordDictionaryEntry("#КОНЕЦУДАЛЕНИЯ", "#ENDDELETE")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorRegion, new KeywordDictionaryEntry("#ОБЛАСТЬ", "#REGION")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorEndRegion, new KeywordDictionaryEntry("#КОНЕЦОБЛАСТИ", "#ENDREGION")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordAnd, new KeywordDictionaryEntry("И", "AND")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordOr, new KeywordDictionaryEntry("ИЛИ", "OR")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordNot, new KeywordDictionaryEntry("НЕ", "NOT")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordVar, new KeywordDictionaryEntry("ПЕРЕМ", "VAR")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordLoop, new KeywordDictionaryEntry("ЦИКЛ", "LOOP")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordEach, new KeywordDictionaryEntry("КАЖДОГО", "EACH")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordVal, new KeywordDictionaryEntry("ЗНАЧ", "VAL")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordExcept, new KeywordDictionaryEntry("ИСКЛЮЧЕНИЕ", "EXCEPT")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.ModuloSign, new KeywordDictionaryEntry("%", "%")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.Tilde, new KeywordDictionaryEntry("~", "~")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordGoto, new KeywordDictionaryEntry("ПЕРЕЙТИ", "GOTO")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.Colon, new KeywordDictionaryEntry(":", ":")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        for (var entry: sTokenDictionary.entrySet())
+        {
+            var dictionaryEntry = entry.getValue();
+            sTokenMappings.put(dictionaryEntry.mKeywordRU, entry.getKey());
+            sTokenMappings.put(dictionaryEntry.mKeywordEN, entry.getKey());
+        }
+
+        // Особые случаи для булевых констант
+        sTokenMappings.put("TRUE", Type.BooleanConst);
+        sTokenMappings.put("FALSE", Type.BooleanConst);
+
+        sTokenMappings.put("ИСТИНА", Type.BooleanConst);
+        sTokenMappings.put("ЛОЖЬ", Type.BooleanConst);
+
+    };
 }

@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.bsl.parser;
+package org.quiteoldorange.i3textutils.bsl.lexer;
 
 import java.util.HashMap;
 
@@ -167,6 +167,9 @@ public class Token
 
         if (keywordType != null)
             return keywordType;
+
+        if (tokenValue.substring(0, 2).equals("//"))
+            return Type.Comment;
 
         if (StringUtils.isNumeric(tokenValue))
             return Type.NumericConstant;

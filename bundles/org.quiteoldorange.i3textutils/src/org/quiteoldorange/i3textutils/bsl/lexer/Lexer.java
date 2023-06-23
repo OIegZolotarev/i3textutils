@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.bsl.parser;
+package org.quiteoldorange.i3textutils.bsl.lexer;
 
 import java.util.Stack;
 

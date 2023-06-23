@@ -7,9 +7,10 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
-import org.quiteoldorange.i3textutils.dialogs.ReformatFileDialog;
+import org.quiteoldorange.i3textutils.bsl.parser.Lexer;
+import org.quiteoldorange.i3textutils.bsl.parser.Token;
+import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
 import org.quiteoldorange.i3textutils.refactoring.ModuleElement;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
@@ -25,14 +26,26 @@ public class ReformatModule
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
 
-        ReformatFileDialog dlg = new ReformatFileDialog(Display.getCurrent().getActiveShell());
-
-        dlg.open();
+        //ReformatFileDialog dlg = new ReformatFileDialog(Display.getCurrent().getActiveShell());
+        //dlg.open();
 
         IXtextDocument doc = Utils.getXTextDocumentFromEvent(event);
 
         if (doc == null)
             return null;
+
+        Lexer l = new Lexer(doc.get());
+
+        while (true)
+        {
+            Token t = l.parseNext();
+
+            if (t == null)
+                break;
+
+            i3TextUtilsPlugin.createWarningStatus(t.getValue());
+
+        }
 
         var elements = ModuleElement.collectFromModule(doc);
 

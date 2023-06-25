@@ -15,7 +15,7 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
  */
 public class Token
 {
-    enum Type
+    public enum Type
     {
         Annotation,
         Identifier,
@@ -75,7 +75,9 @@ public class Token
         ModuloSign,
         KeywordGoto,
         Tilde,
-        Colon
+        Colon,
+        KeywordAsynch,
+        KeywordWait,
 
     }
 
@@ -168,13 +170,14 @@ public class Token
         if (keywordType != null)
             return keywordType;
 
-        if (tokenValue.substring(0, 2).equals("//"))
-            return Type.Comment;
+        if (tokenValue.length() > 2)
+            if (tokenValue.substring(0, 2).equals("//"))
+                return Type.Comment;
 
         if (StringUtils.isNumeric(tokenValue))
             return Type.NumericConstant;
 
-        return null;
+        return Type.Identifier;
     }
 
     static HashMap<Type, KeywordDictionaryEntry> sTokenDictionary = new HashMap<>();
@@ -233,6 +236,8 @@ public class Token
         sTokenDictionary.put(Type.Tilde, new KeywordDictionaryEntry("~", "~")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.KeywordGoto, new KeywordDictionaryEntry("ПЕРЕЙТИ", "GOTO")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.Colon, new KeywordDictionaryEntry(":", ":")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordAsynch, new KeywordDictionaryEntry("АСИНХ", "ASYNCH")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordWait, new KeywordDictionaryEntry("ЖДАТЬ", "WAIT")); //$NON-NLS-1$ //$NON-NLS-2$
 
         for (var entry: sTokenDictionary.entrySet())
         {

@@ -5,12 +5,16 @@ package org.quiteoldorange.i3textutils.bsl.lexer;
 
 import java.util.Stack;
 
+import org.quiteoldorange.i3textutils.bsl.exceptions.BSLParsingException;
+import org.quiteoldorange.i3textutils.bsl.exceptions.BSLParsingException.UnexpectedToken;
+
 /**
  * @author ozolotarev
  *
  */
 public class Lexer
 {
+
     private int mOffset;
     private int mRow;
     private int mColumn;
@@ -27,7 +31,6 @@ public class Lexer
 
         mSource = source;
 
-
         mTokensStack = new Stack<>();
 
     }
@@ -40,7 +43,7 @@ public class Lexer
 
     public Token parseNext()
     {
-        Token result = new Token(null,null, 0,0,0);
+        Token result = new Token(null, null, 0, 0, 0);
         String accumulator = ""; //$NON-NLS-1$
         int tokenStart = mOffset;
 
@@ -50,7 +53,9 @@ public class Lexer
         while (true)
         {
             if (mOffset == mSource.length() - 1)
+            {
                 break;
+            }
 
             Character curChar = mSource.charAt(mOffset);
             Character nextChar = 0;
@@ -85,7 +90,9 @@ public class Lexer
             }
 
             if (atComment)
+            {
                 accumulator += curChar;
+            }
             else if (Character.isWhitespace(curChar) && !atString)
             {
                 if (!accumulator.isEmpty())
@@ -156,18 +163,27 @@ public class Lexer
         return null;
     }
 
-    Token top()
+    public Token current()
     {
         return mTokensStack.peek();
     }
 
-    Token pop()
+    public Token peekNext()
+    {
+        Token result = parseNext();
+        rollback();
+        return result;
+    }
+
+    public Token rollback()
     {
         Token r = mTokensStack.pop();
-        mOffset = r.getOffset();
 
-        mRow = r.getRow();
-        mColumn = r.getColumn();
+        Token newTop = mTokensStack.peek();
+        mOffset = newTop.getOffset();
+
+        mRow = newTop.getRow();
+        mColumn = newTop.getColumn();
 
         return r;
     }
@@ -180,5 +196,13 @@ public class Lexer
     public void setOffset(int offset)
     {
         mOffset = offset;
+    }
+
+    public void parseAndCheckToken(Token.Type expectedType) throws UnexpectedToken
+    {
+        Token next = parseNext();
+
+        if (next.getType() != expectedType)
+            throw new BSLParsingException.UnexpectedToken(this, next, expectedType);
     }
 }

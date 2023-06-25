@@ -3,15 +3,13 @@
  */
 package org.quiteoldorange.i3textutils.commands;
 
-import java.util.ArrayList;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
-import org.quiteoldorange.i3textutils.bsl.lexer.Token;
+import org.quiteoldorange.i3textutils.bsl.parser.ModuleASTTree;
 import org.quiteoldorange.i3textutils.refactoring.ModuleElement;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
@@ -37,19 +35,8 @@ public class ReformatModule
 
         Lexer l = new Lexer(doc.get());
 
-        ArrayList<Token> test = new ArrayList<>();
+        ModuleASTTree tree = new ModuleASTTree(l);
 
-        while (true)
-        {
-            Token t = l.parseNext();
-
-            if (t == null)
-                break;
-
-            //i3TextUtilsPlugin.createWarningStatus(t.getValue());
-            test.add(t);
-
-        }
 
         var elements = ModuleElement.collectFromModule(doc);
 

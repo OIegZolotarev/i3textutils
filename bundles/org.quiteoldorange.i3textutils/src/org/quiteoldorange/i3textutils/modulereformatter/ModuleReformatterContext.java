@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.refactoring;
+package org.quiteoldorange.i3textutils.modulereformatter;
 
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 

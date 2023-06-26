@@ -5,7 +5,6 @@ package org.quiteoldorange.i3textutils.bsl.parser;
 
 import java.util.LinkedList;
 
-import org.quiteoldorange.i3textutils.bsl.exceptions.BSLParsingException;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 
 
@@ -25,7 +24,7 @@ public class ModuleASTTree
         {
             try
             {
-                var node = AbsractBSLElementNode.ParseNode(lex, this);
+                var node = ParseNode(lex);
 
                 if (node == null)
                     break;

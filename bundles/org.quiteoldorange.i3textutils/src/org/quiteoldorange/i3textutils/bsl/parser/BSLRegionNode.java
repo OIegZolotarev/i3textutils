@@ -3,7 +3,6 @@
  */
 package org.quiteoldorange.i3textutils.bsl.parser;
 
-import org.quiteoldorange.i3textutils.bsl.exceptions.BSLParsingException;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
 
@@ -11,12 +10,12 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
  * @author ozolotarev
  *
  */
-public class BSLRegionElement
+public class BSLRegionNode
     extends AbsractBSLElementNode
 {
     private String mRegionName = null;
 
-    public BSLRegionElement(Lexer stream) throws BSLParsingException
+    public BSLRegionNode(Lexer stream) throws BSLParsingException
     {
         super(stream);
 

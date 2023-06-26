@@ -25,10 +25,10 @@ public class ModuleElement
 
     List<ModuleElement> mChidlren = null;
 
-    private final static String METHOD = "Method";
-    private final static String DECLARATION = "Declaration";
-    private final static String REGION = "Region";
-    private final static String MAINPROGRAM = "MainProgram";
+    private final static String METHOD = "Method"; //$NON-NLS-1$
+    private final static String DECLARATION = "Declaration"; //$NON-NLS-1$
+    private final static String REGION = "Region"; //$NON-NLS-1$
+    private final static String MAINPROGRAM = "MainProgram"; //$NON-NLS-1$
 
     private String mType;
 

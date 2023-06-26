@@ -5,11 +5,10 @@ package org.quiteoldorange.i3textutils.bsl.parser;
 
 import java.util.LinkedList;
 
-import org.quiteoldorange.i3textutils.bsl.exceptions.BSLParsingException;
-import org.quiteoldorange.i3textutils.bsl.exceptions.BSLParsingException.UnexpectedToken;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
+import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedToken;
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode.MethodTypes;
 
 /**
@@ -27,6 +26,7 @@ public class AbsractBSLElementNode
             mTokens.add(stream.current());
     }
 
+    @SuppressWarnings("incomplete-switch")
     public AbsractBSLElementNode ParseNode(Lexer stream)
         throws BSLParsingException
     {
@@ -44,7 +44,7 @@ public class AbsractBSLElementNode
             case BeginProcedure:
                 return new MethodNode(stream, MethodTypes.Procedure);
             case PreprocessorRegion:
-                return new BSLRegionElement(stream);
+                return new BSLRegionNode(stream);
             case Comment:
                 return new CommentNode(stream);
             case KeywordAsynch:
@@ -58,7 +58,43 @@ public class AbsractBSLElementNode
 
                 if (t.getType() == Type.BeginProcedure)
                     return new MethodNode(stream, MethodTypes.Procedure, true);
+            case Identifier:
 
+                Token next = stream.peekNext();
+
+                switch (next.getType())
+                {
+                case EqualsSign:
+                    return new AssigmentExpression(stream);
+                }
+
+            default:
+                throw new BSLParsingException.UnexpectedToken(stream, t);
+            }
+
+        }
+
+        return null;
+    }
+
+    public AbsractBSLElementNode ParseExpressionNode(Lexer stream, Token.Type endingToken) throws BSLParsingException
+    {
+        while (true)
+        {
+            Token t = readTokenTracked(stream);
+
+            if (t == null)
+                break;
+
+            switch (t.getType())
+            {
+            case Identifier:
+                return new ExpressionNode(stream, endingToken);
+            case NumericConstant:
+            case StringConstant:
+            case DateConstant:
+            case BooleanConst:
+                return new ConstantNode(stream);
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
             }
@@ -94,7 +130,7 @@ public class AbsractBSLElementNode
             // откатываем поток
             stream.rollback();
 
-            AbsractBSLElementNode newNode = AbsractBSLElementNode.ParseNode(stream, this);
+            AbsractBSLElementNode newNode = ParseNode(stream);
             mChildren.add(newNode);
         }
     }

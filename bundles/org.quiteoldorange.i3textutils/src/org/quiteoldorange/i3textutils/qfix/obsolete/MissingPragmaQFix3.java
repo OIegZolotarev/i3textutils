@@ -40,8 +40,8 @@ public class MissingPragmaQFix3
     protected void configureFix(FixConfigurer configurer)
     {
         configurer.interactive(true)
-            .description(String.format("Добавить директиву \"%s\"", mPragmaRU))
-            .details(String.format("Добавляет директиву \"%s\"", mPragmaRU));
+            .description(String.format("Добавить директиву \"%s\"", mPragmaRU)) //$NON-NLS-1$
+            .details(String.format("Добавляет директиву \"%s\"", mPragmaRU)); //$NON-NLS-1$
     }
 
     @Override

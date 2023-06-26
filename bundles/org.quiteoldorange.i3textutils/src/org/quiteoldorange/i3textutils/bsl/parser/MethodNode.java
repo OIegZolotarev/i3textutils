@@ -5,11 +5,10 @@ package org.quiteoldorange.i3textutils.bsl.parser;
 
 import java.util.LinkedList;
 
-import org.quiteoldorange.i3textutils.bsl.exceptions.BSLParsingException;
-import org.quiteoldorange.i3textutils.bsl.exceptions.BSLParsingException.UnexpectedEndOfStream;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
+import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedEndOfStream;
 
 /**
  * @author ozolotarev

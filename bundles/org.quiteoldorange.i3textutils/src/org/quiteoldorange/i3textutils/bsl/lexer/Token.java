@@ -171,7 +171,7 @@ public class Token
             return keywordType;
 
         if (tokenValue.length() > 2)
-            if (tokenValue.substring(0, 2).equals("//"))
+            if (tokenValue.substring(0, 2).equals("//")) //$NON-NLS-1$
                 return Type.Comment;
 
         if (StringUtils.isNumeric(tokenValue))
@@ -247,11 +247,11 @@ public class Token
         }
 
         // Особые случаи для булевых констант
-        sTokenMappings.put("TRUE", Type.BooleanConst);
-        sTokenMappings.put("FALSE", Type.BooleanConst);
+        sTokenMappings.put("TRUE", Type.BooleanConst); //$NON-NLS-1$
+        sTokenMappings.put("FALSE", Type.BooleanConst); //$NON-NLS-1$
 
-        sTokenMappings.put("ИСТИНА", Type.BooleanConst);
-        sTokenMappings.put("ЛОЖЬ", Type.BooleanConst);
+        sTokenMappings.put("ИСТИНА", Type.BooleanConst); //$NON-NLS-1$
+        sTokenMappings.put("ЛОЖЬ", Type.BooleanConst); //$NON-NLS-1$
 
     };
 }

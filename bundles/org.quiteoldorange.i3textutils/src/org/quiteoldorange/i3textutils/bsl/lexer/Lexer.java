@@ -5,8 +5,8 @@ package org.quiteoldorange.i3textutils.bsl.lexer;
 
 import java.util.Stack;
 
-import org.quiteoldorange.i3textutils.bsl.exceptions.BSLParsingException;
-import org.quiteoldorange.i3textutils.bsl.exceptions.BSLParsingException.UnexpectedToken;
+import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException;
+import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedToken;
 
 /**
  * @author ozolotarev
@@ -37,7 +37,7 @@ public class Lexer
 
     private boolean isOneSymbolToken(Character sym)
     {
-        String s = "\"\\/%()-=+;.,<>\"";
+        String s = "\"\\/%()-=+;.,<>\""; //$NON-NLS-1$
         return s.indexOf(sym) != -1;
     }
 
@@ -126,7 +126,7 @@ public class Lexer
                     // 1С-овское экранирование кавычек - две подряд
                     if (nextChar == '"')
                     {
-                        accumulator += "\"\"";
+                        accumulator += "\"\""; //$NON-NLS-1$
                         mOffset++;
                     }
                     else

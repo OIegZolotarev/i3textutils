@@ -43,7 +43,7 @@ public class AddMissingPragmas
 
                 try
                 {
-                    doc.replace(node.getOffset(), 0, "&НаСервере\n");
+                    doc.replace(node.getOffset(), 0, "&НаСервере\n"); //$NON-NLS-1$
                 }
                 catch (BadLocationException e)
                 {

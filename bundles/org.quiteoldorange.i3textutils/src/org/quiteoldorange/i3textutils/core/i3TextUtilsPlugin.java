@@ -19,7 +19,7 @@ public class i3TextUtilsPlugin
 {
     public static final String PLUGIN_ID = "org.quiteoldorange.i3textutils"; //$NON-NLS-1$
 
-    public static final String V8_CODESTYLE_BUNDLE = "com.e1c.v8codestyle.bsl";
+    public static final String V8_CODESTYLE_BUNDLE = "com.e1c.v8codestyle.bsl"; //$NON-NLS-1$
 
     private static i3TextUtilsPlugin plugin;
 

@@ -41,18 +41,18 @@ public class ReformatFileDialog
     @Override
     protected Control createDialogArea(Composite parent)
     {
-        setTitle("Размещение методов модуля по областям");
-        setMessage("Настройте стратегию переформатирования модуля");
+        setTitle("Размещение методов модуля по областям"); //$NON-NLS-1$
+        setMessage("Настройте стратегию переформатирования модуля"); //$NON-NLS-1$
 
-        getShell().setText("Переформатирование модуля");
+        getShell().setText("Переформатирование модуля"); //$NON-NLS-1$
 
         Composite control = (Composite)super.createDialogArea(parent);
 
         var items = new ArrayList<String>();
-        items.add("Привет");
-        items.add("Мир");
+        items.add("Привет"); //$NON-NLS-1$
+        items.add("Мир"); //$NON-NLS-1$
 
-        createDataTable(control, "Процедуры модуля", items);
+        createDataTable(control, "Процедуры модуля", items); //$NON-NLS-1$
 
 
         return control;

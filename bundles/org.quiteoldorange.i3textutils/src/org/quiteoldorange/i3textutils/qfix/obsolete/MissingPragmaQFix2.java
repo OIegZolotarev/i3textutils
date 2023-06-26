@@ -30,7 +30,7 @@ public class MissingPragmaQFix2
     @Override
     protected void configureFix(FixConfigurer configurer)
     {
-        configurer.interactive(true).description("Насрал 2").details("MissingPragmaQFix2");
+        configurer.interactive(true).description("Насрал 2").details("MissingPragmaQFix2"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

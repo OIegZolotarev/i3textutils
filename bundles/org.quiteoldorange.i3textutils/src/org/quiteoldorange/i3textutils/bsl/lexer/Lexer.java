@@ -104,6 +104,7 @@ public class Lexer
             }
             else if (isOneSymbolToken(curChar) && !atString)
             {
+
                 if (!accumulator.isEmpty())
                 {
                     Token.Type type = Token.CalculateTokenType(accumulator);
@@ -179,11 +180,9 @@ public class Lexer
     {
         Token r = mTokensStack.pop();
 
-        Token newTop = mTokensStack.peek();
-        mOffset = newTop.getOffset();
-
-        mRow = newTop.getRow();
-        mColumn = newTop.getColumn();
+        mOffset = r.getOffset();
+        mRow = r.getRow();
+        mColumn = r.getColumn();
 
         return r;
     }

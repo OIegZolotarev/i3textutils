@@ -31,6 +31,21 @@ public class BSLParsingException
     public static class UnexpectedToken
         extends BSLParsingException
     {
+        @Override
+        public String getMessage()
+        {
+            String result = null;
+
+            if (mTypeExpected == null)
+                result = String.format("Unexpected token \"%s\" at [%d,%d]", //$NON-NLS-1$
+                    mToken.getValue(), mToken.getRow(), mToken.getColumn());
+            else
+                result = String.format("Unexpected token \"%s\" at [%d,%d], expected token type %s", //$NON-NLS-1$
+                    mToken.getValue(), mToken.getRow(), mToken.getColumn(), mTypeExpected.toString());
+
+            return result;
+        }
+
         private Token mToken;
         private Token.Type mTypeExpected;
         private Lexer mLexer;

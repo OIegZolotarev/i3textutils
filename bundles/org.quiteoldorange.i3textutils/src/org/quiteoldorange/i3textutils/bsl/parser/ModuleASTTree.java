@@ -6,6 +6,7 @@ package org.quiteoldorange.i3textutils.bsl.parser;
 import java.util.LinkedList;
 
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
+import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
 
 
 /**
@@ -33,8 +34,7 @@ public class ModuleASTTree
             }
             catch (BSLParsingException e)
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                i3TextUtilsPlugin.logError(e);
             }
         }
     }

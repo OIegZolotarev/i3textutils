@@ -5,7 +5,6 @@ package org.quiteoldorange.i3textutils.bsl.parser;
 
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
-import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedToken;
 
 /**
  * @author ozolotarev
@@ -18,19 +17,18 @@ public class AssigmentExpression
 
     /**
      * @param stream
-     * @throws UnexpectedToken
      */
-    public AssigmentExpression(Lexer stream) throws UnexpectedToken
+    public AssigmentExpression(Lexer stream) throws BSLParsingException
     {
         super(stream);
 
-        var token = readTokenTracked(stream);
-        mVariableName = token.getValue();
+        // Первый токен - имя переменной
+
+        mVariableName = mTokens.get(0).getValue();
 
         checkTokenTracked(stream, Type.EqualsSign);
 
         mChildren.add(new ExpressionNode(stream, Type.ExpressionEnd));
-
     }
 
 }

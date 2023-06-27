@@ -13,10 +13,10 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 public class ExpressionNode
     extends AbsractBSLElementNode
 {
-    public ExpressionNode(Lexer stream, Token.Type endToken)
+    public ExpressionNode(Lexer stream, Token.Type endToken) throws BSLParsingException
     {
         super(stream);
 
-
+        ParseExpressionNode(stream, endToken);
     }
 }

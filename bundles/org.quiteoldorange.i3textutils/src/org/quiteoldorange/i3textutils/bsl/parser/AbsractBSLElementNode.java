@@ -10,6 +10,7 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedToken;
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode.MethodTypes;
+import org.quiteoldorange.i3textutils.bsl.parser.OperationNode.Operator;
 
 /**
  * @author ozolotarev
@@ -67,6 +68,8 @@ public class AbsractBSLElementNode
                 case EqualsSign:
                     return new AssigmentExpression(stream);
                 }
+            case KeywordVar:
+                return new VariableDeclNode(stream);
 
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
@@ -86,15 +89,34 @@ public class AbsractBSLElementNode
             if (t == null)
                 break;
 
+            if (t.getType() == endingToken)
+                break;
+
             switch (t.getType())
             {
             case Identifier:
-                return new ExpressionNode(stream, endingToken);
+                //    return new ExpressionNode(stream, endingToken);
             case NumericConstant:
             case StringConstant:
             case DateConstant:
             case BooleanConst:
-                return new ConstantNode(stream);
+                mChildren.add(new ConstantNode(stream));
+                break;
+            case PlusSign:
+                mChildren.add(new OperationNode(stream, Operator.Addition));
+                break;
+            case MinusSign:
+                mChildren.add(new OperationNode(stream, Operator.Substraction));
+                break;
+            case MultiplicationSign:
+                mChildren.add(new OperationNode(stream, Operator.Multiplication));
+                break;
+            case DivisionSign:
+                mChildren.add(new OperationNode(stream, Operator.Division));
+                break;
+            case ModuloSign:
+                mChildren.add(new OperationNode(stream, Operator.Modulo));
+                break;
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
             }
@@ -122,13 +144,13 @@ public class AbsractBSLElementNode
     {
         while (true)
         {
-            var token = stream.parseNext();
+            var token = stream.peekNext();
 
             if (token.getType() == type)
+            {
+                readTokenTracked(stream);
                 break;
-
-            // откатываем поток
-            stream.rollback();
+            }
 
             AbsractBSLElementNode newNode = ParseNode(stream);
             mChildren.add(newNode);

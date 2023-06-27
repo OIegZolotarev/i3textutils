@@ -72,7 +72,7 @@ public class MethodNode
 
             String argName = token.getValue();
 
-            token = readTokenTracked(stream);
+            token = readTokenTracked(stream); // Запятая или равно
 
             if (stream.peekNext().getType() != Type.EqualsSign)
             {
@@ -91,12 +91,13 @@ public class MethodNode
             mArguments.add(new ArgumentDefinition(argName, defaultValue));
         }
 
-        token = readTokenTracked(stream);
+        token = stream.peekNext();
 
         if (token.getType() == Type.Export)
+        {
             mExported = true;
-        else
-            stream.rollback();
+            readTokenTracked(stream);
+        }
 
 
         Token.Type finisher = null;

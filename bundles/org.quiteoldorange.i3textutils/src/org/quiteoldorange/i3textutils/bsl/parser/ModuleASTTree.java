@@ -37,6 +37,8 @@ public class ModuleASTTree
                 i3TextUtilsPlugin.logError(e);
             }
         }
+
+        int a = 1;
     }
 
     /**

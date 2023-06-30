@@ -67,6 +67,10 @@ public class AbsractBSLElementNode
                 {
                 case EqualsSign:
                     return new AssigmentExpression(stream);
+                //case OpeningBracket:
+                //return new MethodCall(stream)
+                case Dot:
+                    return new MemberExpression(stream);
                 }
             case KeywordVar:
                 return new VariableDeclNode(stream);

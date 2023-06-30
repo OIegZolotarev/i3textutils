@@ -24,10 +24,6 @@ public class ReformatModule
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
-
-        //ReformatFileDialog dlg = new ReformatFileDialog(Display.getCurrent().getActiveShell());
-        //dlg.open();
-
         IXtextDocument doc = Utils.getXTextDocumentFromEvent(event);
 
         if (doc == null)
@@ -36,7 +32,6 @@ public class ReformatModule
         Lexer l = new Lexer(doc.get());
 
         ModuleASTTree tree = new ModuleASTTree(l);
-
 
         var elements = ModuleElement.collectFromModule(doc);
 
@@ -61,8 +56,8 @@ public class ReformatModule
             e.printStackTrace();
         }
 
-
         return null;
+
     }
 
 }

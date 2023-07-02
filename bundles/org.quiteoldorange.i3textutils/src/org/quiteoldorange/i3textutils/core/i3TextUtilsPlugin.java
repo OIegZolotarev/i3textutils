@@ -5,6 +5,7 @@ package org.quiteoldorange.i3textutils.core;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.quiteoldorange.i3textutils.QuickFixRegistrator;
@@ -119,8 +120,52 @@ public class i3TextUtilsPlugin
 
         ServiceInitialization.schedule(() -> {
             registrator.managedService(QuickFixRegistrator.class).activateBeforeRegistration().registerInjected();
+
+            hackContentassistColors();
+
         });
 
+    }
+
+    /**
+     *
+     */
+    private void hackContentassistColors()
+    {
+        try
+        {
+            Class<?> c = Class.forName("com._1c.g5.v8.dt.bsl.ui.contentassist.Messages"); //$NON-NLS-1$
+
+            var field = c.getDeclaredField("ParametersHoverInfoControl_Description"); //$NON-NLS-1$
+            field.setAccessible(true);
+
+            String oldValue = (String)field.get(null);
+
+            var color = contentAssistFixedColor();
+
+            String hackColor = String.format("<style>a[style] { color: rgb(%d,%d,%d) !important;}</style>", //$NON-NLS-1$
+                color.getRed(), color.getGreen(), color.getBlue());
+
+            field.set(null, oldValue + hackColor);
+        }
+        catch (Exception e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @return
+     */
+    private Color contentAssistFixedColor()
+    {
+        //.i3TextUtilsPlugin.
+
+        // TODO: сделать это более цивильным способом - сейчас это чуть лучше чем типовое говнище.
+        return new Color(255, 120, 90);
+
+        //return
     }
 
     /**

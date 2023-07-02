@@ -52,6 +52,7 @@ public class ExternalDependenciesModule
         bind(IV8ProjectManager.class).toService();
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();
+
     }
 
 }

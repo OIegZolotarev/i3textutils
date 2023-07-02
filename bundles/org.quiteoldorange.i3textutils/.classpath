@@ -8,6 +8,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="/home/ozolotarev/plugins/com._1c.g5.v8.dt.common_8.4.200.v202303221317.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

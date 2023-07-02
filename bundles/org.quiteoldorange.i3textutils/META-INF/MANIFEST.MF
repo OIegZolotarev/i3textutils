@@ -18,7 +18,8 @@ Require-Bundle: com.google.inject;bundle-version="[5.0.1,6.0.0)",
  com.e1c.g5.v8.dt.bsl.check,
  com.e1c.g5.v8.dt.check,
  com._1c.g5.v8.dt.bsl.ui,
- com._1c.g5.wiring
+ com._1c.g5.wiring,
+ com._1c.g5.v8.dt.common.ui
 Import-Package: com._1c.g5.v8.dt.bsl.model;version="[5.0.0,6.0.0)",
  com._1c.g5.v8.dt.mcore;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.mcore.impl;version="[6.0.0,7.0.0)",

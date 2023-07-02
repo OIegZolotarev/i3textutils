@@ -39,9 +39,9 @@ public class MissingPragmaQFix3
     @Override
     protected void configureFix(FixConfigurer configurer)
     {
-        configurer.interactive(true)
+        /*configurer.interactive(true)
             .description(String.format("Добавить директиву \"%s\"", mPragmaRU)) //$NON-NLS-1$
-            .details(String.format("Добавляет директиву \"%s\"", mPragmaRU)); //$NON-NLS-1$
+            .details(String.format("Добавляет директиву \"%s\"", mPragmaRU)); //$NON-NLS-1$*/
     }
 
     @Override

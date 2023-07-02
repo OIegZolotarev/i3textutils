@@ -5,7 +5,7 @@ package org.quiteoldorange.i3textutils.core;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.quiteoldorange.i3textutils.QuickFixRegistrator;
@@ -141,10 +141,11 @@ public class i3TextUtilsPlugin
 
             String oldValue = (String)field.get(null);
 
-            var color = contentAssistFixedColor();
+            String colorKey = "com._1c.g5.v8.dt.bsl.Bsl.syntaxColorer.tokenStyles.BSL_Keywords.color"; //$NON-NLS-1$
+            var val = InstanceScope.INSTANCE.getNode("com._1c.g5.v8.dt.bsl.ui").get(colorKey, ""); //$NON-NLS-1$ //$NON-NLS-2$
 
-            String hackColor = String.format("<style>a[style] { color: rgb(%d,%d,%d) !important;}</style>", //$NON-NLS-1$
-                color.getRed(), color.getGreen(), color.getBlue());
+            String hackColor = String.format("<style>a[style] { color: rgb(%s) !important;}</style>", //$NON-NLS-1$
+                val);
 
             field.set(null, oldValue + hackColor);
         }
@@ -155,18 +156,6 @@ public class i3TextUtilsPlugin
         }
     }
 
-    /**
-     * @return
-     */
-    private Color contentAssistFixedColor()
-    {
-        //.i3TextUtilsPlugin.
-
-        // TODO: сделать это более цивильным способом - сейчас это чуть лучше чем типовое говнище.
-        return new Color(255, 120, 90);
-
-        //return
-    }
 
     /**
      * Данный метод вызывается при завершении работы плагина

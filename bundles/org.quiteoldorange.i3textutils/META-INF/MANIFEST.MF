@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
-Bundle-Version: 1.0.0.6
+Bundle-Version: 1.0.1.0
 Bundle-SymbolicName: org.quiteoldorange.i3textutils;singleton:=true
 Bundle-Activator: org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin
 Bundle-ActivationPolicy: lazy

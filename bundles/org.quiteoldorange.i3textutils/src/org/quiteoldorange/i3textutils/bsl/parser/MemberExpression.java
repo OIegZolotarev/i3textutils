@@ -31,7 +31,7 @@ public class MemberExpression
         if (token.getType() == Type.Dot)
         {
             readTokenTracked(stream);
-            mChildren.add(ParseNode(stream));
+            addChildren(ParseNode(stream));
         }
     }
 

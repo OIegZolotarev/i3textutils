@@ -183,6 +183,25 @@ public class Token
     static HashMap<Type, KeywordDictionaryEntry> sTokenDictionary = new HashMap<>();
     static HashMap<String, Type> sTokenMappings = new HashMap<>();
 
+    public static String getKeywordValue(Type tokenType, ScriptVariant variant)
+    {
+        var dictEntry = sTokenDictionary.get(tokenType);
+
+        if (dictEntry == null)
+            return ""; //$NON-NLS-1$
+
+        // TODO: Титульный регистр токенов
+        switch (variant)
+        {
+        case ENGLISH:
+            return dictEntry.mKeywordEN;
+        case RUSSIAN:
+            return dictEntry.mKeywordRU;
+        default:
+            return ""; //$NON-NLS-1$
+        }
+    }
+
     static
     {
         sTokenDictionary.put(Type.BeginProcedure, new KeywordDictionaryEntry("ПРОЦЕДУРА", "PROCEDURE")); //$NON-NLS-1$ //$NON-NLS-2$

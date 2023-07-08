@@ -3,10 +3,10 @@
  */
 package org.quiteoldorange.i3textutils.bsl.parser;
 
-import java.util.LinkedList;
-
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
+
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 
 /**
@@ -16,6 +16,19 @@ import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
 public class ModuleASTTree
     extends AbsractBSLElementNode
 {
+
+    @Override
+    public String serialize(ScriptVariant variant)
+    {
+        StringBuilder builder = new StringBuilder();
+
+        for (AbsractBSLElementNode node : getChildren())
+        {
+            builder.append(node.serialize(variant) + "\n"); //$NON-NLS-1$
+        }
+
+        return builder.toString();
+    }
 
     public ModuleASTTree(Lexer lex)
     {
@@ -30,7 +43,7 @@ public class ModuleASTTree
                 if (node == null)
                     break;
 
-                mChildren.add(node);
+                addChildren(node);
             }
             catch (BSLParsingException e)
             {
@@ -41,11 +54,4 @@ public class ModuleASTTree
         int a = 1;
     }
 
-    /**
-     * @return the rootNodes
-     */
-    public LinkedList<AbsractBSLElementNode> getRootNodes()
-    {
-        return mChildren;
-    }
 }

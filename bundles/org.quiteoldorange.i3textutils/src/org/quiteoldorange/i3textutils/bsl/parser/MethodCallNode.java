@@ -42,7 +42,7 @@ public class MethodCallNode
             }
 
             AbsractBSLElementNode newNode = ParseNode(stream);
-            mChildren.add(newNode);
+            addChildren(newNode);
         }
 
     }

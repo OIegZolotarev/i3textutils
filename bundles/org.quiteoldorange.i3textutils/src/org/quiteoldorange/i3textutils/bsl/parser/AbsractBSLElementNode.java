@@ -12,14 +12,45 @@ import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedT
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode.MethodTypes;
 import org.quiteoldorange.i3textutils.bsl.parser.OperationNode.Operator;
 
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+
 /**
  * @author ozolotarev
  *
  */
 public class AbsractBSLElementNode
 {
+    AbsractBSLElementNode mParent = null;
+
     protected LinkedList<Token> mTokens = new LinkedList<>();
-    protected LinkedList<AbsractBSLElementNode> mChildren = new LinkedList<>();
+    private LinkedList<AbsractBSLElementNode> mChildren = new LinkedList<>();
+
+    public LinkedList<AbsractBSLElementNode> getChildren()
+    {
+        return mChildren;
+    }
+
+    public void addChildren(AbsractBSLElementNode node)
+    {
+        mChildren.add(node);
+        node.setParent(this);
+    }
+
+    public int getHierarchyLevel()
+    {
+        if (mParent == null)
+            return 0;
+
+        return mParent.getHierarchyLevel() + 1;
+    }
+
+    /**
+     * @param absractBSLElementNode
+     */
+    public void setParent(AbsractBSLElementNode node)
+    {
+        mParent = node;
+    }
 
     public AbsractBSLElementNode(Lexer stream)
     {
@@ -104,22 +135,22 @@ public class AbsractBSLElementNode
             case StringConstant:
             case DateConstant:
             case BooleanConst:
-                mChildren.add(new ConstantNode(stream));
+                addChildren(new ConstantNode(stream));
                 break;
             case PlusSign:
-                mChildren.add(new OperationNode(stream, Operator.Addition));
+                addChildren(new OperationNode(stream, Operator.Addition));
                 break;
             case MinusSign:
-                mChildren.add(new OperationNode(stream, Operator.Substraction));
+                addChildren(new OperationNode(stream, Operator.Substraction));
                 break;
             case MultiplicationSign:
-                mChildren.add(new OperationNode(stream, Operator.Multiplication));
+                addChildren(new OperationNode(stream, Operator.Multiplication));
                 break;
             case DivisionSign:
-                mChildren.add(new OperationNode(stream, Operator.Division));
+                addChildren(new OperationNode(stream, Operator.Division));
                 break;
             case ModuloSign:
-                mChildren.add(new OperationNode(stream, Operator.Modulo));
+                addChildren(new OperationNode(stream, Operator.Modulo));
                 break;
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
@@ -157,30 +188,17 @@ public class AbsractBSLElementNode
             }
 
             AbsractBSLElementNode newNode = ParseNode(stream);
-            mChildren.add(newNode);
+            addChildren(newNode);
         }
     }
 
-    public static class UnexpectedTokenException
-        extends Exception
+    /**
+     * @return
+     */
+    public String serialize(ScriptVariant scriptVariant)
     {
-        Token mToken;
-
-        /**
-         *
-         */
-        public UnexpectedTokenException(Token token)
-        {
-            mToken = token;
-        }
-
-        /**
-         * @return the token
-         */
-        public Token getToken()
-        {
-            return mToken;
-        }
+        return ""; //$NON-NLS-1$
     }
+
 
 }

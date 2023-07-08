@@ -10,6 +10,8 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedEndOfStream;
 
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+
 /**
  * @author ozolotarev
  *
@@ -17,6 +19,7 @@ import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedE
 public class MethodNode
     extends AbsractBSLElementNode
 {
+    String mLazySource;
     LinkedList<ArgumentDefinition> mArguments = new LinkedList<>();
     boolean mExported = false;
     boolean mAsynch = false;
@@ -34,6 +37,15 @@ public class MethodNode
     {
         this(stream, type);
         mAsynch = true;
+    }
+
+    @Override
+    public String serialize(ScriptVariant scriptVariant)
+    {
+        if (!mLazySource.isEmpty())
+            return mLazySource;
+
+        return "";
     }
 
     /**
@@ -64,6 +76,12 @@ public class MethodNode
             if (token == null)
                 throw new BSLParsingException.UnexpectedEndOfStream();
 
+            if (token.getType() == Type.Export)
+            {
+                mExported = true;
+                break;
+            }
+
             if (token.getType() == Type.ClosingBracket)
                 break;
 
@@ -72,7 +90,10 @@ public class MethodNode
 
             String argName = token.getValue();
 
-            token = readTokenTracked(stream); // Запятая или равно
+            token = readTokenTracked(stream); // Запятая или равно или скобка
+
+            if (token.getType() == Type.ClosingBracket)
+                continue;
 
             if (stream.peekNext().getType() != Type.EqualsSign)
             {
@@ -112,8 +133,23 @@ public class MethodNode
             break;
         }
 
-        ParseUntilEndingToken(stream, finisher);
+        if (stream.isLazyMode())
+        {
+            while (true)
+            {
+                token = readTokenTracked(stream);
 
+                if (token == null)
+                    throw new UnexpectedEndOfStream();
+
+                if (token.getType() == finisher)
+                    break;
+            }
+        }
+        else
+            ParseUntilEndingToken(stream, finisher);
+
+        mLazySource = stream.getTokensSource(mTokens);
     }
 
     /**

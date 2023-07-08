@@ -3,6 +3,7 @@
  */
 package org.quiteoldorange.i3textutils.bsl.lexer;
 
+import java.util.LinkedList;
 import java.util.Stack;
 
 import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException;
@@ -14,6 +15,8 @@ import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedT
  */
 public class Lexer
 {
+
+    private boolean mLazyMode = false;
 
     private int mOffset;
     private int mRow;
@@ -43,7 +46,6 @@ public class Lexer
 
     public Token parseNext()
     {
-        Token result = new Token(null, null, 0, 0, 0);
         String accumulator = ""; //$NON-NLS-1$
         int tokenStart = mOffset;
 
@@ -52,7 +54,7 @@ public class Lexer
 
         while (true)
         {
-            if (mOffset == mSource.length() - 1)
+            if (mOffset == mSource.length())
             {
                 break;
             }
@@ -86,6 +88,7 @@ public class Lexer
                     return mTokensStack.peek();
                 }
 
+
                 atComment = true;
             }
 
@@ -101,6 +104,8 @@ public class Lexer
                     mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
                     return mTokensStack.peek();
                 }
+                else
+                    tokenStart++;
             }
             else if (isOneSymbolToken(curChar) && !atString)
             {
@@ -203,5 +208,36 @@ public class Lexer
 
         if (next.getType() != expectedType)
             throw new BSLParsingException.UnexpectedToken(this, next, expectedType);
+    }
+
+    /**
+     * @param tokens
+     * @return
+     */
+    public String getTokensSource(LinkedList<Token> tokens)
+    {
+        Token first = tokens.getFirst();
+        Token last = tokens.getLast();
+
+        if (first == null || last == null)
+            return null;
+
+        return mSource.substring(first.getOffset(), last.getOffset() + last.getValue().length());
+    }
+
+    /**
+     * @return the lazyMode
+     */
+    public boolean isLazyMode()
+    {
+        return mLazyMode;
+    }
+
+    /**
+     * @param lazyMode the lazyMode to set
+     */
+    public void setLazyMode(boolean lazyMode)
+    {
+        mLazyMode = lazyMode;
     }
 }

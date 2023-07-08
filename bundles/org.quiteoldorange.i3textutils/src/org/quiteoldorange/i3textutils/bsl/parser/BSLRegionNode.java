@@ -4,7 +4,10 @@
 package org.quiteoldorange.i3textutils.bsl.parser;
 
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
+import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
+
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
  * @author ozolotarev
@@ -13,6 +16,21 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
 public class BSLRegionNode
     extends AbsractBSLElementNode
 {
+    @Override
+    public String serialize(ScriptVariant variant)
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("%s %s\n", Token.getKeywordValue(Type.PreprocessorRegion, variant), mRegionName)); //$NON-NLS-1$
+
+        for (AbsractBSLElementNode node : getChildren())
+        {
+            builder.append(node.serialize(variant) + "\n"); //$NON-NLS-1$
+        }
+
+        builder.append(String.format("%s\n", Token.getKeywordValue(Type.PreprocessorEndRegion, variant))); //$NON-NLS-1$
+        return builder.toString();
+    }
+
     private String mRegionName = null;
 
     public BSLRegionNode(Lexer stream) throws BSLParsingException

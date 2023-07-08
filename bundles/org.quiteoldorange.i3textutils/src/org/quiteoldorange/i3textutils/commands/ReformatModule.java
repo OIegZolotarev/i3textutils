@@ -13,6 +13,8 @@ import org.quiteoldorange.i3textutils.bsl.parser.ModuleASTTree;
 import org.quiteoldorange.i3textutils.refactoring.ModuleElement;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+
 /**
  * @author ozolotarev
  *
@@ -29,9 +31,7 @@ public class ReformatModule
         if (doc == null)
             return null;
 
-        Lexer l = new Lexer(doc.get());
-
-        ModuleASTTree tree = new ModuleASTTree(l);
+        debugParser(doc);
 
         var elements = ModuleElement.collectFromModule(doc);
 
@@ -58,6 +58,18 @@ public class ReformatModule
 
         return null;
 
+    }
+
+    /**
+     * @param doc
+     */
+    private void debugParser(IXtextDocument doc)
+    {
+        Lexer l = new Lexer(doc.get());
+        l.setLazyMode(true);
+        ModuleASTTree tree = new ModuleASTTree(l);
+
+        var s = tree.serialize(ScriptVariant.RUSSIAN);
     }
 
 }

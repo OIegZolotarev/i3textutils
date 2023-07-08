@@ -28,7 +28,7 @@ public class AssigmentExpression
 
         checkTokenTracked(stream, Type.EqualsSign);
 
-        mChildren.add(new ExpressionNode(stream, Type.ExpressionEnd));
+        addChildren(new ExpressionNode(stream, Type.ExpressionEnd));
     }
 
 }

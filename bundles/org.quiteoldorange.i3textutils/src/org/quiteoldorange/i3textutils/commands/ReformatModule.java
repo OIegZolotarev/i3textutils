@@ -6,8 +6,10 @@ package org.quiteoldorange.i3textutils.commands;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
+import org.quiteoldorange.i3textutils.ServicesAdapter;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.parser.ModuleASTTree;
 import org.quiteoldorange.i3textutils.refactoring.ModuleElement;
@@ -31,7 +33,7 @@ public class ReformatModule
         if (doc == null)
             return null;
 
-        debugParser(doc);
+        debugParser(doc, event);
 
         var elements = ModuleElement.collectFromModule(doc);
 
@@ -63,11 +65,24 @@ public class ReformatModule
     /**
      * @param doc
      */
-    private void debugParser(IXtextDocument doc)
+    private void debugParser(IXtextDocument doc, ExecutionEvent event)
     {
         Lexer l = new Lexer(doc.get());
         l.setLazyMode(true);
         ModuleASTTree tree = new ModuleASTTree(l);
+
+        var model = Utils.getModuleFromXTextDocument(doc);
+
+        // Shit - Доставание маркеров от v8 codestyle !!!!
+        var project = Utils.getProjectFromEvent(event);
+
+        var markerManager = ServicesAdapter.getInstance().getMarkerManager();
+
+        String id = EcoreUtil.getURI(model).trimFragment().toPlatformString(true);
+
+        var m = markerManager.getMarkers(project, id);
+
+        // Shit
 
         var s = tree.serialize(ScriptVariant.RUSSIAN);
     }

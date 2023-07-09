@@ -8,7 +8,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.quiteoldorange.i3textutils.QuickFixRegistrator;
+import org.quiteoldorange.i3textutils.ServicesAdapter;
 
 import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
 import com._1c.g5.wiring.ServiceInitialization;
@@ -119,7 +119,7 @@ public class i3TextUtilsPlugin
         registrator = new InjectorAwareServiceRegistrator(bundleContext, this::getInjector);
 
         ServiceInitialization.schedule(() -> {
-            registrator.managedService(QuickFixRegistrator.class).activateBeforeRegistration().registerInjected();
+            registrator.managedService(ServicesAdapter.class).activateBeforeRegistration().registerInjected();
 
             hackContentassistColors();
 

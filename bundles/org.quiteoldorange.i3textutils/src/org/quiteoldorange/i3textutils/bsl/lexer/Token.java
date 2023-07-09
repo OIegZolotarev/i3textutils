@@ -170,7 +170,7 @@ public class Token
         if (keywordType != null)
             return keywordType;
 
-        if (tokenValue.length() > 2)
+        if (tokenValue.length() > 1)
             if (tokenValue.substring(0, 2).equals("//")) //$NON-NLS-1$
                 return Type.Comment;
 

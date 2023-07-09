@@ -98,14 +98,19 @@ public class AbsractBSLElementNode
                 {
                 case EqualsSign:
                     return new AssigmentExpression(stream);
-                //case OpeningBracket:
-                //return new MethodCall(stream)
+                case OpeningBracket:
+                    return new MethodCallNode(stream);
                 case Dot:
                     return new MemberExpression(stream);
                 }
+
+                throw new BSLParsingException.UnexpectedToken(stream, t);
+
             case KeywordVar:
                 return new VariableDeclNode(stream);
-
+            case Annotation:
+                return new AnnotationNode(stream);
+                break;
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
             }

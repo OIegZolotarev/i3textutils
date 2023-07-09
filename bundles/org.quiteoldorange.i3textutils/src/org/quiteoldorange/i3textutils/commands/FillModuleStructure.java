@@ -18,7 +18,6 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
 import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 
 /**
@@ -41,7 +40,7 @@ public class FillModuleStructure
             return;
         }
 
-        IFile templatePath = project.getFile(getFileTemplatePathForModuleType(moduleModel.getModuleType()));
+        IFile templatePath = project.getFile(Utils.getFileTemplatePathForModuleType(moduleModel.getModuleType()));
         File f = templatePath.getLocation().toFile();
 
         String templateSource = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
@@ -58,72 +57,6 @@ public class FillModuleStructure
             doc.replace(0, 0, templateSource);
         }
 
-    }
-
-    private String getFileTemplatePathForModuleType(ModuleType type)
-    {
-        if (type == ModuleType.COMMON_MODULE)
-        {
-            return ".settings/templates/common_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.ORDINARY_APP_MODULE)
-        {
-            return ".settings/templates/ordinary_app_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.BOT_MODULE)
-        {
-            return ".settings/templates/bot_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.COMMAND_MODULE)
-        {
-            return ".settings/templates/command_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.EXTERNAL_CONN_MODULE)
-        {
-            return ".settings/templates/external_conn_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.FORM_MODULE)
-        {
-            return ".settings/templates/form_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.HTTP_SERVICE_MODULE)
-        {
-            return ".settings/templates/http_service_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.INTEGRATION_SERVICE_MODULE)
-        {
-            return ".settings/templates/integration_service_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.MANAGED_APP_MODULE)
-        {
-            return ".settings/templates/managed_app_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.MANAGER_MODULE)
-        {
-            return ".settings/templates/manager_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.OBJECT_MODULE)
-        {
-            return ".settings/templates/object_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.RECORDSET_MODULE)
-        {
-            return ".settings/templates/recordset_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.SESSION_MODULE)
-        {
-            return ".settings/templates/session_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.VALUE_MANAGER_MODULE)
-        {
-            return ".settings/templates/value_manager_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.WEB_SERVICE_MODULE)
-        {
-            return ".settings/templates/web_service_module.bsl"; //$NON-NLS-1$
-        }
-
-        return null;
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.quiteoldorange.i3textutils.ServicesAdapter;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.parser.ModuleASTTree;
+import org.quiteoldorange.i3textutils.modulereformatter.ModuleReformatterContext;
 import org.quiteoldorange.i3textutils.refactoring.ModuleElement;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
@@ -33,8 +34,25 @@ public class ReformatModule
         if (doc == null)
             return null;
 
-        debugParser(doc, event);
+        var model = Utils.getModuleFromXTextDocument(doc);
+        var project = Utils.getProjectFromEvent(event);
 
+        ModuleReformatterContext cont = new ModuleReformatterContext(project, model, doc);
+        cont.run();
+
+
+        //debugParser(doc, event);
+        //legacy(doc);
+
+        return null;
+
+    }
+
+    /**
+     * @param doc
+     */
+    private void legacy(IXtextDocument doc)
+    {
         var elements = ModuleElement.collectFromModule(doc);
 
         elements.sort((ModuleElement a, ModuleElement b) -> {
@@ -57,9 +75,6 @@ public class ReformatModule
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        return null;
-
     }
 
     /**
@@ -76,7 +91,7 @@ public class ReformatModule
         // Shit - Доставание маркеров от v8 codestyle !!!!
         var project = Utils.getProjectFromEvent(event);
 
-        var markerManager = ServicesAdapter.getInstance().getMarkerManager();
+        var markerManager = ServicesAdapter.instance().getMarkerManager();
 
         String id = EcoreUtil.getURI(model).trimFragment().toPlatformString(true);
 

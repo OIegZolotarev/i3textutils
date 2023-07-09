@@ -22,6 +22,7 @@ import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 
@@ -230,6 +231,72 @@ public class Utils
 
         var serviceRef = bundleContext.getServiceReference(serviceClass);
         return (T)bundleContext.getService(serviceRef);
+    }
+
+    public static String getFileTemplatePathForModuleType(ModuleType type)
+    {
+        if (type == ModuleType.COMMON_MODULE)
+        {
+            return ".settings/templates/common_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.ORDINARY_APP_MODULE)
+        {
+            return ".settings/templates/ordinary_app_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.BOT_MODULE)
+        {
+            return ".settings/templates/bot_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.COMMAND_MODULE)
+        {
+            return ".settings/templates/command_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.EXTERNAL_CONN_MODULE)
+        {
+            return ".settings/templates/external_conn_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.FORM_MODULE)
+        {
+            return ".settings/templates/form_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.HTTP_SERVICE_MODULE)
+        {
+            return ".settings/templates/http_service_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.INTEGRATION_SERVICE_MODULE)
+        {
+            return ".settings/templates/integration_service_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.MANAGED_APP_MODULE)
+        {
+            return ".settings/templates/managed_app_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.MANAGER_MODULE)
+        {
+            return ".settings/templates/manager_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.OBJECT_MODULE)
+        {
+            return ".settings/templates/object_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.RECORDSET_MODULE)
+        {
+            return ".settings/templates/recordset_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.SESSION_MODULE)
+        {
+            return ".settings/templates/session_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.VALUE_MANAGER_MODULE)
+        {
+            return ".settings/templates/value_manager_module.bsl"; //$NON-NLS-1$
+        }
+        else if (type == ModuleType.WEB_SERVICE_MODULE)
+        {
+            return ".settings/templates/web_service_module.bsl"; //$NON-NLS-1$
+        }
+    
+        return null;
     }
 
 }

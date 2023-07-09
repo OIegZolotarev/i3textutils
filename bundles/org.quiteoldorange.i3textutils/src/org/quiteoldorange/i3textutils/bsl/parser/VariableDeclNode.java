@@ -32,6 +32,8 @@ public class VariableDeclNode
 
         mName = token.getValue();
 
+        // TODO: несколько переменных, поддержка "экспорт"
+
         checkTokenTracked(stream, Type.ExpressionEnd);
     }
 

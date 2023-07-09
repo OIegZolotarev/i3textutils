@@ -48,6 +48,7 @@ public class ModuleASTTree
             catch (BSLParsingException e)
             {
                 i3TextUtilsPlugin.logError(e);
+                break;
             }
         }
 

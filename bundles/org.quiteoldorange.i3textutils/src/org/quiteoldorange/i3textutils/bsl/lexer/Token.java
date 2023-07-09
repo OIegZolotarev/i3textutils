@@ -170,6 +170,9 @@ public class Token
         if (keywordType != null)
             return keywordType;
 
+        if (tokenValue.charAt(0) == '&')
+            return Type.Annotation;
+
         if (tokenValue.length() > 1)
             if (tokenValue.substring(0, 2).equals("//")) //$NON-NLS-1$
                 return Type.Comment;

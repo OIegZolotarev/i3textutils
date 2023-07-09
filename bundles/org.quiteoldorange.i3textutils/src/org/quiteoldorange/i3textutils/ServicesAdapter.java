@@ -6,6 +6,7 @@ package org.quiteoldorange.i3textutils;
 import com._1c.g5.v8.dt.validation.marker.IMarkerManager;
 import com._1c.g5.wiring.IManagedService;
 import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
+import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
 import com.google.inject.Inject;
 
 /**
@@ -19,7 +20,11 @@ public class ServicesAdapter
     private IFixRepository fixRepository;
 
     @Inject
+    private ICheckRepository checksRepository;
+
+    @Inject
     private IMarkerManager markerManager;
+
 
     private static ServicesAdapter sInstance;
 
@@ -60,8 +65,16 @@ public class ServicesAdapter
     /**
      * @return the sInstance
      */
-    public static ServicesAdapter getInstance()
+    public static ServicesAdapter instance()
     {
         return sInstance;
+    }
+
+    /**
+     * @return the checksRepository
+     */
+    public ICheckRepository getChecksRepository()
+    {
+        return checksRepository;
     }
 }

@@ -69,47 +69,58 @@ public class MethodNode
 
         checkTokenTracked(stream, Type.OpeningBracket);
 
-        while (true)
+        argParserLoop: while (true)
         {
             token = readTokenTracked(stream);
 
             if (token == null)
                 throw new BSLParsingException.UnexpectedEndOfStream();
 
-            if (token.getType() == Type.Export)
-            {
-                mExported = true;
-                break;
-            }
-
+            // Упираемся тут если прочитали аргумент со значением по умолчанию
             if (token.getType() == Type.ClosingBracket)
                 break;
 
+            boolean byValue = false;
+            // Если аргумент по значению
+            if (token.getType() == Type.KeywordVal)
+            {
+                byValue = true;
+                token = readTokenTracked(stream);
+            }
+
+            // Ожидаем имя аргумента и падаем если его нет
             if (token.getType() != Type.Identifier)
                 throw new BSLParsingException.UnexpectedToken(stream, token, Type.Identifier);
 
             String argName = token.getValue();
 
-            token = readTokenTracked(stream); // Запятая или равно или скобка
+            // Смотрим следующий токен
+            // а) запятая
+            // б) знак равно
+            // в) закрывающая скобка.
+            token = readTokenTracked(stream);
 
-            if (token.getType() == Type.ClosingBracket)
-                continue;
-
-            if (stream.peekNext().getType() != Type.EqualsSign)
+            switch (token.getType())
             {
-                mArguments.add(new ArgumentDefinition(argName, null));
+            case Comma:
+                mArguments.add(new ArgumentDefinition(argName, null, byValue));
                 continue;
+            case EqualsSign:
+
+                token = readTokenTracked(stream); // Значение аргумента
+
+                if (token.getType() != Type.Identifier)
+                    throw new BSLParsingException.UnexpectedToken(stream, token, Type.Identifier);
+
+                String defaultValue = token.getValue();
+                mArguments.add(new ArgumentDefinition(argName, defaultValue, byValue));
+
+                continue;
+            case ClosingBracket:
+                break argParserLoop;
+            default:
+                throw new BSLParsingException.UnexpectedToken(stream, token);
             }
-
-            token = readTokenTracked(stream); // Знак равно
-            token = readTokenTracked(stream); // Значение аргумента
-
-            if (token.getType() != Type.Identifier)
-                throw new BSLParsingException.UnexpectedToken(stream, token, Type.Identifier);
-
-            String defaultValue = token.getValue();
-
-            mArguments.add(new ArgumentDefinition(argName, defaultValue));
         }
 
         token = stream.peekNext();
@@ -172,13 +183,15 @@ public class MethodNode
     {
         private String mName = null;
         private String mDefaultValue = null;
+        private boolean mByValue;
 
         /**
          * @param stream
          */
-        public ArgumentDefinition(String name, String defaultValue)
+        public ArgumentDefinition(String name, String defaultValue, boolean byValue)
         {
             mName = name;
+            mByValue = byValue;
             mDefaultValue = defaultValue;
         }
 

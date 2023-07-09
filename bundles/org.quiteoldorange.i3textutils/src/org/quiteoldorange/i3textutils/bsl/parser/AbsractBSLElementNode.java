@@ -108,9 +108,14 @@ public class AbsractBSLElementNode
 
             case KeywordVar:
                 return new VariableDeclNode(stream);
-            case Annotation:
+            case AnnotationAtClient:
+            case AnnotationAtServer:
+            case AnnotationAtServerNoContext:
+            case AnnotationAtClientAtServerNoContext:
+            case AnnotationAfter:
+            case AnnotationBefore:
+            case AnnotationAround:
                 return new AnnotationNode(stream);
-                break;
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
             }

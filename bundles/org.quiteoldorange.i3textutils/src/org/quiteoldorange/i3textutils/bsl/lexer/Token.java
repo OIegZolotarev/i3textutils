@@ -78,6 +78,13 @@ public class Token
         Colon,
         KeywordAsynch,
         KeywordWait,
+        AnnotationAtClient,
+        AnnotationAtServer,
+        AnnotationAtClientAtServerNoContext,
+        AnnotationAtServerNoContext,
+        AnnotationBefore,
+        AnnotationAfter,
+        AnnotationAround
 
     }
 
@@ -260,6 +267,16 @@ public class Token
         sTokenDictionary.put(Type.Colon, new KeywordDictionaryEntry(":", ":")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.KeywordAsynch, new KeywordDictionaryEntry("АСИНХ", "ASYNCH")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.KeywordWait, new KeywordDictionaryEntry("ЖДАТЬ", "WAIT")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        sTokenDictionary.put(Type.AnnotationAtClient, new KeywordDictionaryEntry("&НАКЛИЕНТЕ", "&ATCLIENT")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationAtServer, new KeywordDictionaryEntry("&НАСЕРВЕРЕ", "&ATSERVER")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationAtClientAtServerNoContext,
+            new KeywordDictionaryEntry("&НАКЛИЕНТЕНАСЕРВЕРЕБЕЗКОНТЕКСТА", "&ATCLIENTATSERVERNOCONTEXT")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationAtServerNoContext,
+            new KeywordDictionaryEntry("&НАСЕРВЕРЕБЕЗКОНТЕКСТА", "&ATSERVERNOCONTEXT")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationBefore, new KeywordDictionaryEntry("&ПЕРЕД", "&BEFORE")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationAfter, new KeywordDictionaryEntry("&ПОСЛЕ", "&AFTER")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationAround, new KeywordDictionaryEntry("&ВМЕСТО", "&AROUND")); //$NON-NLS-1$ //$NON-NLS-2$
 
         for (var entry: sTokenDictionary.entrySet())
         {

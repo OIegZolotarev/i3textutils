@@ -4,6 +4,7 @@
 package org.quiteoldorange.i3textutils.bsl.parser;
 
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token;
@@ -34,6 +35,14 @@ public class AbsractBSLElementNode
     {
         mChildren.add(node);
         node.setParent(this);
+    }
+
+    public void removeChildren(AbsractBSLElementNode node)
+    {
+        if (!mChildren.remove(node))
+            throw new NoSuchElementException();
+
+        node.setParent(null);
     }
 
     public int getHierarchyLevel()
@@ -116,6 +125,8 @@ public class AbsractBSLElementNode
             case AnnotationBefore:
             case AnnotationAround:
                 return new AnnotationNode(stream);
+            case EmptyLine:
+                return new EmptyLineNode(stream);
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
             }
@@ -210,5 +221,12 @@ public class AbsractBSLElementNode
         return ""; //$NON-NLS-1$
     }
 
+    /**
+     * @param newNodes
+     */
+    public void setChildren(LinkedList<AbsractBSLElementNode> newNodes)
+    {
+        mChildren = newNodes;
+    }
 
 }

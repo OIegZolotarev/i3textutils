@@ -16,8 +16,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.quiteoldorange.i3textutils.ServicesAdapter;
 import org.quiteoldorange.i3textutils.StringUtils;
+import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
-import org.quiteoldorange.i3textutils.bsl.parser.ModuleASTTree;
 import org.quiteoldorange.i3textutils.modulereformatter.tasks.AddRegionTask;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 

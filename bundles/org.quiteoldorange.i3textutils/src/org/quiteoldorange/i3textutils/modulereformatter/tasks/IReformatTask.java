@@ -3,7 +3,7 @@
  */
 package org.quiteoldorange.i3textutils.modulereformatter.tasks;
 
-import org.quiteoldorange.i3textutils.bsl.parser.ModuleASTTree;
+import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 
 /**
  * @author ozolotarev

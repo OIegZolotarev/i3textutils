@@ -23,6 +23,7 @@ public class Token
         StringConstant,
         DateConstant,
         Comment,
+        EmptyLine,
         // Токены с конкретным строковым значением
         BeginProcedure,
         BeginFunction,
@@ -179,6 +180,9 @@ public class Token
 
         if (tokenValue.charAt(0) == '&')
             return Type.Annotation;
+
+        if (tokenValue.charAt(0) == '\n')
+            return Type.EmptyLine;
 
         if (tokenValue.length() > 1)
             if (tokenValue.substring(0, 2).equals("//")) //$NON-NLS-1$

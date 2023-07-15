@@ -27,7 +27,9 @@ public class BSLRegionNode
             builder.append(node.serialize(variant) + "\n"); //$NON-NLS-1$
         }
 
-        builder.append(String.format("%s\n", Token.getKeywordValue(Type.PreprocessorEndRegion, variant))); //$NON-NLS-1$
+        builder.append(
+            String.format("%s // %s\n", Token.getKeywordValue(Type.PreprocessorEndRegion, variant), mRegionName));
+
         return builder.toString();
     }
 

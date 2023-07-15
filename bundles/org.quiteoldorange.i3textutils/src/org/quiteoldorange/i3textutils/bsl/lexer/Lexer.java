@@ -76,6 +76,16 @@ public class Lexer
                 mColumn = 1;
                 mRow++;
 
+                mOffset++;
+
+                if (accumulator.isEmpty())
+                {
+                    accumulator += curChar;
+                    Token.Type type = Token.CalculateTokenType(accumulator);
+                    mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
+                    return mTokensStack.peek();
+                }
+
                 atComment = false;
             }
 

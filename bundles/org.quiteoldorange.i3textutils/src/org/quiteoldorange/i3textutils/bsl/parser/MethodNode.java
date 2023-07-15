@@ -217,4 +217,22 @@ public class MethodNode
         }
     }
 
+    /**
+     * @param childNode
+     */
+    public void addAnnotation(AnnotationNode childNode)
+    {
+        childNode.setParent(this);
+        getChildren().add(0, childNode);
+    }
+
+    /**
+     * @param childNode
+     */
+    public void addDocumentationBlock(CommentsBlock childNode)
+    {
+        childNode.setParent(this);
+        getChildren().add(0, childNode);
+    }
+
 }

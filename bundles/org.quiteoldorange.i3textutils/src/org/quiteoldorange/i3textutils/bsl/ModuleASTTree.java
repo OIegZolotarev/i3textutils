@@ -1,0 +1,166 @@
+/**
+ *
+ */
+package org.quiteoldorange.i3textutils.bsl;
+
+import java.util.Collections;
+import java.util.LinkedList;
+
+import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
+import org.quiteoldorange.i3textutils.bsl.parser.AbsractBSLElementNode;
+import org.quiteoldorange.i3textutils.bsl.parser.AnnotationNode;
+import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException;
+import org.quiteoldorange.i3textutils.bsl.parser.BSLRegionNode;
+import org.quiteoldorange.i3textutils.bsl.parser.CommentNode;
+import org.quiteoldorange.i3textutils.bsl.parser.CommentsBlock;
+import org.quiteoldorange.i3textutils.bsl.parser.MethodNode;
+import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
+
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+
+
+/**
+ * @author ozolotarev
+ *
+ */
+public class ModuleASTTree
+    extends AbsractBSLElementNode
+{
+
+    @Override
+    public String serialize(ScriptVariant variant)
+    {
+        StringBuilder builder = new StringBuilder();
+
+        for (AbsractBSLElementNode node : getChildren())
+        {
+            builder.append(node.serialize(variant) + "\n"); //$NON-NLS-1$
+        }
+
+        return builder.toString();
+    }
+
+    public ModuleASTTree(Lexer lex)
+    {
+        super(null);
+
+        while (true)
+        {
+            try
+            {
+                var node = ParseNode(lex);
+
+                if (node == null)
+                    break;
+
+                addChildren(node);
+            }
+            catch (BSLParsingException e)
+            {
+                i3TextUtilsPlugin.logError(e);
+                break;
+            }
+        }
+
+        mergeCommentNodes(this);
+        mergeMethodAnnotationsAndDocs(this);
+        int f = 1;
+    }
+
+    /**
+     * @param moduleASTTree
+     */
+    private void mergeMethodAnnotationsAndDocs(AbsractBSLElementNode node)
+    {
+        LinkedList<AbsractBSLElementNode> newNodes = new LinkedList<>();
+
+        var children = node.getChildren();
+        MethodNode methodNode = null;
+
+        for (var iterator = children.listIterator(children.size()); iterator.hasPrevious();)
+        {
+            var childNode = iterator.previous();
+
+            if (childNode instanceof MethodNode)
+            {
+                methodNode = (MethodNode)childNode;
+                newNodes.add(methodNode);
+            }
+            else if (childNode instanceof BSLRegionNode)
+            {
+                mergeMethodAnnotationsAndDocs(childNode);
+                newNodes.add(childNode);
+            }
+            else if (childNode instanceof AnnotationNode)
+            {
+                if (methodNode != null)
+                    methodNode.addAnnotation((AnnotationNode)childNode);
+            }
+            else if (childNode instanceof CommentsBlock)
+            {
+                if (methodNode != null)
+                    methodNode.addDocumentationBlock((CommentsBlock)childNode);
+            }
+            else
+            {
+                methodNode = null;
+                newNodes.add(childNode);
+            }
+
+        }
+
+        Collections.reverse(newNodes);
+        node.setChildren(newNodes);
+    }
+
+    /**
+     * @param moduleASTTree
+     */
+    private void mergeCommentNodes(AbsractBSLElementNode node)
+    {
+        LinkedList<CommentNode> commentNodes = new LinkedList<>();
+        LinkedList<AbsractBSLElementNode> newNodes = new LinkedList<>();
+
+        for (var iterator = node.getChildren().iterator(); iterator.hasNext();)
+        {
+            var child = iterator.next();
+
+            if (child instanceof BSLRegionNode)
+            {
+                newNodes.add(child);
+                mergeCommentNodes(child);
+            }
+            else if (child instanceof CommentNode)
+            {
+                commentNodes.add((CommentNode)child);
+            }
+            else
+            {
+                if (commentNodes.size() > 0)
+                {
+                    var commentBlock = new CommentsBlock(commentNodes);
+                    newNodes.add(commentBlock);
+                    commentNodes.clear();
+                }
+
+                newNodes.add(child);
+            }
+
+        }
+
+        if (commentNodes.size() > 0)
+        {
+            int index = node.getChildren().indexOf(commentNodes.get(0));
+
+            var commentBlock = new CommentsBlock(commentNodes);
+
+            node.getChildren().add(index, commentBlock);
+            commentBlock.setParent(node);
+            commentNodes.clear();
+        }
+
+        node.setChildren(newNodes);
+    }
+
+
+}

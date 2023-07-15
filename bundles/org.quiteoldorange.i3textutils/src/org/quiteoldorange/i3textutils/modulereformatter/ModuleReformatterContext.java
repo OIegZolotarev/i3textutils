@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
+import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
-import org.quiteoldorange.i3textutils.bsl.parser.ModuleASTTree;
 import org.quiteoldorange.i3textutils.modulereformatter.tasks.AddRegionTask;
 
 import com._1c.g5.v8.dt.bsl.model.Module;

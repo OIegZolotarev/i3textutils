@@ -18,6 +18,11 @@
             id="org.quiteoldorange.i3textutils.commands.ReformatModule"
             name="%reformatModule.name">
       </command>
+            <command
+                  defaultHandler="org.quiteoldorange.i3textutils.commands.VerticalAlign"
+                  id="org.quiteoldorange.i3textutils.verticalalign"
+                  name="Выровнять вертикально">
+            </command>
       
    </extension>
    <extension point="org.eclipse.ui.menus">
@@ -52,6 +57,18 @@
                  style="push"
                  tooltip="%fillModuleStructure.tooltip">
               <visibleWhen
+                    checkEnabled="true">
+                 <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
+                 </reference>
+              </visibleWhen>
+           </command>
+           <command
+                 commandId="org.quiteoldorange.i3textutils.verticalalign"
+                 id="org.quiteoldorange.i3textutils.verticalalign"
+                 label="Выровнять вертикально"
+                 style="push">
+            <visibleWhen
                     checkEnabled="true">
                  <reference
                        definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">

@@ -218,14 +218,14 @@ public class Token
 
     static
     {
-        sTokenDictionary.put(Type.BeginProcedure, new KeywordDictionaryEntry("ПРОЦЕДУРА", "PROCEDURE")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.BeginFunction, new KeywordDictionaryEntry("ФУНКЦИЯ", "FUNCTION")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.EndProcedure, new KeywordDictionaryEntry("КОНЕЦПРОЦЕДУРЫ", "ENDPROCEDURE")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.EndFunction, new KeywordDictionaryEntry("КОНЕЦФУНКЦИИ", "ENDFUNCTION")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.BeginProcedure, new KeywordDictionaryEntry("Процедура", "Procedure")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.BeginFunction, new KeywordDictionaryEntry("Функция", "Function")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.EndProcedure, new KeywordDictionaryEntry("КонецПроцедуры", "EndProcedure")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.EndFunction, new KeywordDictionaryEntry("КонецФункции", "EndFunction")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.EqualsSign, new KeywordDictionaryEntry("=", "=")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.OpeningBracket, new KeywordDictionaryEntry("(", "(")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.ClosingBracket, new KeywordDictionaryEntry(")", ")")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.Export, new KeywordDictionaryEntry("ЭКСПОРТ", "EXPORT")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.Export, new KeywordDictionaryEntry("Экспорт", "Export")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.Comma, new KeywordDictionaryEntry(",", ",")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.ExpressionEnd, new KeywordDictionaryEntry(";", ";")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.PlusSign, new KeywordDictionaryEntry("+", "+")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -233,60 +233,60 @@ public class Token
         sTokenDictionary.put(Type.MultiplicationSign, new KeywordDictionaryEntry("*", "*")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.DivisionSign, new KeywordDictionaryEntry("/", "/")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.Dot, new KeywordDictionaryEntry(".", ".")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorNew, new KeywordDictionaryEntry("НОВЫЙ", "NEW")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorIf, new KeywordDictionaryEntry("ЕСЛИ", "IF")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorThen, new KeywordDictionaryEntry("ТОГДА", "THEN")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorElse, new KeywordDictionaryEntry("ИНАЧЕ", "ELSE")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorElseIf, new KeywordDictionaryEntry("ИНАЧЕЕСЛИ", "ELSEIF")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorEndIf, new KeywordDictionaryEntry("КОНЕЦЕСЛИ", "ENDIF")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorNew, new KeywordDictionaryEntry("Новый", "New")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorIf, new KeywordDictionaryEntry("Если", "If")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorThen, new KeywordDictionaryEntry("Тогда", "Then")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorElse, new KeywordDictionaryEntry("Иначе", "Else")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorElseIf, new KeywordDictionaryEntry("ИначеЕсли", "ElseIf")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorEndIf, new KeywordDictionaryEntry("КонецЕсли", "EndIf")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.LessSign, new KeywordDictionaryEntry("<", "<")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.GreateSign, new KeywordDictionaryEntry(">", ">")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorFor, new KeywordDictionaryEntry("ДЛЯ", "FOR")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorWhile, new KeywordDictionaryEntry("ПОКА", "WHILE")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorEndLoop, new KeywordDictionaryEntry("КОНЕЦЦИКЛА", "ENDLOOP")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorTry, new KeywordDictionaryEntry("ПОПЫТКА", "TRY")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorEndTry, new KeywordDictionaryEntry("КОНЕЦПОПЫТКИ", "ENDTRY")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.PreprocessorIf, new KeywordDictionaryEntry("#ЕСЛИ", "#IF")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.PreprocessorThen, new KeywordDictionaryEntry("#ТОГДА", "#THEN")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.PreprocessorElseIf, new KeywordDictionaryEntry("#ИНАЧЕЕСЛИ", "#ELSEIF")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.PreprocessorElse, new KeywordDictionaryEntry("#ИНАЧЕ", "#ELSE")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.PreprocessorEndIf, new KeywordDictionaryEntry("#КОНЕЦЕСЛИ", "#ENDIF")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.PreprocessorInsert, new KeywordDictionaryEntry("#ВСТАВКА", "#INSERT")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.PreprocessorEndInsert, new KeywordDictionaryEntry("#КОНЕЦВСТАВКИ", "#ENDINSERT")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.PreprocessorRemove, new KeywordDictionaryEntry("#УДАЛЕНИЕ", "#DELETE")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.PreprocessorEndRemove, new KeywordDictionaryEntry("#КОНЕЦУДАЛЕНИЯ", "#ENDDELETE")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.PreprocessorRegion, new KeywordDictionaryEntry("#ОБЛАСТЬ", "#REGION")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.PreprocessorEndRegion, new KeywordDictionaryEntry("#КОНЕЦОБЛАСТИ", "#ENDREGION")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.KeywordAnd, new KeywordDictionaryEntry("И", "AND")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.KeywordOr, new KeywordDictionaryEntry("ИЛИ", "OR")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.KeywordNot, new KeywordDictionaryEntry("НЕ", "NOT")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.KeywordVar, new KeywordDictionaryEntry("ПЕРЕМ", "VAR")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.KeywordLoop, new KeywordDictionaryEntry("ЦИКЛ", "LOOP")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.KeywordEach, new KeywordDictionaryEntry("КАЖДОГО", "EACH")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.KeywordVal, new KeywordDictionaryEntry("ЗНАЧ", "VAL")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.KeywordExcept, new KeywordDictionaryEntry("ИСКЛЮЧЕНИЕ", "EXCEPT")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorFor, new KeywordDictionaryEntry("Для", "For")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorWhile, new KeywordDictionaryEntry("Пока", "While")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorEndLoop, new KeywordDictionaryEntry("КонецЦикла", "EndLoop")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorTry, new KeywordDictionaryEntry("Попытка", "Try")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorEndTry, new KeywordDictionaryEntry("КонецПопытка", "EndTry")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorIf, new KeywordDictionaryEntry("#Если", "#If")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorThen, new KeywordDictionaryEntry("#Тогда", "#Then")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorElseIf, new KeywordDictionaryEntry("#ИначеЕсли", "#ElseIf")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorElse, new KeywordDictionaryEntry("#Иначе", "#Else")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorEndIf, new KeywordDictionaryEntry("#КонецЕсли", "#EndIf")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorInsert, new KeywordDictionaryEntry("#Вставка", "#Insert")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorEndInsert, new KeywordDictionaryEntry("#КонецВставки", "#EndInsert")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorRemove, new KeywordDictionaryEntry("#Удаление", "#Delete")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorEndRemove, new KeywordDictionaryEntry("#КонецУдаления", "#EndDelete")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorRegion, new KeywordDictionaryEntry("#Область", "#Region")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.PreprocessorEndRegion, new KeywordDictionaryEntry("#КонецОбласти", "#EndRegion")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordAnd, new KeywordDictionaryEntry("И", "And")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordOr, new KeywordDictionaryEntry("Или", "Or")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordNot, new KeywordDictionaryEntry("Не", "Not")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordVar, new KeywordDictionaryEntry("Перем", "Var")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordLoop, new KeywordDictionaryEntry("Цикл", "Loop")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordEach, new KeywordDictionaryEntry("Каждого", "Each")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordVal, new KeywordDictionaryEntry("Знач", "Val")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordExcept, new KeywordDictionaryEntry("Исключение", "Except")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.ModuloSign, new KeywordDictionaryEntry("%", "%")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.Tilde, new KeywordDictionaryEntry("~", "~")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.KeywordGoto, new KeywordDictionaryEntry("ПЕРЕЙТИ", "GOTO")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordGoto, new KeywordDictionaryEntry("Перейти", "Goto")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.Colon, new KeywordDictionaryEntry(":", ":")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.KeywordAsynch, new KeywordDictionaryEntry("АСИНХ", "ASYNCH")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.KeywordWait, new KeywordDictionaryEntry("ЖДАТЬ", "WAIT")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordAsynch, new KeywordDictionaryEntry("Асинх", "Asynch")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordWait, new KeywordDictionaryEntry("Ждать", "Wait")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        sTokenDictionary.put(Type.AnnotationAtClient, new KeywordDictionaryEntry("&НАКЛИЕНТЕ", "&ATCLIENT")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.AnnotationAtServer, new KeywordDictionaryEntry("&НАСЕРВЕРЕ", "&ATSERVER")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationAtClient, new KeywordDictionaryEntry("&НаКлиенте", "&AtClient")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationAtServer, new KeywordDictionaryEntry("&НаСервере", "&AtServer")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.AnnotationAtClientAtServerNoContext,
-            new KeywordDictionaryEntry("&НАКЛИЕНТЕНАСЕРВЕРЕБЕЗКОНТЕКСТА", "&ATCLIENTATSERVERNOCONTEXT")); //$NON-NLS-1$ //$NON-NLS-2$
+            new KeywordDictionaryEntry("&НаКлиентеНаСервереБезКонтекста", "&AtClientAtServerNoContext")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.AnnotationAtServerNoContext,
-            new KeywordDictionaryEntry("&НАСЕРВЕРЕБЕЗКОНТЕКСТА", "&ATSERVERNOCONTEXT")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.AnnotationBefore, new KeywordDictionaryEntry("&ПЕРЕД", "&BEFORE")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.AnnotationAfter, new KeywordDictionaryEntry("&ПОСЛЕ", "&AFTER")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.AnnotationAround, new KeywordDictionaryEntry("&ВМЕСТО", "&AROUND")); //$NON-NLS-1$ //$NON-NLS-2$
+            new KeywordDictionaryEntry("&НаСервереБезКонтекста", "&AtServerNoContext")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationBefore, new KeywordDictionaryEntry("&Перед", "&Before")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationAfter, new KeywordDictionaryEntry("&После", "&After")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationAround, new KeywordDictionaryEntry("&Вместо", "&Around")); //$NON-NLS-1$ //$NON-NLS-2$
 
         for (var entry: sTokenDictionary.entrySet())
         {
             var dictionaryEntry = entry.getValue();
-            sTokenMappings.put(dictionaryEntry.mKeywordRU, entry.getKey());
-            sTokenMappings.put(dictionaryEntry.mKeywordEN, entry.getKey());
+            sTokenMappings.put(dictionaryEntry.mKeywordRU.toUpperCase(), entry.getKey());
+            sTokenMappings.put(dictionaryEntry.mKeywordEN.toUpperCase(), entry.getKey());
         }
 
         // Особые случаи для булевых констант

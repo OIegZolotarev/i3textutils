@@ -9,10 +9,10 @@
         1C-Soft LLC - initial API and implementation
  -->
 <feature
-      id="org.example.sdk"
-      label="%featureName"
+      id="org.quiteoldorange.i3textutils.feature"
+      label="Инструменты i3"
       version="1.0.0.qualifier"
-      provider-name="%providerName"
+      provider-name="Олег Золотарев"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.2.qualifier">
 
@@ -28,13 +28,11 @@
       %license
    </license>
 
-   <includes
-         id="org.example.feature.source"
-         version="1.0.0.qualifier"
-         optional="true"/>
-
-   <includes
-         id="org.example.feature"
-         version="1.0.0.qualifier"/>
+   <plugin
+         id="org.quiteoldorange.i3textutils"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

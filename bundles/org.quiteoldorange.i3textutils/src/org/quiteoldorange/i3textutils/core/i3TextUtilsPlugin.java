@@ -153,6 +153,12 @@ public class i3TextUtilsPlugin
             String colorKey = "com._1c.g5.v8.dt.bsl.Bsl.syntaxColorer.tokenStyles.BSL_Keywords.color"; //$NON-NLS-1$
             var val = InstanceScope.INSTANCE.getNode("com._1c.g5.v8.dt.bsl.ui").get(colorKey, ""); //$NON-NLS-1$ //$NON-NLS-2$
 
+            if (val.isEmpty())
+            {
+                Log.Debug("No color setting found - assuming light theme is used and bailing out...");
+                return;
+            }
+
             Log.Debug("Got BSL_Keywords.color: %s", val);
 
             String hackColor = String.format("<style> a[style] { color: rgb(%s) !important;} </style>", //$NON-NLS-1$

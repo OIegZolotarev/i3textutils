@@ -144,7 +144,7 @@ public class i3TextUtilsPlugin
             String colorKey = "com._1c.g5.v8.dt.bsl.Bsl.syntaxColorer.tokenStyles.BSL_Keywords.color"; //$NON-NLS-1$
             var val = InstanceScope.INSTANCE.getNode("com._1c.g5.v8.dt.bsl.ui").get(colorKey, ""); //$NON-NLS-1$ //$NON-NLS-2$
 
-            String hackColor = String.format("<style>a[style] { color: rgb(%s) !important;}</style>", //$NON-NLS-1$
+            String hackColor = String.format("<style> a[style] { color: rgb(%s) !important;} </style>", //$NON-NLS-1$
                 val);
 
             field.set(null, oldValue + hackColor);

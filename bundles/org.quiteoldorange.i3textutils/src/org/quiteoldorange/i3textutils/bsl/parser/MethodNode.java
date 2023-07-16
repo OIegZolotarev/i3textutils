@@ -42,8 +42,28 @@ public class MethodNode
     @Override
     public String serialize(ScriptVariant scriptVariant)
     {
+        var iterator = getChildren().iterator();
+
+        StringBuilder builder = new StringBuilder();
+
+        while (true)
+        {
+            if (!iterator.hasNext())
+                break;
+
+            var node = iterator.next();
+
+            if (!(node instanceof CommentsBlock || node instanceof AnnotationNode))
+                break;
+
+            builder.append(node.serialize(scriptVariant));
+        }
+
         if (!mLazySource.isEmpty())
-            return mLazySource;
+        {
+            builder.append(mLazySource);
+            return builder.toString();
+        }
 
         return "";
     }

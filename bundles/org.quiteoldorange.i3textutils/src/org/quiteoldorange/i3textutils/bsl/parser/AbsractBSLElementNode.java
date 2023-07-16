@@ -229,4 +229,21 @@ public class AbsractBSLElementNode
         mChildren = newNodes;
     }
 
+    public String serializeChildren(ScriptVariant variant, boolean addNewline)
+    {
+        StringBuilder builder = new StringBuilder();
+
+        for (AbsractBSLElementNode node : getChildren())
+        {
+            // TODO: проверка на необходимость лепить перенос
+            String nodeValue = node.serialize(variant);
+            builder.append(nodeValue);
+
+            if (addNewline)
+                builder.append("\n"); //$NON-NLS-1$
+        }
+
+        return builder.toString();
+    }
+
 }

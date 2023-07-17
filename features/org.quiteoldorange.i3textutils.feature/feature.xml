@@ -11,7 +11,7 @@
 <feature
       id="org.quiteoldorange.i3textutils.feature"
       label="Инструменты i3"
-      version="1.0.0.qualifier"
+      version="1.0.2.qualifier"
       provider-name="Олег Золотарев"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.2.qualifier">

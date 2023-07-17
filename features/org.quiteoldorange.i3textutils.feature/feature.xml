@@ -9,7 +9,7 @@
         1C-Soft LLC - initial API and implementation
  -->
 <feature
-      id="org.example.feature"
+      id="org.quiteoldorange.i3textutils.feature"
       label="%featureName"
       version="1.0.0.qualifier"
       provider-name="%providerName"
@@ -29,17 +29,10 @@
    </license>
 
    <plugin
-         id="org.example"
-         download-size="0"
-         install-size="0"
-         version="1.0.0.qualifier"
-         unpack="false"/>
-
-   <plugin
          id="org.quiteoldorange.i3textutils"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

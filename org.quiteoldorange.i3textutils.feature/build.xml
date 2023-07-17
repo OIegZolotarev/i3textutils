@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="feature_export" name="build">
 	<target name="feature_export">
-		<pde.exportFeatures destination="/home/ozolotarev/1c/EDTProjects/plugin_repo" exportSource="false" exportType="directory" features="org.quiteoldorange.i3textutils.feature" useJARFormat="true"/>
+		<pde.exportFeatures destination="/run/media/data-tier-0/1C/EDTProjects" exportSource="false" exportType="zip" features="org.quiteoldorange.i3textutils.feature" filename="i3textutils.zip" useJARFormat="true"/>
 	</target>
 </project>

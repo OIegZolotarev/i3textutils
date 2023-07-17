@@ -55,18 +55,25 @@ public class VerticalAlign
                 continue;
             }
 
+            if (currentOffset == maxOffset)
+            {
+                newLines.append(line + "\n");
+                continue;
+            }
+
             int spacesToAdd = maxOffset - currentOffset;
 
             line = line.substring(0, currentOffset) + " ".repeat(spacesToAdd) + line.substring(currentOffset);
             newLines.append(line + "\n");
         }
 
-
         //////////////////////////////
 
         try
         {
-            doc.replace(offset, length, newLines.toString());
+            String result = newLines.toString();
+            result = result.substring(0, result.length() - 1);
+            doc.replace(offset, length, result);
         }
         catch (BadLocationException e)
         {

@@ -4,21 +4,25 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
+            categoryId="com._1c.g5.v8.dt.ui.aef.commands"
             defaultHandler="org.quiteoldorange.i3textutils.commands.AddMissingPragmas"
             id="org.quiteoldorange.i3textutils.commands.AddMissingPragmas"
             name="%addMissingPragmas.name">
       </command>
       <command
+            categoryId="com._1c.g5.v8.dt.ui.aef.commands"
             defaultHandler="org.quiteoldorange.i3textutils.commands.FillModuleStructure"
             id="org.quiteoldorange.i3textutils.commands.fillModuleStructure"
             name="%fillModuleStructure.name">
       </command>      
             <command
-            defaultHandler="org.quiteoldorange.i3textutils.commands.ReformatModule"
-            id="org.quiteoldorange.i3textutils.commands.ReformatModule"
-            name="%reformatModule.name">
+                  categoryId="com._1c.g5.v8.dt.ui.aef.commands"
+                  defaultHandler="org.quiteoldorange.i3textutils.commands.ReformatModule"
+                  id="org.quiteoldorange.i3textutils.commands.ReformatModule"
+                  name="%reformatModule.name">
       </command>
             <command
+                  categoryId="com._1c.g5.v8.dt.ui.aef.commands"
                   defaultHandler="org.quiteoldorange.i3textutils.commands.VerticalAlign"
                   id="org.quiteoldorange.i3textutils.verticalalign"
                   name="Выровнять вертикально">

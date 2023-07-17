@@ -10,9 +10,9 @@
  -->
 <feature
       id="org.quiteoldorange.i3textutils.feature"
-      label="%featureName"
+      label="Инструменты i3"
       version="1.0.0.qualifier"
-      provider-name="%providerName"
+      provider-name="Олег Золотарев"
       license-feature="org.eclipse.license"
       license-feature-version="2.0.2.qualifier">
 

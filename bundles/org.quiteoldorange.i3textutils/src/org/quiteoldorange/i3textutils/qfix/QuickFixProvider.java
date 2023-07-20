@@ -17,7 +17,7 @@ public class QuickFixProvider
         // TODO Auto-generated constructor stub
     }
 
-    @Fix("SU39")
+    @Fix("SU39999")
     public void Shit(final Issue issue, IssueResolutionAcceptor acceptor)
     {
         acceptor.accept(issue, "Переместить метод в область", "", null, new IModification()

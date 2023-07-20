@@ -3,13 +3,19 @@
  */
 package org.quiteoldorange.i3textutils.core;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.Map;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.xtext.ui.editor.quickfix.Fix;
 import org.osgi.framework.BundleContext;
 import org.quiteoldorange.i3textutils.Log;
 import org.quiteoldorange.i3textutils.ServicesAdapter;
+import org.quiteoldorange.i3textutils.qfix.QuickFixProvider;
 
 import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
 import com._1c.g5.wiring.ServiceInitialization;
@@ -117,6 +123,12 @@ public class i3TextUtilsPlugin
         this.bundleContext = bundleContext;
         plugin = this;
 
+        // Annotation hack test
+
+        AnnotationsHack("SU39");
+
+        // Annotation hack test
+
         registrator = new InjectorAwareServiceRegistrator(bundleContext, this::getInjector);
 
         ServiceInitialization.schedule(() -> {
@@ -126,6 +138,41 @@ public class i3TextUtilsPlugin
 
         });
 
+    }
+
+    private void AnnotationsHack(String val) throws NoSuchFieldException, IllegalAccessException
+    {
+        var fixMethod = QuickFixProvider.class.getMethods()[0];
+
+        final Fix oldAnnotation = (Fix)fixMethod.getAnnotations()[0];
+
+        Annotation newAnnotation = new Fix()
+        {
+
+            @Override
+            public String value()
+            {
+                return val;
+            }
+
+            @Override
+            public Class<? extends Annotation> annotationType()
+            {
+                return oldAnnotation.annotationType();
+            }
+        };
+
+        fixMethod.getDeclaredAnnotations();
+        Class<?> superclass = fixMethod.getClass().getSuperclass();
+
+        Field declaredField = superclass.getDeclaredField("declaredAnnotations");
+        declaredField.setAccessible(true);
+
+        @SuppressWarnings("unchecked")
+        Map<Class<? extends Annotation>, Annotation> map =
+            (Map<Class<? extends Annotation>, Annotation>)declaredField.get(fixMethod);
+
+        map.put(Fix.class, newAnnotation);
     }
 
     /**

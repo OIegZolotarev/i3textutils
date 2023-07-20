@@ -2,7 +2,6 @@ package org.quiteoldorange.i3textutils.qfix;
 
 import org.eclipse.emf.ecore.EObject;
 
-import com._1c.g5.v8.dt.bsl.model.impl.MethodImpl;
 import com._1c.g5.v8.dt.bsl.validation.CustomValidationMessageAcceptor;
 import com._1c.g5.v8.dt.bsl.validation.IExternalBslValidator;
 
@@ -33,8 +32,9 @@ public class QuickFixMarkerGenerator
     @Override
     public boolean needValidation(EObject object)
     {
+        return false;
         // TODO Auto-generated method stub
-        return object instanceof MethodImpl;
+        //return object instanceof MethodImpl;
     }
 
 }

@@ -17,10 +17,10 @@ public class QuickFixProvider
         // TODO Auto-generated constructor stub
     }
 
-    @Fix("I3Marker")
+    @Fix("SU39")
     public void Shit(final Issue issue, IssueResolutionAcceptor acceptor)
     {
-        acceptor.accept(issue, "Насрать", "На все", null, new IModification()
+        acceptor.accept(issue, "Переместить метод в область", "", null, new IModification()
         {
 
             @Override

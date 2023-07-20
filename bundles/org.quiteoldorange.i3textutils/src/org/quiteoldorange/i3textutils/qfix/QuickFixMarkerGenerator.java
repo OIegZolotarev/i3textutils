@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EObject;
 import com._1c.g5.v8.dt.bsl.validation.CustomValidationMessageAcceptor;
 import com._1c.g5.v8.dt.bsl.validation.IExternalBslValidator;
 
+@SuppressWarnings("deprecation")
 public class QuickFixMarkerGenerator
     implements IExternalBslValidator
 {

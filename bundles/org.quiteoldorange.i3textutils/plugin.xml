@@ -86,6 +86,12 @@
    
 <extension point="com.e1c.g5.v8.dt.check.fixes">
 <fix class="org.quiteoldorange.i3textutils.core.ExecutableExtensionFactory:org.quiteoldorange.i3textutils.qfix.MissingPragmaQFix"/>
+</extension>
+<extension
+      point="com._1c.g5.v8.dt.bsl.externalBslValidator">
+   <externalValidator
+         class="org.quiteoldorange.i3textutils.qfix.QuickFixMarkerGenerator">
+   </externalValidator>
 </extension>   
    
 </plugin>

@@ -15,6 +15,7 @@ import org.quiteoldorange.i3textutils.refactoring.MethodSourceInfo;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.bsl.ui.quickfix.AbstractExternalQuickfixProvider;
@@ -37,6 +38,7 @@ public class QuickFixProvider
         private final Issue mIssue;
         private List<String> mIssueSuggestedRegions;
         private List<String> mInvalidRegionsForSuggestion;
+        private String mSuggestedRegion = null;
 
         /**
          * @param issue
@@ -49,25 +51,57 @@ public class QuickFixProvider
             mInvalidRegionsForSuggestion = invalidRegionsForSuggestion;
         }
 
+        private BadRegionIssueResolver(Issue issue, String suggestedRegion)
+        {
+            mIssue = issue;
+            mSuggestedRegion = suggestedRegion;
+        }
+
         @Override
         public void apply(IModificationContext context) throws Exception
         {
             var doc = context.getXtextDocument();
             var module = Utils.getModuleFromXTextDocument(doc);
 
-            List<RegionPreprocessor> existingRegions = BslUtil.getAllRegionPreprocessors(module);
-            List<CandidateRegion> candidates = makeCandidatesList(existingRegions, doc);
 
             String methodName = StringUtils.parseMethodFromURIToProblem(mIssue.getUriToProblem().toString());
 
-            var dlg = new RegionChooserDialog(candidates, methodName, mIssue.getMessage());
-            dlg.open();
+            CandidateRegion regionDesc = null;
 
-            CandidateRegion regionDesc = dlg.getSelectedRegion();
+            if (mSuggestedRegion == null)
+            {
+
+                List<RegionPreprocessor> existingRegions = BslUtil.getAllRegionPreprocessors(module);
+                List<CandidateRegion> candidates = makeCandidatesList(existingRegions, doc);
+
+                var dlg = new RegionChooserDialog(candidates, methodName, mIssue.getMessage());
+                dlg.open();
+
+                regionDesc = dlg.getSelectedRegion();
+            }
+            else
+            {
+                RegionPreprocessor bslRegion = Utils.findModuleRegion(mSuggestedRegion, module);
+                regionDesc = new CandidateRegion(bslRegion, doc);
+            }
 
             if (regionDesc == null)
                 return;
 
+            moveMethodToNewRegion(doc, module, methodName, regionDesc);
+
+        }
+
+        /**
+         * @param doc
+         * @param module
+         * @param methodName
+         * @param regionDesc
+         * @throws BadLocationException
+         */
+        private void moveMethodToNewRegion(IXtextDocument doc, Module module, String methodName,
+            CandidateRegion regionDesc) throws BadLocationException
+        {
             Method method = Utils.findModuleMethod(methodName, module);
             MethodSourceInfo info = Utils.getMethodSourceInfo(method, doc);
 
@@ -105,7 +139,6 @@ public class QuickFixProvider
                 moveMethodBodyToTarget(doc, info, targetOffset, replaceLength);
                 doc.replace(info.getStartOffset(), info.getLength(), "");
             }
-
         }
 
         /**
@@ -128,6 +161,17 @@ public class QuickFixProvider
             }
         }
 
+        private boolean isInvalidRegionForSuggestion(String region)
+        {
+            if (mInvalidRegionsForSuggestion == null)
+                return false;
+
+            if (mInvalidRegionsForSuggestion.stream().anyMatch(s -> s.equals(region)))
+                return true;
+
+            return false;
+        }
+
         private List<CandidateRegion> makeCandidatesList(List<RegionPreprocessor> items, IXtextDocument doc)
         {
 
@@ -135,7 +179,7 @@ public class QuickFixProvider
 
             for (var existingItem : items)
             {
-                if (mInvalidRegionsForSuggestion.stream().anyMatch(s -> s.equals(existingItem.getName())))
+                if (isInvalidRegionForSuggestion(existingItem.getName()))
                     continue;
 
                 result.add(new CandidateRegion(existingItem, doc));
@@ -143,7 +187,7 @@ public class QuickFixProvider
 
             for (var newItem : mIssueSuggestedRegions)
             {
-                if (mInvalidRegionsForSuggestion.stream().anyMatch(s -> s.equals(newItem)))
+                if (isInvalidRegionForSuggestion(newItem))
                     continue;
 
                 if (hasRegionInList(items, newItem))
@@ -220,7 +264,7 @@ public class QuickFixProvider
 
             acceptor.accept(issue, String.format("Переместить метод в область \"%s\"", suggestedRegion), "<Описание>",
                 null,
-                new BadRegionIssueResolver(issue, suggestions.getRecommendedRegions(), suggestions.getBadRegions()));
+                new BadRegionIssueResolver(issue, suggestedRegion));
 
             return;
         }

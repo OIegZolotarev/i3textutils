@@ -3,6 +3,8 @@ package org.quiteoldorange.i3textutils.qfix;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModification;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.quickfix.Fix;
@@ -50,8 +52,7 @@ public class QuickFixProvider
             var module = Utils.getModuleFromXTextDocument(doc);
 
             List<RegionPreprocessor> items = BslUtil.getAllRegionPreprocessors(module);
-
-            List<CandidateRegion> candidates = makeCandidatesList(items, mIssue);
+            List<CandidateRegion> candidates = makeCandidatesList(items, mIssue, doc);
 
             var dlg = new MoveMethodToRegionDialog(candidates);
             dlg.open();
@@ -65,8 +66,6 @@ public class QuickFixProvider
             Method method = Utils.findModuleMethod(methodName, module);
             MethodSourceInfo info = Utils.getMethodSourceInfo(method, doc);
 
-            doc.replace(info.getStartOffset(), info.getLength(), "");
-
             int targetOffset = 0;
             int replaceLength = 0;
 
@@ -74,14 +73,13 @@ public class QuickFixProvider
             {
                 StringBuilder builder = new StringBuilder();
 
-                builder.append(String.format("#Область %s\n\n", regionDesc.getName()));
-                builder.append("// %MOVE_METHOD%\n\n");
+                builder.append(String.format("#Область %s\n", regionDesc.getName()));
+                builder.append("\n" + info.getSourceText().trim() + "\n\n");
                 builder.append(String.format("#КонецОбласти // %s\n\n", regionDesc.getName()));
 
+                doc.replace(info.getStartOffset(), info.getLength(), "");
                 doc.replace(0, 0, builder.toString());
-
-                targetOffset = doc.get().indexOf("// %MOVE_METHOD%\n");
-                replaceLength = "// %MOVE_METHOD%".length();
+                return;
             }
             else
             {
@@ -89,18 +87,51 @@ public class QuickFixProvider
                 replaceLength = 0;
             }
 
-            doc.replace(targetOffset, replaceLength, info.getSourceText());
+            // Если исходное тело модуля до области - надо сначала убрать тело модуля
+            // затем поместить его в область, и соответственно наоборот, иначе смещения будут неактуальные
+            // и все поплывет :(
+            if (info.getStartOffset() > targetOffset)
+            {
+                doc.replace(info.getStartOffset(), info.getLength(), "");
+                moveMethodBodyToTarget(doc, info, targetOffset, replaceLength);
+            }
+            else
+            {
+                moveMethodBodyToTarget(doc, info, targetOffset, replaceLength);
+                doc.replace(info.getStartOffset(), info.getLength(), "");
+            }
 
         }
 
-        private List<CandidateRegion> makeCandidatesList(List<RegionPreprocessor> items, Issue issue)
+        /**
+         * @param doc
+         * @param info
+         * @param targetOffset
+         * @param replaceLength
+         * @throws BadLocationException
+         */
+        private void moveMethodBodyToTarget(IXtextDocument doc, MethodSourceInfo info, int targetOffset,
+            int replaceLength) throws BadLocationException
+        {
+            if (replaceLength > 0)
+            {
+                doc.replace(targetOffset, replaceLength, info.getSourceText());
+            }
+            else
+            {
+                doc.replace(targetOffset, replaceLength, "\n" + info.getSourceText() + "\n\n");
+            }
+        }
+
+        private List<CandidateRegion> makeCandidatesList(List<RegionPreprocessor> items, Issue issue,
+            IXtextDocument doc)
         {
 
             List<CandidateRegion> result = new LinkedList<>();
 
             for (var existingItem : items)
             {
-                result.add(new CandidateRegion(existingItem));
+                result.add(new CandidateRegion(existingItem, doc));
             }
 
             List<String> newRegions = parseSuggestedRegions(items, issue);
@@ -152,7 +183,7 @@ public class QuickFixProvider
         // TODO Auto-generated constructor stub
     }
 
-    @Fix("SU39999")
+    @Fix("SU391")
     public void Shit(final Issue issue, IssueResolutionAcceptor acceptor)
     {
         acceptor.accept(issue, "Переместить метод в область", "", null, new BadRegionIssueResolver(issue));

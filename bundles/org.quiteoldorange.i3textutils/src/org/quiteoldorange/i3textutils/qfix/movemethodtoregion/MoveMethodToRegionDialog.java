@@ -20,6 +20,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+
 
 /**
  * @author ozolotarev
@@ -55,6 +57,8 @@ public class MoveMethodToRegionDialog
         Composite control = (Composite)super.createDialogArea(parent);
         mRegionsTable = createDataTable(control, "Области модуля", mCandidates); //$NON-NLS-1$
 
+        Label l = new Label(control, SWT.LEFT);
+        l.setText("* - область не существует в модуле и будет создана");
 
         return control;
     }

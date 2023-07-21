@@ -18,6 +18,7 @@ import org.quiteoldorange.i3textutils.ServicesAdapter;
 import org.quiteoldorange.i3textutils.StringUtils;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
+import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
 import org.quiteoldorange.i3textutils.modulereformatter.tasks.AddRegionTask;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
@@ -64,11 +65,12 @@ public class RequiredRegionsCalculator
             String uriKey = "uriToProblem";
 
             String methodName = StringUtils.parseMethodFromURIToProblem(extraInfo.get(uriKey));
-            builder.append(String.format("%s : %s -> %s\n", methodName,v8checkid, message));
+            builder.append(String.format("%s : %s (SUID: %s) -> %s\n", methodName, v8checkid, checkId, message));
         }
 
         String s = builder.toString();
 
+        i3TextUtilsPlugin.getDefault().getLog().info(s);
 
         return result;
     }

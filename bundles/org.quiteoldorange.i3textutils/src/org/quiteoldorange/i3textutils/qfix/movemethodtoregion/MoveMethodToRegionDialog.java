@@ -1,9 +1,8 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.dialogs;
+package org.quiteoldorange.i3textutils.qfix.movemethodtoregion;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.edit.ui.provider.DelegatingStyledCellLabelProvider;
@@ -12,6 +11,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -25,33 +25,35 @@ import org.eclipse.swt.widgets.Display;
  * @author ozolotarev
  *
  */
-public class ReformatFileDialog
+public class MoveMethodToRegionDialog
     extends TitleAreaDialog
 {
+
+    private TableViewer mRegionsTable;
+    private List<CandidateRegion> mCandidates;
+
+    private CandidateRegion mSelectedRegion = null;
 
     /**
      * @param parentShell
      */
-    public ReformatFileDialog()
+    public MoveMethodToRegionDialog(List<CandidateRegion> candidates)
     {
         super(Display.getCurrent().getActiveShell());
+
+        mCandidates = candidates;
     }
 
     @Override
     protected Control createDialogArea(Composite parent)
     {
-        setTitle("Размещение методов модуля по областям"); //$NON-NLS-1$
-        setMessage("Настройте стратегию переформатирования модуля"); //$NON-NLS-1$
+        setTitle("Перемещение в область"); //$NON-NLS-1$
+        setMessage("Выберите область в которую следуюет переместить метод"); //$NON-NLS-1$
 
-        getShell().setText("Переформатирование модуля"); //$NON-NLS-1$
+        getShell().setText("Рефакторинг"); //$NON-NLS-1$
 
         Composite control = (Composite)super.createDialogArea(parent);
-
-        var items = new ArrayList<String>();
-        items.add("Привет"); //$NON-NLS-1$
-        items.add("Мир"); //$NON-NLS-1$
-
-        createDataTable(control, "Процедуры модуля", items); //$NON-NLS-1$
+        mRegionsTable = createDataTable(control, "Области модуля", mCandidates); //$NON-NLS-1$
 
 
         return control;
@@ -65,13 +67,16 @@ public class ReformatFileDialog
         @Override
         public String getText(Object element)
         {
-            return super.getText(element);
+            CandidateRegion r = (CandidateRegion)element;
+            return r.getName();
         }
 
         @Override
         public StyledString getStyledText(Object element)
         {
-            return new StyledString(super.getText(element));
+            CandidateRegion r = (CandidateRegion)element;
+            String existanceFlag = r.isExists() ? "" : "*"; //$NON-NLS-1$//$NON-NLS-2$
+            return new StyledString(r.getName() + existanceFlag);
         }
 
         @Override
@@ -81,7 +86,7 @@ public class ReformatFileDialog
         }
     }
 
-    private TableViewer createDataTable(Composite composite, String headerName, List<String> content)
+    private TableViewer createDataTable(Composite composite, String headerName, List<CandidateRegion> content)
     {
         final TableViewer tableViewer = new TableViewer(composite, SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION);
         int height = tableViewer.getTable().getItemHeight() * 5;
@@ -96,6 +101,21 @@ public class ReformatFileDialog
 
         column.getColumn().pack();
         return tableViewer;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void okPressed()
+    {
+        StructuredSelection sel = (StructuredSelection)mRegionsTable.getSelection();
+        var element = sel.getFirstElement();
+        mSelectedRegion = (CandidateRegion)element;
+        super.okPressed();
+    }
+
+    public CandidateRegion getSelectedRegion()
+    {
+        return mSelectedRegion;
     }
 
 }

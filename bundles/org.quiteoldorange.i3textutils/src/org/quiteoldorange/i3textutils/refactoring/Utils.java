@@ -295,7 +295,7 @@ public class Utils
         {
             return ".settings/templates/web_service_module.bsl"; //$NON-NLS-1$
         }
-    
+
         return null;
     }
 

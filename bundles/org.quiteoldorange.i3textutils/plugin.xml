@@ -96,7 +96,7 @@
 <extension
       point="com._1c.g5.v8.dt.bsl.ui.externalQuickfixProvider">
    <externalQuickfixProvider
-         class="org.quiteoldorange.i3textutils.qfix.QuickFixProvider">
+         class="org.quiteoldorange.i3textutils.qfix.movemethodtoregion.QuickFixProvider">
    </externalQuickfixProvider>
 </extension>   
    

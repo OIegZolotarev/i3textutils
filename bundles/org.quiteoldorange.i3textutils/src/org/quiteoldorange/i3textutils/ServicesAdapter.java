@@ -6,6 +6,7 @@ package org.quiteoldorange.i3textutils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
+import org.quiteoldorange.i3textutils.core.QuickFixAdapter;
 
 import com._1c.g5.v8.dt.validation.marker.IMarkerManager;
 import com._1c.g5.wiring.IManagedService;
@@ -40,7 +41,7 @@ public class ServicesAdapter
     @Override
     public void activate()
     {
-
+        QuickFixAdapter.bindQuickFixes();
     }
 
     @Override

@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Label;
  * @author ozolotarev
  *
  */
-public class MoveMethodToRegionDialog
+public class RegionChooserDialog
     extends TitleAreaDialog
 {
 
@@ -35,22 +35,27 @@ public class MoveMethodToRegionDialog
     private List<CandidateRegion> mCandidates;
 
     private CandidateRegion mSelectedRegion = null;
+    private String mMethodName;
+    private String mIssueDescription;
 
     /**
+     * @param issueDescription
      * @param parentShell
      */
-    public MoveMethodToRegionDialog(List<CandidateRegion> candidates)
+    public RegionChooserDialog(List<CandidateRegion> candidates, String methodName, String issueDescription)
     {
         super(Display.getCurrent().getActiveShell());
 
         mCandidates = candidates;
+        mMethodName = methodName;
+        mIssueDescription = issueDescription;
     }
 
     @Override
     protected Control createDialogArea(Composite parent)
     {
-        setTitle("Перемещение в область"); //$NON-NLS-1$
-        setMessage("Выберите область в которую следуюет переместить метод"); //$NON-NLS-1$
+        setTitle(String.format("Перемещение метода \"%s\"", mMethodName));
+        setMessage(mIssueDescription);
 
         getShell().setText("Рефакторинг"); //$NON-NLS-1$
 

@@ -224,7 +224,7 @@ public class QuickFixProvider
         String issueMessage = issue.getMessage();
         String regionsList = issueMessage.substring(issueMessage.indexOf(':') + 1);
 
-        String[] suggestedRegions = regionsList.split(",");
+        String[] suggestedRegions = regionsList.split(","); //$NON-NLS-1$
 
         for (String item : suggestedRegions)
         {
@@ -276,7 +276,7 @@ public class QuickFixProvider
     {
         var suggestedRegions = parseSuggestedRegions_ModuleStructureMethodInRegions(issue);
 
-        acceptor.accept(issue, "SU 39 Переместить метод в область", "<Описание>", null,
+        acceptor.accept(issue, "Переместить метод в другую область...", "<Описание>", null,
             new BadRegionIssueResolver(issue, suggestedRegions, new LinkedList<>()));
     }
 

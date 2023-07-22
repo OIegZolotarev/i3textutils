@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.quiteoldorange.i3textutils" default="build.jars" basedir=".">
+
+	<property name="p2.build.repo" value="file:${buildDirectory}/buildRepo"/>
+	<property name="basews" value="${ws}"/>
+	<property name="baseos" value="${os}"/>
+	<property name="basearch" value="${arch}"/>
+	<property name="basenl" value="${nl}"/>
+	<property name="bundleId" value="org.quiteoldorange.i3textutils"/>
+	<property name="bundleVersion" value="1.0.3.3"/>
+	<property name="p2.publishonerror" value="false"/>
+
+	<!-- Compiler settings. -->
+	<property name="javacFailOnError" value="false"/>
+	<property name="javacDebugInfo" value="on"/>
+	<property name="javacVerbose" value="false"/>
+	<property name="logExtension" value=".log"/>
+	<property name="compilerArg" value=""/>
+	<property name="compilation.prereq.log" value="${buildDirectory}/prereqErrors.log"/>
+	<property name="javacSource" value="1.3"/>
+	<property name="javacTarget" value="1.2"/>
+	<condition property="dir_bootclasspath" value="${java.home}/../Classes">
+		<and>
+			<os family="mac"/>
+			<available file="${java.home}/../Classes" type="dir"/>
+		</and>
+	</condition>
+	<property name="dir_bootclasspath" value="${java.home}/lib"/>
+	<path id="path_bootclasspath">
+		<fileset dir="${dir_bootclasspath}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<property name="bootclasspath" refid="path_bootclasspath"/>
+	<condition property="bundleBootClasspath" value="${JavaSE-11}"	>
+		<isset property="JavaSE-11"/>
+	</condition>
+	<condition property="bundleJavacSource" value="11"	>
+		<isset property="JavaSE-11"/>
+	</condition>
+	<property name="bundleJavacSource" value="${javacSource}"/>
+	<property name="bundleJavacTarget" value="${javacTarget}"/>
+	<property name="bundleBootClasspath" value="${bootclasspath}"/>
+
+	<target name="init" depends="properties">
+		<condition property="pluginTemp" value="${buildTempFolder}/plugins"		>
+			<isset property="buildTempFolder"/>
+		</condition>
+		<property name="pluginTemp" value="${basedir}"/>
+		<condition property="build.result.folder" value="${pluginTemp}/org.quiteoldorange.i3textutils_1.0.3.3"		>
+			<isset property="buildTempFolder"/>
+		</condition>
+		<property name="build.result.folder" value="${basedir}"/>
+		<property name="temp.folder" value="${basedir}/temp.folder"/>
+		<property name="plugin.destination" value="${basedir}"/>
+		<condition property="p2.publish.parts" value="true"		>
+			<istrue value="${p2.gathering}"/>
+		</condition>
+		<property name="compilation.problem.marker" value="${build.result.folder}/compilation.problem"/>
+		<condition property="compilation.problem.marker.exists" value="true"		>
+			<and>
+			<available file="${compilation.problem.marker}"/>
+			<isfalse value="${p2.publishonerror}"/>
+			</and>
+		</condition>
+	</target>
+
+	<target name="properties" if="eclipse.running">
+		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+
+	</target>
+
+	<target name="build.update.jar" depends="init" description="Build the plug-in: org.quiteoldorange.i3textutils for an update site.">
+		<delete dir="${temp.folder}"/>
+		<mkdir dir="${temp.folder}"/>
+		<antcall target="build.jars"/>
+		<antcall target="gather.bin.parts">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<jar destfile="${plugin.destination}/org.quiteoldorange.i3textutils_1.0.3.3.jar" basedir="${temp.folder}/org.quiteoldorange.i3textutils_1.0.3.3" filesetmanifest="merge"/>
+		<delete dir="${temp.folder}"/>
+		<eclipse.jarProcessor sign="${jarProcessor.sign}" pack="${jarProcessor.pack200}" unsign="${jarProcessor.unsign}" jar="${plugin.destination}/org.quiteoldorange.i3textutils_1.0.3.3.jar" alias="${sign.alias}" keystore="${sign.keystore}" storepass="${sign.storepass}"/>
+	</target>
+
+	<target name="@dot.nestedJars">
+		<mkdir dir="${buildDirectory}/nestedJars/com._1c.g5.modeling.xml_3.4.100.v202205241453"/>
+		<unzip src="../../../../../plugins/plugins/com._1c.g5.modeling.xml_3.4.100.v202205241453.jar" dest="${buildDirectory}/nestedJars/com._1c.g5.modeling.xml_3.4.100.v202205241453" overwrite="false">
+			<patternset includes="lib/stax2-api-3.1.1.jar"/>
+		</unzip>
+		<mkdir dir="${buildDirectory}/nestedJars/com._1c.g5.modeling.xml_3.4.100.v202205241453"/>
+		<unzip src="../../../../../plugins/plugins/com._1c.g5.modeling.xml_3.4.100.v202205241453.jar" dest="${buildDirectory}/nestedJars/com._1c.g5.modeling.xml_3.4.100.v202205241453" overwrite="false">
+			<patternset includes="lib/woodstox-core-asl-4.1.1.jar"/>
+		</unzip>
+		<mkdir dir="${buildDirectory}/nestedJars/org.eclipse.platform.nl_ru_4.18.0.v20210305020001"/>
+		<unzip src="../../../../../plugins/plugins/org.eclipse.platform.nl_ru_4.18.0.v20210305020001.jar" dest="${buildDirectory}/nestedJars/org.eclipse.platform.nl_ru_4.18.0.v20210305020001" overwrite="false">
+			<patternset includes="platform.jar"/>
+		</unzip>
+	</target>
+	<target name="@dot" depends="init,@dot.nestedJars" unless="@dot" description="Create jar: org.quiteoldorange.i3textutils @dot.">
+		<delete dir="${build.result.folder}/@dot"/>
+		<mkdir dir="${build.result.folder}/@dot"/>
+		<path id="@dot.classpath">
+			<pathelement path="../../../../../plugins/plugins/com._1c.chassis.gears_0.14.0.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.e1c.g5.i18n_3.2.0.v20190611-1004.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.google.guava_30.1.0.v20210127-2300.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.slf4j.api_1.7.30.v20200204-2150.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.lifecycle_3.0.1000.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.runtime_3.24.100.v20220211-2001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.runtime.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.osgi_3.17.200.v20220215-2237.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.weaving.hook_1.3.100.v20211021-1418.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.fx.osgi_3.7.0.202010120720.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.osgi.compatibility.state_1.2.600.v20220207-1403.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.osgi.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.common_3.16.0.v20220211-2322.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.common.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.jobs_3.12.100.v20220120-1329.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.jobs.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.registry_3.11.100.v20211021-1418.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.registry.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.preferences_3.9.100.v20211021-1418.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.preferences.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.contenttype_3.8.100.v20210910-0640.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.contenttype.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.app_1.6.100.v20211021-1418.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.app.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.osgi.services_3.10.200.v20210723-0643.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.osgi.services.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.osgi.util_3.6.100.v20210723-1119.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.osgi.util.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/jakarta.servlet-api_4.0.0.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.wiring_2.3.0.v202203290322.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.google.inject_5.0.1.v20210324-2015.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.google.inject.assistedinject_5.0.1.v20210324-2015.jar"/>
+			<pathelement path="../../../../../plugins/plugins/javax.inject_1.0.0.v20091030.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.aopalliance_1.0.0.v201105210816.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.ops4j.peaberry_1.3.0.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.metadata_14.1.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.i18n_1.0.1.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.bm.core_7.7.100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.bm.common_3.0.900.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.mapdb.mapdb_1.0.6.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.bm.store_5.3.900.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.handly_1.6.1.v20220313-2000.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.filebuffers_3.7.200.v20220202-1008.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.filebuffers.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.resources_3.16.100.v20220214-1012.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.resources.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ant.core_3.6.300.v20220214-2001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ant.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.variables_3.5.100.v20210721-1355.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.variables.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.expressions_3.8.100.v20210910-0640.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.expressions.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.filesystem_1.9.300.v20220121-1426.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.filesystem.linux.x86_64_1.2.300.v20180828-0158.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.filesystem.linux.x86_64.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.filesystem.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.text_3.12.0.v20210512-1644.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.text.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.commands_3.10.100.v20210722-1426.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.commands.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ltk.core.refactoring_3.12.100.v20210926-1112.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ltk.core.refactoring.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui_3.201.0.v20220124-1108.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.swt_3.119.0.v20220215-1102.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.make.chromium.cef.gtk.linux.x86_64_0.4.0.201908130254.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.swt.chromium.gtk.linux.x86_64_0.10.2.201908130308.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.swt.gtk.linux.x86_64_3.119.0.v20220215-1102.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.swt.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jface_3.25.0.v20220210-0755.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.jface.patches_2.1.500.v202205241239.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jface.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.bidi_1.4.100.v20211021-1418.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.bidi.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.workbench_3.125.0.v20220214-1256.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.workbench.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.ibm.icu_67.1.0.v20200706-1749.jar"/>
+			<pathelement path="../../../../../plugins/plugins/javax.annotation_1.3.5.v20200909-1856.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.commands_1.0.100.v20211204-1536.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.commands.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.contexts_1.9.100.v20211011-1349.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.contexts.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.di_1.8.100.v20210910-0640.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.di.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.di.annotations_1.7.100.v20210910-0640.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.di.annotations.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.services_2.3.100.v20210910-0640.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.services.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.workbench_1.13.100.v20211019-0756.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.workbench.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.commons.jxpath_1.3.0.v200911051830.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.model.workbench_2.2.0.v20210727-1533.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.model.workbench.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore_2.26.0.v20220123-0838.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.common_2.24.0.v20220123-0838.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.common.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.emf.xpath_0.3.0.v20210722-1426.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.emf.xpath.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.services_1.5.0.v20210115-1333.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.services.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.di_1.4.0.v20210621-1133.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.di.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.di.extensions.supplier_0.16.200.v20210910-0640.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.di.extensions.supplier.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.di.extensions_0.17.100.v20210910-0640.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.core.di.extensions.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore.change_2.14.0.v20190528-0725.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore.change.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore.xmi_2.16.0.v20190528-0725.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore.xmi.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.workbench.renderers.swt_0.15.300.v20211102-1716.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.workbench.renderers.swt.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.workbench.swt_0.16.300.v20211102-0939.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.workbench.swt.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.dialogs_1.3.200.v20211210-1500.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.dialogs.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.databinding_1.11.0.v20220118-1028.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.databinding.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.databinding.observable_1.12.0.v20211231-1006.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.databinding.observable.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.databinding.property_1.9.0.v20210619-1129.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.databinding.property.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jface.databinding_1.13.0.v20210619-1146.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jface.databinding.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.css.core_0.13.200.v20211022-1402.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.css.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.w3c.css.sac_1.3.1.v200903091627.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.css_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.i18n_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.xmlgraphics_2.6.0.v20210409-0748.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.commons.io_2.8.0.v20210415-0900.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.commons.logging_1.2.0.v20180409-1502.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.log4j_1.2.15.v201012070815.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.logging_2.0.2500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.w3c.dom.svg_1.1.0.v201011041433.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.w3c.dom.smil_1.0.1.v200903091627.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.w3c.dom.events_3.0.0.draft20060413_v201105210656.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.util_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.constants_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.css.swt_0.14.400.v20211026-1534.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.css.swt.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.bindings_0.13.100.v20210722-1426.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.bindings.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.workbench3_0.16.0.v20210619-0956.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.workbench3.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.css.swt.theme_0.13.0.v20201026-1147.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.css.swt.theme.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.swt.gtk_1.1.100.v20210108-1832.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.widgets_1.3.0.v20210621-1136.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.widgets.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.urischeme_1.2.100.v20211001-1648.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.urischeme.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.sun.jna_5.8.0.v20210503-0343.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.sun.jna.platform_5.8.0.v20210406-1004.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.help_3.9.100.v20210721-0601.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.help.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.workbench.addons.swt_1.4.400.v20211102-0453.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.workbench.addons.swt.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.bm.integration_10.0.100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bsl.model_10.1.100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.lcore_3.1.1100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.modeling.xtext_6.3.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.modeling.xml_3.4.100.v202205241453.jar"/>
+			<pathelement path="${buildDirectory}/nestedJars/com._1c.g5.modeling.xml_3.4.100.v202205241453/lib/stax2-api-3.1.1.jar"/>
+			<pathelement path="${buildDirectory}/nestedJars/com._1c.g5.modeling.xml_3.4.100.v202205241453/lib/woodstox-core-asl-4.1.1.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext_2.26.0.v20220221-1206.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.antlr.runtime_3.2.0.v201101311130.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.objectweb.asm_9.2.0.v20210813-1119.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.util_2.26.0.v20220221-1206.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtend.lib_2.26.0.v20220221-1144.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.xbase.lib_2.26.0.v20220221-1144.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtend.lib.macro_2.26.0.v20220221-1144.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.lcore.model_2.0.2500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.mcore_7.5.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore.xcore.lib_1.6.0.v20210405-0628.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore.xcore.lib.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.schedule.model_3.1.1900.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.ws.model_4.0.2100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.xdto.model_4.0.500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bsl.ui_17.1.100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bsl.gumtree.ui_1.0.2300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.ides.core_6.0.500.v202205251640.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.ui_2.26.0.v20220221-1227.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.commons.lang_2.6.0.v201404270220.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.editors_3.14.300.v20210913-0815.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.editors.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.ide_3.18.500.v20220215-1304.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.ide.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.views_3.11.100.v20210816-0811.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.views.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jface.text_3.20.0.v20220214-1611.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jface.text.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.forms_3.11.300.v20211022-1451.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.forms.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.engine_2.7.300.v20220209-1714.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.engine.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.bouncycastle.bcpg_1.70.0.v20220105-1522.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.bouncycastle.bcprov_1.70.0.v20220105-1522.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.artifact.repository_1.4.400.v20220214-1412.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.artifact.repository.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.core_2.9.0.v20220210-1157.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.jarprocessor_1.2.200.v20220207-0719.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.jarprocessor.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.metadata_2.6.100.v20210813-0606.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.metadata.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.repository_2.6.0.v20220215-0840.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.repository.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.security_1.3.900.v20220108-1321.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.security.linux_1.0.200.v20210616-0726"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.security.linux.x86_64.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.security.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.tukaani.xz_1.9.0.v20210624-1259.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.metadata.repository_1.4.0.v20210315-2228.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.metadata.repository.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.ide_3.16.0.v20210625-1251.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.e4.ui.ide.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.navigator_3.10.200.v20211009-1706.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.navigator.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.workbench.texteditor_3.16.400.v20220203-0557.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.workbench.texteditor.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.compare.core_3.6.1000.v20201020-1107.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.compare.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.edit.ui_2.20.0.v20210506-1232.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.edit.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.edit_2.17.0.v20220201-1551.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.edit.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.common.ui_2.19.0.v20211110-0654.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.common.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jdt.core_3.29.0.v20220214-1307.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jdt.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.team.core_3.9.300.v20220204-0611.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.team.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.search_3.14.100.v20220120-1549.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.search.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ltk.ui.refactoring_3.12.0.v20210618-1953.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ltk.ui.refactoring.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.compare_3.8.300.v20220121-1000.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.compare.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.team.ui_3.9.200.v20211130-1532.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.team.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.ide_2.26.0.v20220221-1206.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.ides.monitoring_0.7.0.v202101161446.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.google.gson_2.8.9.v20220111-1409.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.google.guava_28.1.0.jre.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.google.guava.failureaccess_1.0.1.jar"/>
+			<pathelement path="../../../../../plugins/plugins/javax.xml.bind_2.2.0.v201105210648.jar"/>
+			<pathelement path="../../../../../plugins/plugins/javax.xml_1.3.4.v201005080400.jar"/>
+			<pathelement path="../../../../../plugins/plugins/javax.activation_1.1.0.v201211130549.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.sun.mail.javax.mail_1.5.6.jar"/>
+			<pathelement path="../../../../../plugins/plugins/javax.xml.stream_1.0.1.v201004272200.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.ides.ui_5.0.500.v202205251640.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.handly.ui_1.6.1.v20220313-2000.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.handly.xtext.ui_1.6.1.v20220313-2000.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.common.types_2.26.0.v20220221-1212.jar"/>
+			<pathelement path="../../../../../plugins/plugins/io.github.classgraph_4.8.138.v20211212-1642.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bm.xtext_16.1.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.modeling.xtext.builder_1.0.600.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.builder_2.26.0.v20220221-1227.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.builder.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore.editor_2.17.0.v20190528-0725.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore.editor.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore.edit_2.13.0.v20190822-1451.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.ecore.edit.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.debug.core_3.19.0.v20220125-2302.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.debug.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.debug.ui_3.16.0.v20220216-2015.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.debug.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.console_3.11.100.v20210721-1355.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.console.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.genericeditor_1.2.200.v20211217-1247.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.genericeditor.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.smap_2.26.0.v20220221-1212.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.resourcemanagement_1.0.1200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.derived_14.0.100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.activitytracking.core_1.0.1800.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.common_8.4.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.databinding_1.5.0.v20180706-1146.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.databinding.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.databinding.edit_1.7.0.v20210113-0340.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.databinding.edit.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.transaction_1.9.1.201805140824.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.validation_1.8.0.202008210805.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bm.index.emf_7.0.900.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.incidentmanagement.core_1.1.600.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.e1c.g5.v8.snapshot_1.0.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.e1c.g5.v8.fastzip_1.0.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.github.luben.zstd-jni_1.4.9.5.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.ui.shared_2.26.0.v20220221-1227.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.ui.shared.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.core_20.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.common.git_4.1.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jgit_6.1.0.202202221755-m3.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jgit.gpg.bc_6.1.0.202202221755-m3.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jgit.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jgit.ssh.jsch_6.1.0.202202221755-m3.jar"/>
+			<pathelement path="../../../../../plugins/plugins/javaewah_1.1.13.v20211029-0839.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.jcraft.jsch_0.1.55.v20190404-1902.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.com.jcraft.jzlib_1.1.3.1-v20160316-0821.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.egit.core_6.1.0.202202221755-m3.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.egit.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.net_1.3.1100.v20210424-0724.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.net.linux_1.0.100.v20220111-1854.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.net.linux.x86_64.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.net.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jgit.http.apache_6.1.0.202202221755-m3.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jgit.http.apache.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.httpcomponents.httpcore_4.4.14.v20210128-2225.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.httpcomponents.httpclient_4.5.13.v20210128-2225.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.commons.codec_1.14.0.v20200818-1422.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jgit.ssh.apache_6.1.0.202202221755-m3.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jgit.ssh.apache.agent_6.1.0.202202221755-m3.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jgit.ssh.apache.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/net.i2p.crypto.eddsa_0.3.0.v20210923-1401.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.sshd.osgi_2.8.0.v20211227-1750.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.sshd.sftp_2.8.0.v20211227-1750.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jgit.lfs_6.1.0.202202221755-m3.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jgit.lfs.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.platform_9.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.form.model_11.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.chart.model_5.1.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.dcs.model_7.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.planner.model_3.1.500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.platform.model_3.0.2200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.platform.linux_2.0.2500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.platform.pictures_4.0.400.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.rights.model_6.0.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.right.templates.model_2.1.500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.platform.core_7.0.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.platform.core_v8.3.8_1.0.2400.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.telemetry_1.0.1200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.emf.workspace_1.5.1.201805140824.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.validation_5.1.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bm.xtext.ui_3.0.2300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bsl_23.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bsl.comment_3.2.100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.md_21.1.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.aggregates.model_4.0.2200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.binary.model_3.0.2200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bm.index.rights_5.0.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.cai.model_4.1.2100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.cmi.model_5.3.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.core.xtext_2.0.2500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.hpwa.model_2.0.2200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.htmldocument.model_2.0.2200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.refactoring.core_3.0.600.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.scc.model_2.1.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.style.model_1.0.1600.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.e1c.g5.dt.core.api_1.1.100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.antlr.antlr4-runtime_4.7.1.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.search.core_11.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.lucene.core_8.4.1.v20200122-1459.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.lucene.analyzers-common_8.4.1.v20200122-1459.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.xdto_8.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bsl.core_6.0.500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.common.ui_10.0.100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.lwt_5.4.100.v202205241239.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.nebula.widgets.formattedtext_1.0.0.201410030017.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.ide.ui_2.1.1800.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.theming.ui_1.0.1800.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.gef_3.11.0.201606061308.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.draw2d_3.10.100.201606061308.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.nebula.widgets.grid_1.0.0.201401021803.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.nebula.widgets.datechooser_1.0.0.201410030017.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.form_25.1.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bsl.bm_5.1.1900.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.md.refactoring_1.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.e1c.g5.v8.dt.check_3.1.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.chart_4.1.600.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.natives.library_4.5.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.platform.services.core_16.1.100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.platform.services.core.linux_3.0.2400.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.designer.ssh.client_0.4.1.v20221202-0524.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.google.guava_15.0.0.v201403281430.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.export_7.1.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.xml_4.2.100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.export.xml_10.1.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.import_7.3.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.import.xml_12.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.md.distribution.support_2.0.1000.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.platform.services.model_6.0.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.v8.platform.services_1.0.0.v201803131413.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.v8.core.streams_0.1.1.1.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.e1c.g5.dt.applications_2.0.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.platform_4.23.0.v20220216-1800/platform.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.platform.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="${buildDirectory}/nestedJars/org.eclipse.platform.nl_ru_4.18.0.v20210305020001/platform.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.intro_3.6.400.v20211015-1317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.intro.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.help.base_4.3.600.v20220216-1800.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.help.base.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.http.jetty_3.8.100.v20211021-1418.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.http.jetty.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.http.servlet_1.7.200.v20211021-1418.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.http.servlet.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jetty.http_10.0.6.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jetty.io_10.0.6.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jetty.util_10.0.6.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jetty.server_10.0.6.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jetty.servlet_10.0.6.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jetty.security_10.0.6.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jetty.util.ajax_10.0.6.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.lucene.analyzers-smartcn_8.4.1.v20200122-1459.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.cheatsheets_3.7.300.v20210507-0822.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.cheatsheets.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.help.ui_4.3.200.v20210922-1029.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.help.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.server.core_1.10.200.v202106020138.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.server.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.common.project.facet.core_1.4.402.v202111212041.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.common.project.facet.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.common.core_1.4.100.v202103232321.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.common.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.server.discovery_1.3.500.v202204301608.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.server.discovery.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.director_2.5.200.v20220127-1112.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.director.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.simpleconfigurator_1.4.0.v20210315-2228.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.simpleconfigurator.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.sat4j.core_2.3.5.v201308161310.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.sat4j.pb_2.3.5.v201404071733.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.updatesite_1.2.200.v20211013-0600.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.updatesite.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.publisher.eclipse_1.4.2.v20220127-1658.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.publisher.eclipse.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.frameworkadmin_2.2.0.v20210315-2042.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.frameworkadmin.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.frameworkadmin.equinox_1.2.100.v20210703-1540.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.frameworkadmin.equinox.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.publisher_1.7.0.v20220127-1312.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.publisher.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.simpleconfigurator.manipulator_2.2.0.v20210315-2228.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.simpleconfigurator.manipulator.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.ui_2.7.400.v20220214-1604.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.extensionlocation_1.4.100.v20220213-0541.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.extensionlocation.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.touchpoint.eclipse_2.3.100.v20210615-1334.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.touchpoint.eclipse.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.garbagecollector_1.2.0.v20210316-1209.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.garbagecollector.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.directorywatcher_1.3.0.v20210316-1209.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.directorywatcher.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.operations_2.6.0.v20210315-2228.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.p2.operations.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.security.ui_1.3.200.v20220115-0654.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.equinox.security.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.pm_1.0.1800.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.cmi_6.0.1800.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.dcs_18.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.lcore.ui_6.8.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.ql_19.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.ql.model_8.0.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.ql.dcs.model_4.2.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.ql.dcs_14.1.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.ui_17.2.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.aef2_7.2.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.aef2.emf_2.0.2500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.aef2.lwt_2.1.1600.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.aef2.standard_14.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.aef2.standard.definitions_6.0.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.aef2.standard.lwt_3.1.800.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.aef2.standard.swt_4.0.1700.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.aef2.swt_3.1.1700.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.aef2_1.0.600.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.aef2.bm_6.0.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.navigator_13.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.refactoring.ui_8.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.sse.core_1.2.800.v202207121749.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.sse.core.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.common.uriresolver_1.3.0.v202007161535.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.common.uriresolver.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.validation_1.2.801.v202007142017.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.validation.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.common.frameworks_1.2.202.v202108200212.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.common.frameworks.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.common.environment_1.0.401.v202007142017.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.common.environment.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.sse.ui_1.7.500.v202207121749.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.wst.sse.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.databinding.beans_1.8.0.v20210619-1111.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.core.databinding.beans.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.transcoder_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.anim_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.dom.svg_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.dom_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.xml_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.xalan_2.7.2.v20201124-1837.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.xerces_2.12.2.v20220131-0835.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.xml.resolver_1.2.0.v201005080400.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.ext_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.awt.util_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.parser_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.bridge_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.gvt_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.script_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.svggen_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.apache.batik.codec_1.14.0.v20210324-0332.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.migration_2.1.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.google.guava_27.1.0.v20190517-1946.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.moxel_13.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.planner_1.1.2100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.antlr.generator_3.2.0.v201405091103.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.markermatcher.ui_1.1.0.v201912091233.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.markermatcher_1.1.0.v201912091233.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.md.ui.shared_2.5.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.ql.bsl.ui_3.0.2000.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.ql.ui_5.2.500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.ql.core_6.0.700.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.ui.codetemplates.ui_2.26.0.v20220221-1227.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.ui.codetemplates.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.ui.codetemplates_2.26.0.v20220221-1227.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.ui.codetemplates.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.ui.codetemplates.ide_2.26.0.v20220221-1227.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.xtext.ui.codetemplates.ide.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.ql.bsl_3.0.1600.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.e1c.g5.v8.dt.ql.check_1.0.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.gumtree.core_3.2.0.v202112241342.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.github.mpkorstanje.simmetrics-core_4.1.0.v20160617-1500.jar"/>
+			<pathelement path="../../../../../plugins/plugins/it.unimi.dsi.fastutil_7.0.12.v20160617-1428.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.gumtree.ui_2.0.400.v202112241342.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.bsl.gumtree_1.1.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.compare.ui_19.1.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.compare_22.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.compare.model_12.0.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.project.library_1.0.2100.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.rights_12.0.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.supply_3.1.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.supply.model_2.0.400.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.e1c.g5.v8.dt.check.suppress.model_1.0.300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.egit.ui_6.1.0.202202221755-m3.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.egit.ui.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.egit.ui_1.1.1300.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.md.ui_23.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.modeling.xtext.ui_2.0.2500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.html_2.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.jetty.rewrite_10.0.6.jar"/>
+			<pathelement path="../../../../../plugins/plugins/javax.servlet_3.1.0.v201410161800.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.html.ui_1.0.1700.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.md.help_6.0.500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.md.mobiledigisign_1.0.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.md.native_1.0.200.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.scc_1.2.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.scc.ui_2.0.0.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.v8help_2.0.2500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.v8help.model_2.0.2500.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.swt.chromium_0.10.2.201908130308.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.views.log_1.3.100.v20210927-1100.jar"/>
+			<pathelement path="../../../../../plugins/plugins/org.eclipse.ui.views.log.nl_ru_4.18.0.v20210305020001.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com._1c.g5.v8.dt.xtext.compare.ui_2.0.1000.v202303221317.jar"/>
+			<pathelement path="../../../../../plugins/plugins/com.e1c.g5.v8.dt.bsl.check_2.0.100.v202303221317.jar"/>
+		</path>
+		<!-- compile the source code -->
+		<javac destdir="${build.result.folder}/@dot" failonerror="${javacFailOnError}" verbose="${javacVerbose}" debug="${javacDebugInfo}" includeAntRuntime="no" source="${bundleJavacSource}" target="${bundleJavacTarget}"		>
+			<compilerarg line="${compilerArg}" compiler="${build.compiler}"/>
+			<classpath refid="@dot.classpath" />
+			<src path="src/"			/>
+			<src path="resources/"			/>
+			<compilerarg value="@${basedir}/javaCompiler...args" compiler="org.eclipse.jdt.core.JDTCompilerAdapter"			/>
+			<compilerarg line="-log &apos;${build.result.folder}/@dot${logExtension}&apos;" compiler="org.eclipse.jdt.core.JDTCompilerAdapter"			/>
+		</javac>
+		<antcall target="checkCompilationResults"/>
+		<!-- Copy necessary resources -->
+		<copy todir="${build.result.folder}/@dot" failonerror="true" overwrite="false">
+			<fileset dir="src/">
+				<exclude name="**/*.java"/>
+				<exclude name="**/package.htm*"/>
+			</fileset>
+			<fileset dir="resources/">
+				<exclude name="**/*.java"/>
+				<exclude name="**/package.htm*"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="src.zip" depends="init" unless="src.zip">
+		<mkdir dir="${build.result.folder}"/>
+		<antcall target="zip.src.zip"/>
+	</target>
+	<target name="zip.src.zip">
+		<zip destfile="${build.result.folder}/src.zip" filesonly="false" whenempty="skip" update="false">
+			<fileset dir="src/">
+				<include name="**/*.java"/>
+			</fileset>
+			<fileset dir="resources/">
+				<include name="**/*.java"/>
+			</fileset>
+		</zip>
+	</target>
+	<target name="copy.src.zip">
+		<copy todir="${source.destination.folder}/" failonerror="true" overwrite="true">
+			<fileset dir="src/">
+				<include name="**/*.java"/>
+			</fileset>
+			<fileset dir="resources/">
+				<include name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="build.jars" depends="init" description="Compile classes and build nested jars for the plug-in: org.quiteoldorange.i3textutils.">
+		<delete file="${compilation.problem.marker}" quiet="true"/>
+		<available property="@dot" file="${build.result.folder}/@dot"/>
+		<antcall target="@dot"/>
+	</target>
+
+	<target name="checkCompilationResults" if="compilation.error.occured">
+		<echo file="${compilation.problem.marker}" message="org.quiteoldorange.i3textutils_1.0.3.3${line.separator}compilation.error.occured=${compilation.error.occured}"/>
+		<eclipse.logCompileError log="${compilation.prereq.log}" bundle="org.quiteoldorange.i3textutils_1.0.3.3">
+		</eclipse.logCompileError>
+	</target>
+
+	<target name="build.sources" depends="init">
+		<available property="src.zip" file="${build.result.folder}/src.zip"/>
+		<antcall target="src.zip"/>
+	</target>
+
+	<target name="publish.bin.parts" depends="init" if="p2.publish.parts" unless="compilation.problem.marker.exists">
+		<mkdir dir="${build.result.folder}/org.quiteoldorange.i3textutils_1.0.3.3"/>
+		<copy todir="${build.result.folder}" failonerror="true" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="META-INF/MANIFEST.MF"/>
+				<include name="plugin.xml"/>
+				<include name="fragment.xml"/>
+			</fileset>
+		</copy>
+		<antcall target="apitools.generation">
+			<param name="projectLocation" value="${basedir}"/>
+			<param name="binary.folders" value="${build.result.folder}/@dot"/>
+			<param name="projectName" value="${bundleId}_${bundleVersion}"/>
+			<param name="target.folder" value="${build.result.folder}"/>
+		</antcall>
+		<eclipse.gatherBundle 
+		   metadataRepository="${p2.build.repo}"
+		   artifactRepository="${p2.build.repo}"
+		   buildResultFolder="${build.result.folder}"
+		   unpack="false"
+		   baseDirectory="${basedir}"
+		/>
+	</target>
+
+	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
+		<mkdir dir="${destination.temp.folder}/org.quiteoldorange.i3textutils_1.0.3.3"/>
+		<copy todir="${destination.temp.folder}/org.quiteoldorange.i3textutils_1.0.3.3" failonerror="true" overwrite="false">
+			<fileset dir="${build.result.folder}/@dot">
+				<include name="**"/>
+			</fileset>
+		</copy>
+		<copy todir="${destination.temp.folder}/org.quiteoldorange.i3textutils_1.0.3.3" failonerror="true" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="META-INF/"/>
+				<include name="plugin.xml"/>
+				<include name="plugin.properties"/>
+				<include name="resources/"/>
+				<include name="bin/"/>
+			</fileset>
+		</copy>
+		<antcall target="apitools.generation">
+			<param name="projectLocation" value="${basedir}"/>
+			<param name="binary.folders" value="${build.result.folder}/@dot"/>
+			<param name="projectName" value="${bundleId}_${bundleVersion}"/>
+			<param name="target.folder" value="${destination.temp.folder}/org.quiteoldorange.i3textutils_1.0.3.3"/>
+		</antcall>
+	</target>
+
+	<target name="build.zips" depends="init">
+	</target>
+
+	<target name="gather.sources" depends="init" if="destination.temp.folder">
+		<mkdir dir="${destination.temp.folder}/org.quiteoldorange.i3textutils_1.0.3.3"/>
+		<copy file="${build.result.folder}/src.zip" todir="${destination.temp.folder}/org.quiteoldorange.i3textutils_1.0.3.3" failonerror="false" overwrite="false"/>
+		<antcall target="copy.src.includes">
+			<param name="source.destination.folder" value="${destination.temp.folder}/org.quiteoldorange.i3textutils_1.0.3.3"/>
+		</antcall>
+	</target>
+
+	<target name="gather.individual.sources" depends="init">
+		<antcall target="copy.src.zip">
+			<param name="source.destination.folder" value="${destination.temp.folder}"/>
+		</antcall>
+		<antcall target="copy.src.includes">
+			<param name="source.destination.folder" value="${destination.temp.folder}"/>
+		</antcall>
+	</target>
+
+	<target name="copy.src.includes" depends="init">
+		<copy todir="${source.destination.folder}" failonerror="false" overwrite="false">
+			<fileset dir="${basedir}">
+				<include name="src/"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="gather.logs" depends="init" if="destination.temp.folder">
+		<mkdir dir="${destination.temp.folder}/org.quiteoldorange.i3textutils_1.0.3.3"/>
+		<copy todir="${destination.temp.folder}/org.quiteoldorange.i3textutils_1.0.3.3" failonerror="false" overwrite="false">
+			<fileset dir="${build.result.folder}">
+				<include name="@dot${logExtension}"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean" depends="init" description="Clean the plug-in: org.quiteoldorange.i3textutils of all the zips, jars and logs created.">
+		<delete dir="${build.result.folder}/@dot"/>
+		<delete file="${build.result.folder}/src.zip"/>
+		<delete file="${plugin.destination}/org.quiteoldorange.i3textutils_1.0.3.3.jar"/>
+		<delete file="${plugin.destination}/org.quiteoldorange.i3textutils_1.0.3.3.zip"/>
+		<delete dir="${temp.folder}"/>
+		<delete file="${compilation.problem.marker}" quiet="true"/>
+	</target>
+
+	<target name="refresh" depends="init" if="eclipse.running" description="Refresh this folder.">
+		<eclipse.convertPath fileSystemPath="/home/ozolotarev/Документы/GitHub/dt-example-plugins/bundles/org.quiteoldorange.i3textutils" property="resourcePath"/>
+		<eclipse.refreshLocal resource="${resourcePath}" depth="infinite"/>
+	</target>
+
+	<target name="zip.plugin" depends="init" description="Create a zip containing all the elements for the plug-in: org.quiteoldorange.i3textutils.">
+		<delete dir="${temp.folder}"/>
+		<mkdir dir="${temp.folder}"/>
+		<antcall target="build.jars"/>
+		<antcall target="build.sources"/>
+		<antcall target="gather.bin.parts">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<antcall target="gather.sources">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<delete>
+			<fileset dir="${temp.folder}">
+				<include name="**/*.bin${logExtension}"/>
+			</fileset>
+		</delete>
+		<zip destfile="${plugin.destination}/org.quiteoldorange.i3textutils_1.0.3.3.zip" basedir="${temp.folder}" filesonly="true" whenempty="skip" update="false"/>
+		<delete dir="${temp.folder}"/>
+	</target>
+
+	<target name="apitools.generation" if="generateAPIDescription">
+		<apitooling.apigeneration  projectName="${projectName}" project="${projectLocation}" binary="${binary.folders}" target="${target.folder}" extramanifests="${extraManifests}" allownonapiproject="${allowNonApiProject}"		/>
+	</target>
+
+</project>

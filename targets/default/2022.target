@@ -8,7 +8,7 @@
    Contributors:
        1C-Soft LLC - initial API and implementation
 -->
-<?pde version="3.8"?><target name="1C:EDT Ruby Platform" sequenceNumber="1">
+<?pde version="3.8"?><target includeMode="feature" name="1C:EDT Ruby Platform" sequenceNumber="1">
 <locations>
 <!-- EDT -->
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
@@ -135,6 +135,9 @@
 </location>
     <location path="/home/ozolotarev/plugins" type="Directory"/>
 </locations>
+    <launcherArgs>
+        <programArgs>-Duser.language=en</programArgs>
+    </launcherArgs>
     <includeBundles>
         <plugin id="bcpkix" version="1.51"/>
         <plugin id="bcprov" version="1.51"/>
@@ -352,7 +355,7 @@
         <plugin id="com._1c.g5.v8.dt.md.extension_v8.3.19" version="1.0.400.v202303221317"/>
         <plugin id="com._1c.g5.v8.dt.md.extension_v8.3.20" version="1.0.300.v202303221317"/>
         <plugin id="com._1c.g5.v8.dt.md.extension_v8.3.21" version="1.0.200.v202303221317"/>
-        <plugin id="com._1c.g5.v8.dt.md.extension_v8.3.22"/>
+        <plugin id="com._1c.g5.v8.dt.md.extension_v8.3.22" version="1.0.0.v202303221317"/>
         <plugin id="com._1c.g5.v8.dt.md.extension_v8.3.8" version="1.0.2100.v202303221317"/>
         <plugin id="com._1c.g5.v8.dt.md.extension_v8.3.9" version="1.0.2100.v202303221317"/>
         <plugin id="com._1c.g5.v8.dt.md.gumtree" version="1.1.200.v202303221317"/>
@@ -362,7 +365,7 @@
         <plugin id="com._1c.g5.v8.dt.md.import.xml" version="5.0.0.v202303221317"/>
         <plugin id="com._1c.g5.v8.dt.md.mobiledigisign" version="1.0.200.v202303221317"/>
         <plugin id="com._1c.g5.v8.dt.md.native" version="1.0.200.v202303221317"/>
-        <plugin id="com._1c.g5.v8.dt.md.refactoring"/>
+        <plugin id="com._1c.g5.v8.dt.md.refactoring" version="1.0.0.v202303221317"/>
         <plugin id="com._1c.g5.v8.dt.md.ui" version="23.0.0.v202303221317"/>
         <plugin id="com._1c.g5.v8.dt.md.ui.extension" version="4.0.0.v202303221317"/>
         <plugin id="com._1c.g5.v8.dt.md.ui.extension.editor" version="1.0.2100.v202303221317"/>
@@ -388,7 +391,7 @@
         <plugin id="com._1c.g5.v8.dt.natives.library.v8.3.19.linux" version="1.0.400.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.natives.library.v8.3.20.linux" version="1.0.300.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.natives.library.v8.3.21.linux" version="1.0.200.v202303240342"/>
-        <plugin id="com._1c.g5.v8.dt.natives.library.v8.3.22.linux"/>
+        <plugin id="com._1c.g5.v8.dt.natives.library.v8.3.22.linux" version="1.0.0.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.natives.library.v8.3.8.linux" version="1.0.600.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.natives.library.v8.3.9.linux" version="1.0.600.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.navigator" version="13.0.0.v202303221317"/>
@@ -413,7 +416,7 @@
         <plugin id="com._1c.g5.v8.dt.platform.doc_v8_3_19" version="1.0.400.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.platform.doc_v8_3_20" version="1.0.300.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.platform.doc_v8_3_21" version="1.0.200.v202303240342"/>
-        <plugin id="com._1c.g5.v8.dt.platform.doc_v8_3_22"/>
+        <plugin id="com._1c.g5.v8.dt.platform.doc_v8_3_22" version="1.0.0.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.platform.doc_v8_3_8" version="1.0.2200.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.platform.doc_v8_3_9" version="1.0.2200.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.platform.linux" version="2.0.2500.v202303221317"/>
@@ -439,7 +442,7 @@
         <plugin id="com._1c.g5.v8.dt.platform_v8.3.19" version="1.0.400.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.platform_v8.3.20" version="1.0.300.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.platform_v8.3.21" version="1.0.200.v202303240342"/>
-        <plugin id="com._1c.g5.v8.dt.platform_v8.3.22"/>
+        <plugin id="com._1c.g5.v8.dt.platform_v8.3.22" version="1.0.0.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.platform_v8.3.8" version="1.0.2200.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.platform_v8.3.9" version="1.0.2200.v202303240342"/>
         <plugin id="com._1c.g5.v8.dt.pm" version="1.0.1800.v202303221317"/>
@@ -559,7 +562,7 @@
         <plugin id="com.e1c.g5.dt.core.legacy" version="1.1.0.v202303221317"/>
         <plugin id="com.e1c.g5.i18n" version="3.2.0.v20190611-1004"/>
         <plugin id="com.e1c.g5.problemreporting" version="0.1.1.v202302021148"/>
-        <plugin id="com.e1c.g5.v8.dt.bookmarks.ui"/>
+        <plugin id="com.e1c.g5.v8.dt.bookmarks.ui" version="1.0.0.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.bsl.check" version="2.0.100.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.bsl.ui.templates" version="1.0.300.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.check" version="3.1.0.v202303221317"/>
@@ -576,18 +579,18 @@
         <plugin id="com.e1c.g5.v8.dt.gsw.ui" version="1.0.1100.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.javadocs" version="1.27.5.10"/>
         <plugin id="com.e1c.g5.v8.dt.lcore.ui.templates" version="1.3.0.v202303221317"/>
-        <plugin id="com.e1c.g5.v8.dt.md.check"/>
+        <plugin id="com.e1c.g5.v8.dt.md.check" version="1.0.0.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.model.updater" version="1.0.300.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.mw" version="1.2.400.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.mw.ui" version="1.1.1200.v202303221317"/>
-        <plugin id="com.e1c.g5.v8.dt.picture.native"/>
+        <plugin id="com.e1c.g5.v8.dt.picture.native" version="1.0.0.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.provisioning" version="2.0.0.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.ql.check" version="1.0.300.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.snapshot" version="1.0.200.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.snapshot.integration.git" version="1.0.200.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.snapshot.integration.ui" version="1.0.200.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.snapshot.ui" version="1.0.200.v202303221317"/>
-        <plugin id="com.e1c.g5.v8.dt.template.ui.extension"/>
+        <plugin id="com.e1c.g5.v8.dt.template.ui.extension" version="1.0.0.v202303221317"/>
         <plugin id="com.e1c.g5.v8.dt.testing.check" version="1.0.300.v202303221317"/>
         <plugin id="com.e1c.g5.v8.fastzip" version="1.0.200.v202303221317"/>
         <plugin id="com.e1c.g5.v8.snapshot" version="1.0.200.v202303221317"/>
@@ -600,8 +603,8 @@
         <plugin id="com.github.luben.zstd-jni" version="1.4.9.5"/>
         <plugin id="com.github.mpkorstanje.simmetrics-core" version="4.1.0.v20160617-1500"/>
         <plugin id="com.google.gson" version="2.8.9.v20220111-1409"/>
-        <plugin id="com.google.guava" version="15.0.0.v201403281430"/>
         <plugin id="com.google.guava" version="28.1.0.jre"/>
+        <plugin id="com.google.guava" version="15.0.0.v201403281430"/>
         <plugin id="com.google.guava" version="27.1.0.v20190517-1946"/>
         <plugin id="com.google.guava" version="30.1.0.v20210127-2300"/>
         <plugin id="com.google.guava.failureaccess" version="1.0.1"/>
@@ -635,7 +638,7 @@
         <plugin id="javax.servlet" version="3.1.0.v201410161800"/>
         <plugin id="javax.servlet.jsp" version="2.2.0.v201112011158"/>
         <plugin id="javax.servlet.jsp.source" version="2.2.0.v201112011158"/>
-        <plugin id="javax.servlet.source" version="3.1.0.v201410161800"/>
+        <plugin id="javax.servlet.source"/>
         <plugin id="javax.xml" version="1.3.4.v201005080400"/>
         <plugin id="javax.xml.bind" version="2.2.0.v201105210648"/>
         <plugin id="javax.xml.stream" version="1.0.1.v201004272200"/>
@@ -713,11 +716,11 @@
         <plugin id="org.apache.jasper.glassfish" version="2.2.2.v201501141630"/>
         <plugin id="org.apache.jasper.glassfish.source" version="2.2.2.v201501141630"/>
         <plugin id="org.apache.log4j" version="1.2.15.v201012070815"/>
-        <plugin id="org.apache.lucene.analyzers-common" version="8.4.1.v20200122-1459"/>
         <plugin id="org.apache.lucene.analyzers-common" version="7.5.0.v20181003-1532"/>
+        <plugin id="org.apache.lucene.analyzers-common" version="8.4.1.v20200122-1459"/>
         <plugin id="org.apache.lucene.analyzers-common.source" version="8.4.1.v20200122-1459"/>
-        <plugin id="org.apache.lucene.analyzers-smartcn" version="7.5.0.v20181003-1532"/>
         <plugin id="org.apache.lucene.analyzers-smartcn" version="8.4.1.v20200122-1459"/>
+        <plugin id="org.apache.lucene.analyzers-smartcn" version="7.5.0.v20181003-1532"/>
         <plugin id="org.apache.lucene.analyzers-smartcn.source" version="8.4.1.v20200122-1459"/>
         <plugin id="org.apache.lucene.core" version="7.5.0.v20181003-1532"/>
         <plugin id="org.apache.lucene.core" version="8.4.1.v20200122-1459"/>
@@ -878,13 +881,13 @@
         <plugin id="org.eclipse.ecf" version="3.10.0.v20210925-0032"/>
         <plugin id="org.eclipse.ecf.filetransfer" version="5.1.102.v20210409-2301"/>
         <plugin id="org.eclipse.ecf.identity" version="3.9.402.v20210409-2301"/>
-        <plugin id="org.eclipse.ecf.identity.source" version="3.9.402.v20210409-2301"/>
+        <plugin id="org.eclipse.ecf.identity.source"/>
         <plugin id="org.eclipse.ecf.provider.filetransfer" version="3.2.700.v20210618-0642"/>
         <plugin id="org.eclipse.ecf.provider.filetransfer.httpclient5" version="1.0.200.v20211217-2012"/>
         <plugin id="org.eclipse.ecf.provider.filetransfer.ssl" version="1.0.201.v20210409-2301"/>
-        <plugin id="org.eclipse.ecf.source" version="3.10.0.v20210925-0032"/>
+        <plugin id="org.eclipse.ecf.source"/>
         <plugin id="org.eclipse.ecf.ssl" version="1.2.401.v20210409-2301"/>
-        <plugin id="org.eclipse.ecf.ssl.source" version="1.2.401.v20210409-2301"/>
+        <plugin id="org.eclipse.ecf.ssl.source"/>
         <plugin id="org.eclipse.egit" version="6.1.0.202202221755-m3"/>
         <plugin id="org.eclipse.egit.core" version="6.1.0.202202221755-m3"/>
         <plugin id="org.eclipse.egit.core.nl_ru" version="4.18.0.v20210305020001"/>
@@ -933,14 +936,14 @@
         <plugin id="org.eclipse.emf.edit.ui" version="2.20.0.v20210506-1232"/>
         <plugin id="org.eclipse.emf.edit.ui.nl_ru" version="4.18.0.v20210305020001"/>
         <plugin id="org.eclipse.emf.edit.ui.source" version="2.20.0.v20210506-1232"/>
-        <plugin id="org.eclipse.emf.mapping.ecore.editor.nl_ru" version="4.18.0.v20210305020001"/>
-        <plugin id="org.eclipse.emf.mapping.ecore.nl_ru" version="4.18.0.v20210305020001"/>
-        <plugin id="org.eclipse.emf.mapping.ecore2ecore.editor.nl_ru" version="4.18.0.v20210305020001"/>
-        <plugin id="org.eclipse.emf.mapping.ecore2ecore.nl_ru" version="4.18.0.v20210305020001"/>
-        <plugin id="org.eclipse.emf.mapping.ecore2xml.nl_ru" version="4.18.0.v20210305020001"/>
-        <plugin id="org.eclipse.emf.mapping.ecore2xml.ui.nl_ru" version="4.18.0.v20210305020001"/>
-        <plugin id="org.eclipse.emf.mapping.nl_ru" version="4.18.0.v20210305020001"/>
-        <plugin id="org.eclipse.emf.mapping.ui.nl_ru" version="4.18.0.v20210305020001"/>
+        <plugin id="org.eclipse.emf.mapping.ecore.editor.nl_ru"/>
+        <plugin id="org.eclipse.emf.mapping.ecore.nl_ru"/>
+        <plugin id="org.eclipse.emf.mapping.ecore2ecore.editor.nl_ru"/>
+        <plugin id="org.eclipse.emf.mapping.ecore2ecore.nl_ru"/>
+        <plugin id="org.eclipse.emf.mapping.ecore2xml.nl_ru"/>
+        <plugin id="org.eclipse.emf.mapping.ecore2xml.ui.nl_ru"/>
+        <plugin id="org.eclipse.emf.mapping.nl_ru"/>
+        <plugin id="org.eclipse.emf.mapping.ui.nl_ru"/>
         <plugin id="org.eclipse.emf.query" version="1.7.0.201805030653"/>
         <plugin id="org.eclipse.emf.query.ocl" version="2.0.0.201805030653"/>
         <plugin id="org.eclipse.emf.query.ocl.source" version="2.0.0.201805030653"/>
@@ -1311,7 +1314,7 @@
         <plugin id="org.eclipse.persistence.core" version="2.7.3.v20180807-4be1041"/>
         <plugin id="org.eclipse.persistence.moxy" version="2.7.3.v20180807-4be1041"/>
         <plugin id="org.eclipse.platform" version="4.23.0.v20220216-1800"/>
-        <plugin id="org.eclipse.platform.doc.isv.nl_ru" version="4.18.0.v20210305020001"/>
+        <plugin id="org.eclipse.platform.doc.isv.nl_ru"/>
         <plugin id="org.eclipse.platform.doc.user" version="4.23.0.v20220216-1135"/>
         <plugin id="org.eclipse.platform.doc.user.nl_ru" version="4.18.0.v20210305020001"/>
         <plugin id="org.eclipse.platform.nl_ru" version="4.18.0.v20210305020001"/>
@@ -1516,8 +1519,8 @@
         <plugin id="org.junit" version="4.13.2.v20211018-1956"/>
         <plugin id="org.kohsuke.args4j" version="2.33.0.v20160323-2218"/>
         <plugin id="org.mapdb.mapdb" version="1.0.6"/>
-        <plugin id="org.objectweb.asm" version="9.2.0.v20210813-1119"/>
         <plugin id="org.objectweb.asm" version="7.1.0.v20190412-2143"/>
+        <plugin id="org.objectweb.asm" version="9.2.0.v20210813-1119"/>
         <plugin id="org.objectweb.asm.analysis" version="7.1.0.v20190412-2143"/>
         <plugin id="org.objectweb.asm.commons" version="7.1.0.v20190412-2143"/>
         <plugin id="org.objectweb.asm.source" version="9.2.0.v20210813-1119"/>
@@ -1544,32 +1547,15 @@
         <plugin id="org.w3c.dom.svg" version="1.1.0.v201011041433"/>
         <plugin id="org.w3c.dom.svg.source" version="1.1.0.v201011041433"/>
         <plugin id="org.yaml.snakeyaml" version="1.27.0.v20201111-1638"/>
-        <plugin id="com.e1c.v8codestyle.autosort.ui"/>
-        <plugin id="com.e1c.v8codestyle.autosort"/>
-        <plugin id="com.e1c.v8codestyle.bsl.ui"/>
-        <plugin id="com.e1c.v8codestyle.bsl"/>
-        <plugin id="com.e1c.v8codestyle.docs"/>
-        <plugin id="com.e1c.v8codestyle.form"/>
-        <plugin id="com.e1c.v8codestyle.md.ui"/>
-        <plugin id="com.e1c.v8codestyle.md"/>
-        <plugin id="com.e1c.v8codestyle.ql"/>
-        <plugin id="com.e1c.v8codestyle.right"/>
-        <plugin id="com.e1c.v8codestyle.ui"/>
-        <plugin id="com.e1c.v8codestyle"/>
-        <plugin id="com.e1c.v8codestyle.ui"/>
-        <plugin id="com.e1c.v8codestyle"/>
-        <plugin id="com.e1c.v8codestyle.right"/>
-        <plugin id="com.e1c.v8codestyle.ql"/>
-        <plugin id="com.e1c.v8codestyle.md"/>
-        <plugin id="com.e1c.v8codestyle.md.ui"/>
-        <plugin id="com.e1c.v8codestyle.form"/>
-        <plugin id="com.e1c.v8codestyle.docs"/>
-        <plugin id="com.e1c.v8codestyle.bsl"/>
-        <plugin id="com.e1c.v8codestyle.bsl.ui"/>
-        <plugin id="com.e1c.v8codestyle.autosort"/>
-        <plugin id="com.e1c.v8codestyle.autosort.ui"/>
+        <plugin id="com.e1c.v8codestyle.autosort.ui" version="0.4.0.135"/>
+        <plugin id="com.e1c.v8codestyle.autosort" version="0.4.0.135"/>
+        <plugin id="com.e1c.v8codestyle.bsl" version="0.4.0.135"/>
+        <plugin id="com.e1c.v8codestyle.docs" version="0.4.0.135"/>
+        <plugin id="com.e1c.v8codestyle.md.ui" version="0.4.0.135"/>
+        <plugin id="com.e1c.v8codestyle.md" version="0.4.0.135"/>
+        <plugin id="com.e1c.v8codestyle.ql" version="0.4.0.135"/>
+        <plugin id="com.e1c.v8codestyle.ui" version="0.4.0.135"/>
+        <plugin id="com.e1c.v8codestyle.right" version="0.4.0.135"/>
+        <plugin id="com.e1c.v8codestyle" version="0.4.0.135"/>
     </includeBundles>
-    <launcherArgs>
-        <programArgs>-Duser.language=en</programArgs>
-    </launcherArgs>
 </target>

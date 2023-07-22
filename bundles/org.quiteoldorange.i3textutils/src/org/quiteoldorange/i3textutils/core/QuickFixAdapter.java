@@ -35,6 +35,8 @@ public class QuickFixAdapter
 
         var p = projects[0];
 
+        assert (p != null);
+
         rebindQuickFix(p, "module-structure-form-event-regions", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
             QuickFixProvider.class, "fixModuleStructureFormEventRegions"); //$NON-NLS-1$
 
@@ -43,7 +45,8 @@ public class QuickFixAdapter
 
     }
 
-    private static void rebindQuickFix(IProject dummyProj, String checkId, String checkProviderId, Class<?> fixProvider,
+    private static synchronized void rebindQuickFix(IProject dummyProj, String checkId, String checkProviderId,
+        Class<?> fixProvider,
         String fixMethodName)
     {
         var checksRepo = ServicesAdapter.instance().getChecksRepository();
@@ -51,8 +54,17 @@ public class QuickFixAdapter
 
 
         CheckUid uid = new CheckUid(checkId, checkProviderId);
+        String suid = null;
 
-        var suid = checksRepo.getShortUid(uid, dummyProj);
+        try
+        {
+            suid = checksRepo.getShortUid(uid, dummyProj);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            assert (false);
+        }
 
         if (suid.isEmpty())
         {

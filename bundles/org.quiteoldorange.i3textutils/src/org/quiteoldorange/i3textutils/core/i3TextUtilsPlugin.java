@@ -29,6 +29,8 @@ public class i3TextUtilsPlugin
     private InjectorAwareServiceRegistrator registrator;
     private Injector injector;
 
+
+
     /**
      * Получить экземпляр плагина. Через экземпляр плагина можно получать доступ к разнообразным механизмам Eclipse,
      * таким как:
@@ -117,19 +119,16 @@ public class i3TextUtilsPlugin
         this.bundleContext = bundleContext;
         plugin = this;
 
-        // Annotation hack test
-
-        //AnnotationsHack("SU39");
-
-        // Annotation hack test
-
         registrator = new InjectorAwareServiceRegistrator(bundleContext, this::getInjector);
 
         ServiceInitialization.schedule(() -> {
             registrator.managedService(ServicesAdapter.class).activateBeforeRegistration().registerInjected();
-            hackContentassistColors();
 
+            hackContentassistColors();
         });
+
+
+
 
     }
 
@@ -194,6 +193,7 @@ public class i3TextUtilsPlugin
     {
         plugin = null;
         injector = null;
+
         super.stop(bundleContext);
     }
 

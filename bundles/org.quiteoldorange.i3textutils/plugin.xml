@@ -98,6 +98,10 @@
    <externalQuickfixProvider
          class="org.quiteoldorange.i3textutils.qfix.movemethodtoregion.QuickFixProvider">
    </externalQuickfixProvider>
+</extension>
+<extension
+      point="com._1c.g5.wiring.serviceProvider">
+   <bundle symbolicName = "org.quiteoldorange.i3textutils"></bundle>
 </extension>   
    
 </plugin>

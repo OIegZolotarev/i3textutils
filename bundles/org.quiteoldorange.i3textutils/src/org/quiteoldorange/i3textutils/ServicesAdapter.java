@@ -8,6 +8,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.quiteoldorange.i3textutils.core.QuickFixAdapter;
 
+import com._1c.g5.v8.dt.lifecycle.LifecycleParticipant;
+import com._1c.g5.v8.dt.lifecycle.LifecyclePhase;
+import com._1c.g5.v8.dt.lifecycle.LifecycleService;
 import com._1c.g5.v8.dt.validation.marker.IMarkerManager;
 import com._1c.g5.wiring.IManagedService;
 import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
@@ -18,9 +21,13 @@ import com.google.inject.Inject;
  * @author ozolotarev
  *
  */
+
+@LifecycleService(name = "i3textutils")
 public class ServicesAdapter
     implements IManagedService
 {
+
+
     @Inject
     private IFixRepository fixRepository;
 
@@ -33,15 +40,21 @@ public class ServicesAdapter
 
     private static ServicesAdapter sInstance;
 
-    ServicesAdapter()
+    public ServicesAdapter()
     {
         sInstance = this;
+    }
+
+    @LifecycleParticipant(phase = LifecyclePhase.RESOURCE_LOADING)
+    public void postResourceLoading()
+    {
+        QuickFixAdapter.bindQuickFixes();
     }
 
     @Override
     public void activate()
     {
-        QuickFixAdapter.bindQuickFixes();
+        //
     }
 
     @Override
@@ -153,4 +166,6 @@ public class ServicesAdapter
 
         return checksRepository;
     }
+
+
 }

@@ -74,7 +74,15 @@ public class QuickFixProvider
                 List<RegionPreprocessor> existingRegions = BslUtil.getAllRegionPreprocessors(module);
                 List<CandidateRegion> candidates = makeCandidatesList(existingRegions, doc);
 
-                var dlg = new RegionChooserDialog(candidates, methodName, mIssue.getMessage());
+                // Для длинных сообщений об ошибках выводим обобощенное сообщение
+                // т.к. оригинальное некрасиво растягивает окно.
+                String message = null;
+                if (mIssueSuggestedRegions.size() > 1)
+                    message = "Выберите область в которую нужно переместить метод";
+                else
+                    message = mIssue.getMessage();
+
+                var dlg = new RegionChooserDialog(candidates, methodName, message);
                 dlg.open();
 
                 regionDesc = dlg.getSelectedRegion();

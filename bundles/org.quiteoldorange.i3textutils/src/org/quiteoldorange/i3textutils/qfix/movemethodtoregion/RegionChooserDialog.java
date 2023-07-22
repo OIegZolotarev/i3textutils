@@ -10,6 +10,8 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledString;
@@ -62,12 +64,30 @@ public class RegionChooserDialog
         Composite control = (Composite)super.createDialogArea(parent);
         mRegionsTable = createDataTable(control, "Области модуля", mCandidates); //$NON-NLS-1$
 
-        Label l = new Label(control, SWT.LEFT);
-        l.setText("* - область не существует в модуле и будет создана");
+        if (hasNewRegionsSuggestions())
+        {
+            Label l = new Label(control, SWT.LEFT);
+            l.setText("* - область не существует в модуле и будет создана");
+        }
+
 
         return control;
     }
 
+
+    /**
+     * @return
+     */
+    private boolean hasNewRegionsSuggestions()
+    {
+        for (var item : mCandidates)
+        {
+            if (!item.isExists())
+                return true;
+        }
+
+        return false;
+    }
 
     private static class CustomLabelProvider
         extends LabelProvider
@@ -95,12 +115,14 @@ public class RegionChooserDialog
         }
     }
 
+
     private TableViewer createDataTable(Composite composite, String headerName, List<CandidateRegion> content)
     {
         final TableViewer tableViewer = new TableViewer(composite, SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION);
-        int height = tableViewer.getTable().getItemHeight() * 5;
+        int height = tableViewer.getTable().getItemHeight() * 10;
         tableViewer.getTable().setHeaderVisible(true);
         GridDataFactory.fillDefaults().hint(SWT.DEFAULT, height).grab(true, false).applyTo(tableViewer.getTable());
+
 
         TableViewerColumn column = new TableViewerColumn(tableViewer, SWT.BORDER);
         column.getColumn().setText(headerName);
@@ -109,6 +131,17 @@ public class RegionChooserDialog
         tableViewer.setInput(content);
 
         column.getColumn().pack();
+
+        tableViewer.addDoubleClickListener(new IDoubleClickListener()
+        {
+
+            @Override
+            public void doubleClick(DoubleClickEvent event)
+            {
+                okPressed();
+            }
+        });
+
         return tableViewer;
     }
 

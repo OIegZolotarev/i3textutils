@@ -18,7 +18,6 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
 import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 
 /**
  * @author ozolotarev
@@ -44,8 +43,6 @@ public class FillModuleStructure
         File f = templatePath.getLocation().toFile();
 
         String templateSource = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
-
-        RegionPreprocessor r = Utils.findModuleRegion("Сборка_Элементов_Интерфейса", moduleModel); //$NON-NLS-1$
 
         if (templateSource.indexOf(codeMarker) > 0)
         {

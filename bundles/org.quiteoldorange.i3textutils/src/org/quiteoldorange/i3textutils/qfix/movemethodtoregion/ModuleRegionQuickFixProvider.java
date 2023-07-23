@@ -1,0 +1,84 @@
+package org.quiteoldorange.i3textutils.qfix.movemethodtoregion;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import org.eclipse.xtext.ui.editor.quickfix.Fix;
+import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
+import org.eclipse.xtext.validation.Issue;
+
+import com._1c.g5.v8.dt.bsl.ui.quickfix.AbstractExternalQuickfixProvider;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+
+public class ModuleRegionQuickFixProvider
+    extends AbstractExternalQuickfixProvider
+{
+
+    public ModuleRegionQuickFixProvider()
+    {
+        // TODO Auto-generated constructor stub
+    }
+
+    private List<String> parseSuggestedRegions_ModuleStructureMethodInRegions(Issue issue)
+    {
+
+        List<String> result = new LinkedList<>();
+        String issueMessage = issue.getMessage();
+        String regionsList = issueMessage.substring(issueMessage.indexOf(':') + 1);
+
+        String[] suggestedRegions = regionsList.split(","); //$NON-NLS-1$
+
+        for (String item : suggestedRegions)
+        {
+            String trimmed = item.trim();
+            result.add(trimmed);
+        }
+
+        return result;
+    }
+
+    @Fix("DUMMY")
+    public void fixModuleStructureFormEventRegions(final Issue issue, IssueResolutionAcceptor acceptor)
+    {
+        // TODO: fixme
+        ScriptVariant scriptVariant = ScriptVariant.RUSSIAN;
+
+        var suggestions = SuggestedRegionsComputer.parseIssue(issue,
+            SuggestedRegionsComputer.METHOD_SHOULD_NOT_BE_IN_THIS_REGION, scriptVariant);
+
+        if (suggestions != null)
+        {
+            acceptor.accept(issue, "Переместить метод в другую область...", "", null,
+                new BadRegionIssueResolver(issue, suggestions.getRecommendedRegions(), suggestions.getBadRegions()));
+
+            return;
+        }
+
+        suggestions = SuggestedRegionsComputer.parseIssue(issue,
+            SuggestedRegionsComputer.METHOD_SHOULD_IN_SPECIFIED_REGION, scriptVariant);
+
+        if (suggestions != null)
+        {
+            var recommendedRegions = suggestions.getRecommendedRegions();
+            assert (recommendedRegions.size() > 0);
+
+            String suggestedRegion = recommendedRegions.get(0);
+
+            acceptor.accept(issue, String.format("Переместить метод в область \"%s\"", suggestedRegion), "<Описание>",
+                null, new BadRegionIssueResolver(issue, suggestedRegion));
+
+            return;
+        }
+
+    }
+
+    @Fix("DUMMY")
+    public void fixModuleStructureMethodInRegions(final Issue issue, IssueResolutionAcceptor acceptor)
+    {
+        var suggestedRegions = parseSuggestedRegions_ModuleStructureMethodInRegions(issue);
+
+        acceptor.accept(issue, "Переместить метод в другую область...", "<Описание>", null,
+            new BadRegionIssueResolver(issue, suggestedRegions, new LinkedList<>()));
+    }
+
+}

@@ -1,19 +1,11 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.qfix;
+package org.quiteoldorange.i3textutils.qfix.obsolete;
 
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
-import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
 
-import com._1c.g5.v8.dt.bsl.model.Method;
-import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextInteractiveBslModuleFixModel;
 import com.e1c.g5.v8.dt.bsl.check.qfix.MultiVariantXtextBslModuleFix;
-import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFixContext;
-import com.e1c.g5.v8.dt.check.qfix.IFixSession;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
 
 
@@ -23,69 +15,25 @@ import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
  */
 
 // checkId + supplierId идентифицируют ошибку!
+/**
+ * @author ozolotarev
+ *
+ */
 @QuickFix(checkId = "form-module-missing-pragma", supplierId = i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE)
-public class MissingPragmaQFix
+public class MissingPragmaQFixNewSystem
     extends MultiVariantXtextBslModuleFix
 {
 
-    private static final String AddAtServer = "НаСервере"; //$NON-NLS-1$
+    @Override
+    protected void buildVariants()
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    /*  private static final String AddAtServer = "НаСервере"; //$NON-NLS-1$
     private static final String AddAtClient = "НаКлиенте"; //$NON-NLS-1$
     private static final String AddAtServerNoContext = "НаСервереБезКонтекста"; //$NON-NLS-1$
-
-    static private class FixVariant
-    {
-        private String mId;
-        private String mPragmaRU;
-        private String mPragmaEN;
-
-        /**
-         *
-         */
-        public FixVariant(String id, String pragmaRU, String pragmaEN)
-        {
-            mId = id;
-
-            mPragmaRU = pragmaRU;
-            mPragmaEN = pragmaEN;
-        }
-
-        /**
-         * @return the description
-         */
-        public String getDescription()
-        {
-            return String.format("Добавить директиву \"%s\"", mPragmaRU); //$NON-NLS-1$
-        }
-        /**
-         * @return the id
-         */
-        public String getId()
-        {
-            return mId;
-        }
-        /**
-         * @return the pragmaRU
-         */
-        public String getPragmaRU()
-        {
-            return mPragmaRU;
-        }
-        /**
-         * @return the pragmaEN
-         */
-        public String getPragmaEN()
-        {
-            return mPragmaEN;
-        }
-
-        /**
-         * @return
-         */
-        public String getDetails()
-        {
-            return "<Детали>"; //$NON-NLS-1$
-        }
-    }
 
     static FixVariant[] fixVariants = {
         new FixVariant(AddAtServer, "&НаСервере", "&AtClient"), //$NON-NLS-1$ //$NON-NLS-2$
@@ -136,5 +84,5 @@ public class MissingPragmaQFix
     }
 
 
-
+    */
 }

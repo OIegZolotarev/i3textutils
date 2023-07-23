@@ -3,14 +3,18 @@
  */
 package org.quiteoldorange.i3textutils;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.quiteoldorange.i3textutils.core.QuickFixAdapter;
 
+import com._1c.g5.v8.dt.core.platform.IV8Project;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.lifecycle.LifecycleParticipant;
 import com._1c.g5.v8.dt.lifecycle.LifecyclePhase;
 import com._1c.g5.v8.dt.lifecycle.LifecycleService;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.validation.marker.IMarkerManager;
 import com._1c.g5.wiring.IManagedService;
 import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
@@ -37,6 +41,9 @@ public class ServicesAdapter
     @Inject
     private IMarkerManager markerManager;
 
+    @Inject
+    private IV8ProjectManager v8ProjectManager;
+
 
     private static ServicesAdapter sInstance;
 
@@ -54,7 +61,16 @@ public class ServicesAdapter
     @Override
     public void activate()
     {
-        //
+
+    }
+
+    public ScriptVariant getProjectScriptVariant(IProject proj)
+    {
+        if (v8ProjectManager == null)
+            return null;
+
+        IV8Project iv8proj = v8ProjectManager.getProject(proj);
+        return iv8proj.getScriptVariant();
     }
 
     @Override
@@ -165,6 +181,14 @@ public class ServicesAdapter
         }
 
         return checksRepository;
+    }
+
+    /**
+     * @return the v8ProjectManager
+     */
+    public IV8ProjectManager getV8ProjectManager()
+    {
+        return v8ProjectManager;
     }
 
 

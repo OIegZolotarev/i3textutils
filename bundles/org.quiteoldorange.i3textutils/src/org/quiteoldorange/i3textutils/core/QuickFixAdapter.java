@@ -13,7 +13,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.xtext.ui.editor.quickfix.Fix;
 import org.quiteoldorange.i3textutils.Log;
 import org.quiteoldorange.i3textutils.ServicesAdapter;
-import org.quiteoldorange.i3textutils.qfix.movemethodtoregion.QuickFixProvider;
+import org.quiteoldorange.i3textutils.qfix.methodmissingpragmas.MissingMethodPragmaQuickFixProvider;
+import org.quiteoldorange.i3textutils.qfix.movemethodtoregion.ModuleRegionQuickFixProvider;
 
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
 
@@ -38,10 +39,13 @@ public class QuickFixAdapter
         assert (p != null);
 
         rebindQuickFix(p, "module-structure-form-event-regions", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
-            QuickFixProvider.class, "fixModuleStructureFormEventRegions"); //$NON-NLS-1$
+            ModuleRegionQuickFixProvider.class, "fixModuleStructureFormEventRegions"); //$NON-NLS-1$
 
         rebindQuickFix(p, "module-structure-method-in-regions", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
-            QuickFixProvider.class, "fixModuleStructureMethodInRegions"); //$NON-NLS-1$
+            ModuleRegionQuickFixProvider.class, "fixModuleStructureMethodInRegions"); //$NON-NLS-1$
+
+        rebindQuickFix(p, "form-module-missing-pragma", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
+            MissingMethodPragmaQuickFixProvider.class, "run"); //$NON-NLS-1$
 
     }
 

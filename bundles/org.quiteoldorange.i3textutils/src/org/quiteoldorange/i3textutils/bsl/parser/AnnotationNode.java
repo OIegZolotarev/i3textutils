@@ -3,6 +3,7 @@
  */
 package org.quiteoldorange.i3textutils.bsl.parser;
 
+import org.quiteoldorange.i3textutils.bsl.BSLMethodAnnotation;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
@@ -18,18 +19,7 @@ public class AnnotationNode
     extends AbsractBSLElementNode
 {
 
-    enum Types
-    {
-        AtClient,
-        AtServer,
-        AtClientAtServerNoContext,
-        AtServerNoContext,
-        Before,
-        After,
-        Around
-    }
-
-    Types mType;
+    BSLMethodAnnotation mType;
     String mExtendedMethodName;
 
     /**
@@ -43,28 +33,28 @@ public class AnnotationNode
         switch (mTokens.get(0).getType())
         {
         case AnnotationAfter:
-            mType = Types.After;
+            mType = BSLMethodAnnotation.After;
             ParseMethodName(stream);
             break;
         case AnnotationAround:
-            mType = Types.Around;
+            mType = BSLMethodAnnotation.Around;
             ParseMethodName(stream);
             break;
         case AnnotationAtClient:
-            mType = Types.AtClient;
+            mType = BSLMethodAnnotation.AtClient;
             break;
         case AnnotationBefore:
-            mType = Types.Before;
+            mType = BSLMethodAnnotation.Before;
             ParseMethodName(stream);
             break;
         case AnnotationAtClientAtServerNoContext:
-            mType = Types.AtClientAtServerNoContext;
+            mType = BSLMethodAnnotation.AtClientAtServerNoContext;
             break;
         case AnnotationAtServer:
-            mType = Types.AtServer;
+            mType = BSLMethodAnnotation.AtServer;
             break;
         case AnnotationAtServerNoContext:
-            mType = Types.AtServerNoContext;
+            mType = BSLMethodAnnotation.AtServerNoContext;
             break;
         default:
             break;

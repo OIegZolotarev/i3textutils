@@ -18,6 +18,7 @@ import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
+import org.quiteoldorange.i3textutils.ServicesAdapter;
 import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
@@ -25,6 +26,7 @@ import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
  * @author ozolotarev
@@ -117,6 +119,17 @@ public class Utils
 
         int startingOffset = doc.getLineOffset(endingLine);
         int endingOffset = node.getEndOffset();
+
+        try
+        {
+            // Перемещаем в конец линии, чтобы явно захватить комментарий к концу процедуры
+            var lineInfo = doc.getLineInformationOfOffset(endingOffset);
+            endingOffset = lineInfo.getOffset() + lineInfo.getLength();
+        }
+        catch (BadLocationException e)
+        {
+
+        }
 
         String sourceText = doc.get(startingOffset, endingOffset - startingOffset);
 
@@ -297,6 +310,14 @@ public class Utils
         }
 
         return null;
+    }
+
+    public static ScriptVariant getDocScriptVariant(IXtextDocument doc)
+    {
+        IFile file = doc.getAdapter(IFile.class);
+        var project = file.getProject();
+
+        return ServicesAdapter.instance().getProjectScriptVariant(project);
     }
 
 }

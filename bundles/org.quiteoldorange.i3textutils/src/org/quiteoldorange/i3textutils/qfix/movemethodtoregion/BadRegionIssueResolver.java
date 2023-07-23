@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.quiteoldorange.i3textutils.qfix.movemethodtoregion;
 
@@ -39,8 +39,7 @@ final class BadRegionIssueResolver
     /**
      * @param issue
      */
-    BadRegionIssueResolver(Issue issue, List<String> issueSugestedRegions,
-        List<String> invalidRegionsForSuggestion)
+    BadRegionIssueResolver(Issue issue, List<String> issueSugestedRegions, List<String> invalidRegionsForSuggestion)
     {
         mIssue = issue;
         mIssueSuggestedRegions = issueSugestedRegions;
@@ -89,7 +88,11 @@ final class BadRegionIssueResolver
         else
         {
             RegionPreprocessor bslRegion = Utils.findModuleRegion(mSuggestedRegion, module);
-            regionDesc = new CandidateRegion(bslRegion, doc);
+
+            if (bslRegion == null)
+                regionDesc = new CandidateRegion(mSuggestedRegion, false);
+            else
+                regionDesc = new CandidateRegion(bslRegion, doc);
         }
 
         if (regionDesc == null)
@@ -108,8 +111,8 @@ final class BadRegionIssueResolver
      * @param regionDesc
      * @throws BadLocationException
      */
-    private void moveMethodToNewRegion(IXtextDocument doc, Module module, String methodName,
-        CandidateRegion regionDesc) throws BadLocationException
+    private void moveMethodToNewRegion(IXtextDocument doc, Module module, String methodName, CandidateRegion regionDesc)
+        throws BadLocationException
     {
         Method method = Utils.findModuleMethod(methodName, module);
         MethodSourceInfo info = Utils.getMethodSourceInfo(method, doc);
@@ -181,8 +184,8 @@ final class BadRegionIssueResolver
      * @param replaceLength
      * @throws BadLocationException
      */
-    private void moveMethodBodyToTarget(IXtextDocument doc, MethodSourceInfo info, int targetOffset,
-        int replaceLength) throws BadLocationException
+    private void moveMethodBodyToTarget(IXtextDocument doc, MethodSourceInfo info, int targetOffset, int replaceLength)
+        throws BadLocationException
     {
         String targetText = "\n" + info.getSourceText().trim() + "\n";
 

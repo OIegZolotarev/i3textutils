@@ -34,7 +34,11 @@ public class QuickFixAdapter
         if (projects.length < 1)
             return;
 
+        // TODO
+        // Если проект является проектом внешней обработки - то getShortUid выдает NULL
+        // Нужно цепляться где-то тут за проект конфигурации (?)
         var p = projects[0];
+
 
         assert (p != null);
 
@@ -70,7 +74,7 @@ public class QuickFixAdapter
             assert (false);
         }
 
-        if (suid.isEmpty())
+        if (suid == null || suid.isEmpty())
         {
             i3TextUtilsPlugin.getDefault()
                 .getLog()

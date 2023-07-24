@@ -162,5 +162,23 @@ public class ModuleASTTree
         node.setChildren(newNodes);
     }
 
+    /**
+     * @param name
+     * @return
+     */
+    public BSLRegionNode findRegion(String name)
+    {
+        for(var item : getChildren())
+        {
+            if (!(item instanceof BSLRegionNode))
+                continue;
+
+            BSLRegionNode node = (BSLRegionNode)item;
+            if (name.equals(node.getName()))
+                return node;
+        }
+
+        return null;
+    }
 
 }

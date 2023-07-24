@@ -1,6 +1,3 @@
-/**
- * Copyright (C) 2020, 1C-Soft LLC
- */
 package org.quiteoldorange.i3textutils.core;
 
 import org.eclipse.core.runtime.IStatus;

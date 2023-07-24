@@ -16,6 +16,8 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 public class BSLRegionNode
     extends AbsractBSLElementNode
 {
+    private int mIdealOrder;
+
     @Override
     public String serialize(ScriptVariant variant)
     {
@@ -27,6 +29,8 @@ public class BSLRegionNode
             builder.append(node.serialize(variant) + "\n"); //$NON-NLS-1$
         }
 
+        // TODO: проверить что у области нет комментария, иначе будет двоить
+        //       проверить что впереди нет "EmptyLineNode"
         builder.append(
             String.format("%s // %s\n", Token.getKeywordValue(Type.PreprocessorEndRegion, variant), mRegionName));
 
@@ -47,5 +51,23 @@ public class BSLRegionNode
         mRegionName = token.getValue();
 
         ParseUntilEndingToken(stream, Type.PreprocessorEndRegion);
+    }
+
+    public int getIdealOrder()
+    {
+        return mIdealOrder;
+    }
+
+    public void setIdealOrder(int idealOrder)
+    {
+        mIdealOrder = idealOrder;
+    }
+
+    /**
+     * @return
+     */
+    public String getName()
+    {
+        return mRegionName;
     }
 }

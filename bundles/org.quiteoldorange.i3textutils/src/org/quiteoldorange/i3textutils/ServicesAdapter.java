@@ -55,7 +55,17 @@ public class ServicesAdapter
     @LifecycleParticipant(phase = LifecyclePhase.RESOURCE_LOADING)
     public void postResourceLoading()
     {
-        QuickFixAdapter.bindQuickFixes();
+        // Здесь надо быть предельно осторожным - любое исключение роняет проект и вызывает полную перегрузку
+        // что очень долго
+
+        try
+        {
+            QuickFixAdapter.bindQuickFixes();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -72,8 +72,7 @@ public class QuickFixAdapter
         }
         catch (Exception e)
         {
-            e.printStackTrace();
-            assert (false);
+            return;
         }
 
         if (suid == null || suid.isEmpty())

@@ -14,11 +14,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
-import org.quiteoldorange.i3textutils.Log;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLRegionNode;
-import org.quiteoldorange.i3textutils.modulereformatter.tasks.AddRegionTask;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
 import com._1c.g5.v8.dt.bsl.model.Module;
@@ -53,7 +51,7 @@ public class ModuleReformatterContext
     public void run()
     {
         RequiredRegionsCalculator regionsCalculator = new RequiredRegionsCalculator(mProject, mModule);
-        List<AddRegionTask> missingRegions = regionsCalculator.calculateMissingRegions();
+        //List<AddRegionTask> missingRegions = regionsCalculator.calculateMissingRegions();
 
         Lexer lex = new Lexer(mDoc.get());
 
@@ -64,6 +62,8 @@ public class ModuleReformatterContext
 
         String s = mModuleStructure.serialize(ScriptVariant.RUSSIAN);
 
+        s = cleanupConsecutiveBlankLines(s);
+
         try
         {
             mDoc.replace(0, mDoc.getLength(), s.toString());
@@ -73,6 +73,34 @@ public class ModuleReformatterContext
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    public static String cleanupConsecutiveBlankLines(String source)
+    {
+        String lines[] = source.split("\n");
+
+        StringBuilder builder = new StringBuilder();
+
+        boolean hasEmptyLine = false;
+
+        for (var line : lines)
+        {
+            if (line.isBlank() && hasEmptyLine)
+                continue;
+            else if (line.isBlank() && !hasEmptyLine)
+            {
+                builder.append("\n");
+                hasEmptyLine = true;
+            }
+            else
+            {
+                hasEmptyLine = false;
+                builder.append(line);
+                builder.append("\n"); //$NON-NLS-1$
+            }
+        }
+
+        return builder.toString();
     }
 
     /**
@@ -121,11 +149,12 @@ public class ModuleReformatterContext
             BSLRegionNode oldNode = (BSLRegionNode)mModuleItems.set(itemIndex, idealNode);
             mModuleItems.set(oldIndex, oldNode);
 
-            Log.Debug("Placing at %s %s -> %s", String.format("%d", itemIndex), oldNode.getName(), idealNode.getName());
+            // Log.Debug("Placing at %s %s -> %s", String.format("%d", itemIndex), oldNode.getName(), idealNode.getName());
         }
 
         mModuleStructure.setChildren(mModuleItems);
     }
+
 
     public ModuleASTTree getStandardModuleStructure()
     {

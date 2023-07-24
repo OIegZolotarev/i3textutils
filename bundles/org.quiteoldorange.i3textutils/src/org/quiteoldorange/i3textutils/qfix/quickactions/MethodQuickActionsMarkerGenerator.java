@@ -3,7 +3,6 @@ package org.quiteoldorange.i3textutils.qfix.quickactions;
 import org.eclipse.emf.ecore.EObject;
 
 import com._1c.g5.v8.dt.bsl.model.impl.FunctionImpl;
-import com._1c.g5.v8.dt.bsl.model.impl.MethodImpl;
 import com._1c.g5.v8.dt.bsl.model.impl.ProcedureImpl;
 import com._1c.g5.v8.dt.bsl.validation.CustomValidationMessageAcceptor;
 import com._1c.g5.v8.dt.bsl.validation.IExternalBslValidator;
@@ -51,7 +50,8 @@ public class MethodQuickActionsMarkerGenerator
     @Override
     public boolean needValidation(EObject object)
     {
-        return object instanceof MethodImpl;
+        return false;
+        //return object instanceof MethodImpl;
     }
 
 }

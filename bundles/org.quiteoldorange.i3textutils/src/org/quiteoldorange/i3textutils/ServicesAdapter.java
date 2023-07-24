@@ -52,7 +52,7 @@ public class ServicesAdapter
         sInstance = this;
     }
 
-    @LifecycleParticipant(phase = LifecyclePhase.RESOURCE_LOADING)
+    @LifecycleParticipant(phase = LifecyclePhase.POST_RESOURCE_LOADING)
     public void postResourceLoading()
     {
         // Здесь надо быть предельно осторожным - любое исключение роняет проект и вызывает полную перегрузку

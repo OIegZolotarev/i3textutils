@@ -27,6 +27,11 @@
                   id="org.quiteoldorange.i3textutils.verticalalign"
                   name="Выровнять вертикально">
             </command>
+            <command
+                  defaultHandler="org.quiteoldorange.i3textutils.commands.CleanupEmptyLines"
+                  id="org.quiteoldorange.i3textutils.cleanupemptylines"
+                  name="Очистить лишние отступы">
+            </command>
       
    </extension>
    <extension point="org.eclipse.ui.menus">
@@ -70,9 +75,19 @@
            <command
                  commandId="org.quiteoldorange.i3textutils.verticalalign"
                  id="org.quiteoldorange.i3textutils.verticalalign"
-                 label="Выровнять вертикально"
-                 style="push">
+                 label="Выровнять вертикально">
             <visibleWhen
+                    checkEnabled="true">
+                 <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
+                 </reference>
+              </visibleWhen>
+           </command>
+           <command
+                 commandId="org.quiteoldorange.i3textutils.cleanupemptylines"
+                 style="push"
+                 tooltip="%fillModuleStructure.tooltip">
+              <visibleWhen
                     checkEnabled="true">
                  <reference
                        definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
@@ -81,6 +96,68 @@
            </command>
         </menu>
         
+    </menuContribution>
+    <menuContribution
+          allPopups="false"
+          locationURI="menu:org.eclipse.ui.main.menu?after=help">
+       <menu
+             id="labeli3Tools"
+             label="%i3ToolsTextGroup">
+          <command
+                commandId="org.quiteoldorange.i3textutils.commands.ReformatModule"
+                style="push">
+             <visibleWhen
+                   checkEnabled="true">
+                <reference
+                      definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
+                </reference>
+             </visibleWhen>
+          </command>
+          <command
+                commandId="org.quiteoldorange.i3textutils.commands.AddMissingPragmas"
+                style="push"
+                tooltip="%addMissingPragmas.tooltip">
+             <visibleWhen
+                   checkEnabled="true">
+                <reference
+                      definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
+                </reference>
+             </visibleWhen>
+          </command>
+          <command
+                commandId="org.quiteoldorange.i3textutils.commands.fillModuleStructure"
+                style="push"
+                tooltip="%fillModuleStructure.tooltip">
+             <visibleWhen
+                   checkEnabled="true">
+                <reference
+                      definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
+                </reference>
+             </visibleWhen>
+          </command>
+          <command
+                commandId="org.quiteoldorange.i3textutils.verticalalign"
+                id="org.quiteoldorange.i3textutils.verticalalign"
+                label="Выровнять вертикально">
+             <visibleWhen
+                   checkEnabled="true">
+                <reference
+                      definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
+                </reference>
+             </visibleWhen>
+          </command>
+          <command
+                commandId="org.quiteoldorange.i3textutils.cleanupemptylines"
+                style="push"
+                tooltip="%fillModuleStructure.tooltip">
+             <visibleWhen
+                   checkEnabled="true">
+                <reference
+                      definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
+                </reference>
+             </visibleWhen>
+          </command>
+       </menu>
     </menuContribution>
 </extension>
    

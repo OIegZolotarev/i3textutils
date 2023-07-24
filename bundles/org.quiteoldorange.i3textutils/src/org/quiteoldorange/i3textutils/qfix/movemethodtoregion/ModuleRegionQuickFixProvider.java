@@ -51,6 +51,10 @@ public class ModuleRegionQuickFixProvider
             acceptor.accept(issue, "Переместить метод в другую область...", "", null,
                 new BadRegionIssueResolver(issue, suggestions.getRecommendedRegions(), suggestions.getBadRegions()));
 
+            // TODO: английский вариант
+            acceptor.accept(issue, String.format("Переместить метод в область \"%s\"", "СлужебныеПроцедурыИФункции"),
+                "<Описание>", null, new BadRegionIssueResolver(issue, "СлужебныеПроцедурыИФункции"));
+
             return;
         }
 

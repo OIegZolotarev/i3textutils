@@ -129,10 +129,21 @@ public class MethodNode
 
                 token = readTokenTracked(stream); // Значение аргумента
 
-                if (token.getType() != Type.Identifier)
+                String defaultValue;
+                switch (token.getType())
+                {
+                case Identifier:
+                case NumericConstant:
+                case BooleanConst:
+                case StringConstant:
+                case DateConstant:
+                    defaultValue = token.getValue();
+                    break;
+                default:
                     throw new BSLParsingException.UnexpectedToken(stream, token, Type.Identifier);
+                }
 
-                String defaultValue = token.getValue();
+
                 mArguments.add(new ArgumentDefinition(argName, defaultValue, byValue));
 
                 continue;

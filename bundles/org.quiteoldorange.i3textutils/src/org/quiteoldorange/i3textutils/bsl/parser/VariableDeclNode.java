@@ -114,6 +114,8 @@ public class VariableDeclNode
 
                 mDefinitions.add(def);
                 break loop;
+            default:
+                throw new BSLParsingException.UnexpectedToken(stream, token);
             }
 
         }

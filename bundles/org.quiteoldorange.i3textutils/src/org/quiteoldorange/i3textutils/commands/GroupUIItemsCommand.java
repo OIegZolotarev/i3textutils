@@ -3,6 +3,7 @@ package org.quiteoldorange.i3textutils.commands;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -19,11 +20,11 @@ import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.model.FormItemContainer;
 import com._1c.g5.v8.dt.form.model.ManagedFormGroupType;
 import com._1c.g5.v8.dt.form.service.item.FormNewItemDescriptor;
+import com._1c.g5.v8.dt.form.service.item.IFormItemMovementService;
 import com._1c.g5.v8.dt.form.service.item.task.AddGroupTask;
 import com._1c.g5.v8.dt.form.service.item.task.MoveFormItemTask;
 import com._1c.g5.v8.dt.form.ui.editor.FormEditor;
 import com._1c.g5.v8.dt.form.ui.editor.IFormEditor;
-import com._1c.g5.v8.dt.ui.IModelApiAwareSelection;
 
 public class GroupUIItemsCommand
 extends AbstractHandler
@@ -40,6 +41,16 @@ extends AbstractHandler
         return null;
     }
 
+    private void moveItemsToNewLocation(List<FormItem> itemsToMove, FormItemContainer newParent, IBmModel model,
+        IFormItemMovementService moveService)
+    {
+        for (var item : itemsToMove)
+        {
+            MoveFormItemTask moveTask = new MoveFormItemTask(moveService, item, newParent, 0);
+            model.execute(moveTask);
+        }
+    }
+
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException
     {
@@ -50,8 +61,6 @@ extends AbstractHandler
             return null;
 
         FormEditor formEditor = (FormEditor)part;
-
-
         Form f = formEditor.getForm();
 
         var iV8Project = formEditor.getV8projectManager().getProject(f).getDtProject();
@@ -59,11 +68,10 @@ extends AbstractHandler
         IBmModelManager bmModelManager = ServicesAdapter.instance().getBmModelManager();
         IBmModel model = bmModelManager.getModel(iV8Project);
 
-        var selRaw = (IModelApiAwareSelection)formEditor.getEditorInput().getSelection();
-        var itemsList = selRaw.toList();
+        //var selRaw = (IModelApiAwareSelection)formEditor.getEditorInput().getSelection();
+        //var itemsList = selRaw.toList();
         //DtSelectionFactory sel = (DtSelectionFactory)selRaw;
-
-        var moveService = ServicesAdapter.instance().getFormItemMovementService();
+        //var moveService = ServicesAdapter.instance().getFormItemMovementService();
 
         try
         {
@@ -76,18 +84,9 @@ extends AbstractHandler
                 new FormNewItemDescriptor("ДобрыйДень", titles, false));
             model.execute(tsk);
 
-            var parent = f.getItems().get(0);
+            //var parent = f.getItems().get(0);
             //parent.getName()
 
-
-            for (var item : itemsList)
-            {
-                MoveFormItemTask moveTask =
-                    new MoveFormItemTask(moveService, (FormItem)item, (FormItemContainer)parent, 0);
-
-                model.execute(moveTask);
-
-            }
 
         }
         catch (Exception e)

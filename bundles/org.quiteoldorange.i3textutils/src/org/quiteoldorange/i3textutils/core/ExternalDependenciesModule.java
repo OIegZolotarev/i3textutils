@@ -16,7 +16,11 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com._1c.g5.v8.dt.form.service.item.IFormItemManagementService;
+import com._1c.g5.v8.dt.form.service.item.IFormItemMovementService;
+import com._1c.g5.v8.dt.form.service.item.IFormItemTypeManagementService;
 import com._1c.g5.v8.dt.validation.marker.IMarkerManager;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
@@ -52,6 +56,10 @@ public class ExternalDependenciesModule
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();
         bind(IMarkerManager.class).toService();
+        bind(IBmModelManager.class).toService();
+        bind(IFormItemTypeManagementService.class).toService();
+        bind(IFormItemManagementService.class).toService();
+        bind(IFormItemMovementService.class).toService();
 
     }
 

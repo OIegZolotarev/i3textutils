@@ -32,6 +32,11 @@
                   id="org.quiteoldorange.i3textutils.cleanupemptylines"
                   name="Очистить лишние отступы">
             </command>
+            <command
+                  defaultHandler="org.quiteoldorange.i3textutils.commands.GroupUIItemsCommand"
+                  id="org.quiteoldorange.i3textutils.ui.groupitems"
+                  name="Сгруппировать элементы">
+            </command>
       
    </extension>
    <extension point="org.eclipse.ui.menus">
@@ -104,58 +109,9 @@
              id="labeli3Tools"
              label="%i3ToolsTextGroup">
           <command
-                commandId="org.quiteoldorange.i3textutils.commands.ReformatModule"
+                commandId="org.quiteoldorange.i3textutils.ui.groupitems"
+                label="Сгруппировать элементы"
                 style="push">
-             <visibleWhen
-                   checkEnabled="true">
-                <reference
-                      definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                </reference>
-             </visibleWhen>
-          </command>
-          <command
-                commandId="org.quiteoldorange.i3textutils.commands.AddMissingPragmas"
-                style="push"
-                tooltip="%addMissingPragmas.tooltip">
-             <visibleWhen
-                   checkEnabled="true">
-                <reference
-                      definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                </reference>
-             </visibleWhen>
-          </command>
-          <command
-                commandId="org.quiteoldorange.i3textutils.commands.fillModuleStructure"
-                style="push"
-                tooltip="%fillModuleStructure.tooltip">
-             <visibleWhen
-                   checkEnabled="true">
-                <reference
-                      definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                </reference>
-             </visibleWhen>
-          </command>
-          <command
-                commandId="org.quiteoldorange.i3textutils.verticalalign"
-                id="org.quiteoldorange.i3textutils.verticalalign"
-                label="Выровнять вертикально">
-             <visibleWhen
-                   checkEnabled="true">
-                <reference
-                      definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                </reference>
-             </visibleWhen>
-          </command>
-          <command
-                commandId="org.quiteoldorange.i3textutils.cleanupemptylines"
-                style="push"
-                tooltip="%fillModuleStructure.tooltip">
-             <visibleWhen
-                   checkEnabled="true">
-                <reference
-                      definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                </reference>
-             </visibleWhen>
           </command>
        </menu>
     </menuContribution>

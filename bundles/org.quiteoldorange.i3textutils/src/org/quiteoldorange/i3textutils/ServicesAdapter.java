@@ -9,8 +9,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.quiteoldorange.i3textutils.core.QuickFixAdapter;
 
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com._1c.g5.v8.dt.form.service.item.IFormItemManagementService;
+import com._1c.g5.v8.dt.form.service.item.IFormItemMovementService;
+import com._1c.g5.v8.dt.form.service.item.IFormItemTypeManagementService;
 import com._1c.g5.v8.dt.lifecycle.LifecycleParticipant;
 import com._1c.g5.v8.dt.lifecycle.LifecyclePhase;
 import com._1c.g5.v8.dt.lifecycle.LifecycleService;
@@ -43,6 +47,18 @@ public class ServicesAdapter
 
     @Inject
     private IV8ProjectManager v8ProjectManager;
+
+    @Inject
+    IBmModelManager bmModelManager;
+
+    @Inject
+    IFormItemTypeManagementService formTypeManagment;
+
+    @Inject
+    IFormItemManagementService formItemManagement;
+
+    @Inject
+    IFormItemMovementService formItemMovementService;
 
 
     private static ServicesAdapter sInstance;
@@ -203,5 +219,36 @@ public class ServicesAdapter
         return v8ProjectManager;
     }
 
+    /**
+     * @return the bmModelManager
+     */
+    public IBmModelManager getBmModelManager()
+    {
+        return bmModelManager;
+    }
+
+    /**
+     * @return the formTypeManagment
+     */
+    public IFormItemTypeManagementService getFormTypeManagment()
+    {
+        return formTypeManagment;
+    }
+
+    /**
+     * @return the formItemManagment
+     */
+    public IFormItemManagementService getFormItemManagement()
+    {
+        return formItemManagement;
+    }
+
+    /**
+     * @return the formItemMovementService
+     */
+    public IFormItemMovementService getFormItemMovementService()
+    {
+        return formItemMovementService;
+    }
 
 }

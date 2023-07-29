@@ -237,6 +237,7 @@ public class Utils
         });
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T getServiceInstance(Class<?> serviceClass)
     {
         var bundle = i3TextUtilsPlugin.getDefault().getBundle();

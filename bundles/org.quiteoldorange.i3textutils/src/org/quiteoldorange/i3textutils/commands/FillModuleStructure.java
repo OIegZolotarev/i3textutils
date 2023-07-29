@@ -42,7 +42,7 @@ public class FillModuleStructure
         IFile templatePath = project.getFile(Utils.getFileTemplatePathForModuleType(moduleModel.getModuleType()));
         File f = templatePath.getLocation().toFile();
 
-        String templateSource = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
+        String templateSource = Files.readString(Paths.get(f.getAbsolutePath()));
 
         if (templateSource.indexOf(codeMarker) > 0)
         {

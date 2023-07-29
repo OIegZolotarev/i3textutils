@@ -102,6 +102,25 @@ final class BadRegionIssueResolver
 
         moveMethodToNewRegion(doc, module, methodName, regionDesc);
 
+        // Eclipse после применения метода принудительно перемещает выделение в место где был Issue
+        // Поэтому сфокусироваться на новом расположении метода не выйдет =\
+/*        var page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+var part = page.getActiveEditor();
+BslXtextEditor target = part.getAdapter(BslXtextEditor.class);
+
+IXtextDocument docEdited = target.getDocument();
+
+if (docEdited == doc)
+{
+    int methodOffset = doc.getLineOffset(10);
+
+
+    target.selectAndReveal(methodOffset, 32);
+
+    IWorkbenchPage page2 = target.getSite().getPage();
+    page2.activate(target);
+
+}*/
     }
 
     /**
@@ -111,7 +130,7 @@ final class BadRegionIssueResolver
      * @param regionDesc
      * @throws BadLocationException
      */
-    private void moveMethodToNewRegion(IXtextDocument doc, Module module, String methodName, CandidateRegion regionDesc)
+    private int moveMethodToNewRegion(IXtextDocument doc, Module module, String methodName, CandidateRegion regionDesc)
         throws BadLocationException
     {
         Method method = Utils.findModuleMethod(methodName, module);
@@ -141,7 +160,7 @@ final class BadRegionIssueResolver
 
             doc.replace(info.getStartOffset(), info.getLength(), "");
             doc.replace(0, 0, builder.toString());
-            return;
+            return 0;
         }
         else
         {
@@ -154,14 +173,16 @@ final class BadRegionIssueResolver
         // и все поплывет :(
         if (info.getStartOffset() > targetOffset)
         {
-            doc.replace(info.getStartOffset(), info.getLength(), "");
+            doc.replace(info.getStartOffset(), info.getLength(), ""); //$NON-NLS-1$
             moveMethodBodyToTarget(doc, info, targetOffset, replaceLength);
         }
         else
         {
             moveMethodBodyToTarget(doc, info, targetOffset, replaceLength);
-            doc.replace(info.getStartOffset(), info.getLength(), "");
+            doc.replace(info.getStartOffset(), info.getLength(), ""); //$NON-NLS-1$
         }
+
+        return targetOffset;
     }
 
     private String getDocLine(IXtextDocument doc, int line)

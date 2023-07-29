@@ -83,7 +83,8 @@
     </location>
 </locations>
     <launcherArgs>
-        <programArgs>-Duser.language=en</programArgs>
+        <programArgs>-Duser.language=en
+-DnativeFormLayoutCalculation=false</programArgs>
     </launcherArgs>
     <includeBundles>
         <plugin id="bcpkix" version="1.51"/>

@@ -12,7 +12,9 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.quiteoldorange.i3textutils.ServicesAdapter;
+import org.quiteoldorange.i3textutils.Tuple;
 
+import com._1c.g5.v8.bm.integration.IBmEditingContext;
 import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.form.model.Form;
@@ -25,6 +27,7 @@ import com._1c.g5.v8.dt.form.service.item.task.AddGroupTask;
 import com._1c.g5.v8.dt.form.service.item.task.MoveFormItemTask;
 import com._1c.g5.v8.dt.form.ui.editor.FormEditor;
 import com._1c.g5.v8.dt.form.ui.editor.IFormEditor;
+import com._1c.g5.v8.dt.ui.IModelApiAwareSelection;
 
 public class GroupUIItemsCommand
 extends AbstractHandler
@@ -41,14 +44,28 @@ extends AbstractHandler
         return null;
     }
 
-    private void moveItemsToNewLocation(List<FormItem> itemsToMove, FormItemContainer newParent, IBmModel model,
+    private void moveItemsToNewLocation(List<FormItem> itemsToMove, FormItemContainer newParent,
+        IBmEditingContext edContext,
         IFormItemMovementService moveService)
     {
         for (var item : itemsToMove)
         {
             MoveFormItemTask moveTask = new MoveFormItemTask(moveService, item, newParent, 0);
-            model.execute(moveTask);
+            edContext.execute(moveTask);
         }
+    }
+
+    Tuple<String, String> suggestNewGroupName(List<FormItem> items)
+    {
+        String resultName = "Группа";
+        String resultTitle = "Зоголовок";
+
+        for (var item : items)
+        {
+            resultName += item.getName();
+        }
+
+        return new Tuple<>(resultName, resultTitle);
     }
 
     @Override
@@ -63,29 +80,39 @@ extends AbstractHandler
         FormEditor formEditor = (FormEditor)part;
         Form f = formEditor.getForm();
 
+        // Поломано?
+        //IBmEditingContext editingContext = formEditor.getAdapter(IBmEditingContext.class);
+        @SuppressWarnings("deprecation")
+        IBmEditingContext editingContext = formEditor.getEditingContext();
+
         var iV8Project = formEditor.getV8projectManager().getProject(f).getDtProject();
 
         IBmModelManager bmModelManager = ServicesAdapter.instance().getBmModelManager();
         IBmModel model = bmModelManager.getModel(iV8Project);
 
-        //var selRaw = (IModelApiAwareSelection)formEditor.getEditorInput().getSelection();
-        //var itemsList = selRaw.toList();
+        var selRaw = (IModelApiAwareSelection)formEditor.getEditorInput().getSelection();
+        var itemsList = selRaw.toList();
+
+
+        Tuple<String, String> newGroupNames = suggestNewGroupName(itemsList);
+
         //DtSelectionFactory sel = (DtSelectionFactory)selRaw;
-        //var moveService = ServicesAdapter.instance().getFormItemMovementService();
+        var moveService = ServicesAdapter.instance().getFormItemMovementService();
 
         try
         {
 
             Map<String, String> titles = new HashMap<>();
-            titles.put("ru", "Добрый день");
-            titles.put("en", "Hello world");
+            titles.put("ru", newGroupNames.getSecond());
+            titles.put("en", newGroupNames.getSecond());
 
             AddGroupTask tsk = new AddGroupTask(f, ManagedFormGroupType.USUAL_GROUP, 0,
-                new FormNewItemDescriptor("ДобрыйДень", titles, false));
-            model.execute(tsk);
+                new FormNewItemDescriptor(newGroupNames.getFirst(), titles, false));
 
-            //var parent = f.getItems().get(0);
-            //parent.getName()
+            editingContext.execute(tsk);
+
+            var parent = FindNamedItem(f, newGroupNames.getFirst());
+            moveItemsToNewLocation(itemsList, (FormItemContainer)parent, editingContext, moveService);
 
 
         }

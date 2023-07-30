@@ -83,4 +83,9 @@ public class BSLParsingException
         }
     }
 
+    public static class ExpectedClosingBracket
+        extends BSLParsingException
+    {
+
+    }
 }

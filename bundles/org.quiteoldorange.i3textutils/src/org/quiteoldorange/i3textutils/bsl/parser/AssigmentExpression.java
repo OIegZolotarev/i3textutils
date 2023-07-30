@@ -5,6 +5,7 @@ package org.quiteoldorange.i3textutils.bsl.parser;
 
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
+import org.quiteoldorange.i3textutils.bsl.parser.expressions.ExpressionNode;
 
 /**
  * @author ozolotarev

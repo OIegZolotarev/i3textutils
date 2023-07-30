@@ -1,9 +1,10 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.bsl.parser;
+package org.quiteoldorange.i3textutils.bsl.parser.expressions;
 
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
+import org.quiteoldorange.i3textutils.bsl.parser.AbsractBSLElementNode;
 
 /**
  * @author ozolotarev
@@ -11,6 +12,7 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
  */
 public class ExpressionOpeningBracket
     extends AbsractBSLElementNode
+    implements IOperationNode
 {
 
     private int mLevel;
@@ -39,6 +41,19 @@ public class ExpressionOpeningBracket
     public void setLevel(int level)
     {
         mLevel = level;
+    }
+
+    @Override
+    public int precedence()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "("; //$NON-NLS-1$
     }
 
 }

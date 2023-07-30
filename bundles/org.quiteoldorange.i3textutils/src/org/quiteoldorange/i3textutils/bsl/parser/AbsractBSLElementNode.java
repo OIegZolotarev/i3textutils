@@ -4,6 +4,7 @@
 package org.quiteoldorange.i3textutils.bsl.parser;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
@@ -23,9 +24,9 @@ public class AbsractBSLElementNode
     AbsractBSLElementNode mParent = null;
 
     protected LinkedList<Token> mTokens = new LinkedList<>();
-    private LinkedList<AbsractBSLElementNode> mChildren = new LinkedList<>();
+    private List<AbsractBSLElementNode> mChildren = new LinkedList<>();
 
-    public LinkedList<AbsractBSLElementNode> getChildren()
+    public List<AbsractBSLElementNode> getChildren()
     {
         return mChildren;
     }
@@ -177,11 +178,11 @@ public class AbsractBSLElementNode
     }
 
     /**
-     * @param newNodes
+     * @param slice
      */
-    public void setChildren(LinkedList<AbsractBSLElementNode> newNodes)
+    public void setChildren(List<AbsractBSLElementNode> slice)
     {
-        mChildren = newNodes;
+        mChildren = slice;
     }
 
     public String serializeChildren(ScriptVariant variant, boolean addNewline)

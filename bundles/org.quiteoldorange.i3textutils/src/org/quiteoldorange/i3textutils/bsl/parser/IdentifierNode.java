@@ -9,29 +9,22 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
  * @author ozolotarev
  *
  */
-public class ConstantNode
+public class IdentifierNode
     extends AbsractBSLElementNode
 {
 
     /**
      * @param stream
      */
-    public ConstantNode(Lexer stream)
+    public IdentifierNode(Lexer stream)
     {
         super(stream);
-    }
-
-    public String getAsString()
-    {
-        assert (mTokens.size() > 0);
-
-        return mTokens.get(0).getValue();
+        // TODO Auto-generated constructor stub
     }
 
     @Override
     public String toString()
     {
-        return getAsString();
+        return mTokens.get(0).getValue();
     }
-
 }

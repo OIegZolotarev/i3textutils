@@ -297,4 +297,10 @@ public class Token
         sTokenMappings.put("ЛОЖЬ", Type.BooleanConst); //$NON-NLS-1$
 
     };
+
+    @Override
+    public String toString()
+    {
+        return String.format("%s (%s)", mValue, mType.toString());
+    }
 }

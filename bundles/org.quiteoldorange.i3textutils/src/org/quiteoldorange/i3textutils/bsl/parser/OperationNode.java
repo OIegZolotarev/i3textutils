@@ -30,6 +30,9 @@ public class OperationNode
         Substraction,
         Multiplication,
         Division,
-        Modulo
+        Modulo,
+        LogicalOr,
+        LogicalAnd,
+        LogicalNot
     }
 }

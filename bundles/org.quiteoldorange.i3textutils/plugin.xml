@@ -37,6 +37,11 @@
                   id="org.quiteoldorange.i3textutils.ui.groupitems"
                   name="Сгруппировать элементы">
             </command>
+            <command
+                  defaultHandler="org.quiteoldorange.i3textutils.commands.DebugParserCommand"
+                  id="org.quiteoldorange.i3textutils.debugparser"
+                  name="Отладка парсера">
+            </command>
       
    </extension>
    <extension point="org.eclipse.ui.menus">
@@ -99,6 +104,19 @@
                  </reference>
               </visibleWhen>
            </command>
+           
+                      <command
+                 commandId="org.quiteoldorange.i3textutils.debugparser"
+                 style="push"
+                 tooltip="Отладка парсера">
+              <visibleWhen
+                    checkEnabled="true">
+                 <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
+                 </reference>
+              </visibleWhen>
+           </command>
+           
         </menu>
         
     </menuContribution>

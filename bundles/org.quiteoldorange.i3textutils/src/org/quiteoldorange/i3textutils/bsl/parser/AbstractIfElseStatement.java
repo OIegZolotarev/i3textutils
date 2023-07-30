@@ -7,6 +7,8 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
 
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+
 /**
  * @author ozolotarev
  *
@@ -61,6 +63,56 @@ public class AbstractIfElseStatement
         {
             return mEndIfToken;
         }
+
+        public boolean isBlockStatementEndtoken(Token t)
+        {
+            return t.getType() == mEndIfToken || t.getType() == mElseIftoken || t.getType() == mElsetoken;
+        }
+
+        /**
+         * @param scriptVariant
+         * @return
+         */
+        public String serializeEndIfToken(ScriptVariant scriptVariant)
+        {
+            return Token.getKeywordValue(mEndIfToken, scriptVariant);
+        }
+
+        /**
+         * @param scriptVariant
+         * @return
+         */
+        public String serializeIfToken(ScriptVariant scriptVariant)
+        {
+            return Token.getKeywordValue(mIfToken, scriptVariant);
+        }
+
+        /**
+         * @param scriptVariant
+         * @return
+         */
+        public String serializeElseIfToken(ScriptVariant scriptVariant)
+        {
+            return Token.getKeywordValue(mElseIftoken, scriptVariant);
+        }
+
+        /**
+         * @param scriptVariant
+         * @return
+         */
+        public String serializeElseToken(ScriptVariant scriptVariant)
+        {
+            return Token.getKeywordValue(mElsetoken, scriptVariant);
+        }
+
+        /**
+         * @param scriptVariant
+         * @return
+         */
+        public String serializeThenToken(ScriptVariant scriptVariant)
+        {
+            return Token.getKeywordValue(Type.OperatorThen, scriptVariant);
+        }
     }
 
     static TokenSet sPreprocessorSet =
@@ -72,20 +124,128 @@ public class AbstractIfElseStatement
     class ConditionNode
         extends AbsractBSLElementNode
     {
+
+        public String serialize(ScriptVariant scriptVariant, int index)
+        {
+            StringBuilder r = new StringBuilder();
+
+            if (index == 0)
+            {
+                r.append(String.format("%s %s %s", mKind.serializeIfToken(scriptVariant), //$NON-NLS-1$
+                    mConditionalExpression.serialize(scriptVariant),
+                    mKind.serializeThenToken(scriptVariant)));
+            }
+            else if (mConditionalExpression != null)
+            {
+                r.append(String.format("%s %s %s", mKind.serializeElseIfToken(scriptVariant), //$NON-NLS-1$
+                        mConditionalExpression.serialize(scriptVariant),
+                        mKind.serializeThenToken(scriptVariant)));
+            }
+            else
+            {
+                r.append(String.format("%s", mKind.serializeElseToken(scriptVariant)));
+            }
+
+            r.append("\n");
+            r.append(serializeChildren(scriptVariant, true));
+
+            return r.toString();
+        }
+
         ExpressionNode mConditionalExpression;
 
-        public ConditionNode(Lexer stream, ExpressionNode node)
+        public ConditionNode(Lexer stream, ExpressionNode conditionExpression, TokenSet kind) throws BSLParsingException
         {
             super(stream);
+
+            mConditionalExpression = conditionExpression;
+
+            while (true)
+            {
+                Token token = stream.peekNext();
+
+                if (kind.isBlockStatementEndtoken(token))
+                {
+                    readTokenTracked(stream);
+                    break;
+                }
+
+                AbsractBSLElementNode node = ParseNode(stream);
+                addChildren(node);
+            }
+
         }
+
     }
+
+    private TokenSet mKind;
 
     /**
      * @param stream
+     * @throws BSLParsingException
      */
-    public AbstractIfElseStatement(Lexer stream, TokenSet kind)
+    public AbstractIfElseStatement(Lexer stream, TokenSet kind) throws BSLParsingException
     {
         super(stream);
-        // TODO Auto-generated constructor stub
+
+        mKind = kind;
+
+        // #Если Выражение Тогда
+        // #Иначе | #ИначеЕсли | #КонецЕсли
+
+        while (true)
+        {
+            var token_type = stream.current().getType();
+
+            if (token_type == kind.getIfToken() || token_type == kind.getElseIftoken())
+            {
+                AbsractBSLElementNode expression = new ExpressionNode(stream, Token.Type.OperatorThen);
+
+                ConditionNode conditionNode = new ConditionNode(stream, (ExpressionNode)expression, kind);
+                addChildren(conditionNode);
+            }
+            else if (token_type == kind.getEndIfToken())
+            {
+                readTokenTracked(stream);
+                break;
+            }
+            else
+            {
+                ConditionNode conditionNode = new ConditionNode(stream, null, kind);
+                addChildren(conditionNode);
+            }
+
+        }
+    }
+
+    @Override
+    public String serialize(ScriptVariant scriptVariant)
+    {
+        assert getChildren().size() > 1;
+
+        StringBuilder result = new StringBuilder();
+
+        var iterator = getChildren().iterator();
+
+        int index = 0;
+        result.append(((ConditionNode)iterator.next()).serialize(scriptVariant, index++));
+
+        while (iterator.hasNext())
+        {
+            result.append(((ConditionNode)iterator.next()).serialize(scriptVariant, index++));
+        }
+
+
+        result.append(String.format("%s", mKind.serializeEndIfToken(scriptVariant))); //$NON-NLS-1$
+
+        return result.toString();
+    }
+
+    /**
+     * @return the kind
+     */
+    protected TokenSet getKind()
+    {
+        return mKind;
     }
 }

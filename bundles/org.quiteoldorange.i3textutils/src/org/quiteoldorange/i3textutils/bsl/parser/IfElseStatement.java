@@ -16,8 +16,9 @@ public class IfElseStatement
     /**
      * @param stream
      * @param kind
+     * @throws BSLParsingException
      */
-    public IfElseStatement(Lexer stream)
+    public IfElseStatement(Lexer stream) throws BSLParsingException
     {
         super(stream, AbstractIfElseStatement.sBSLCodeSet);
         // TODO Auto-generated constructor stub

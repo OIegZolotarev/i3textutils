@@ -11,7 +11,6 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedToken;
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode.MethodTypes;
-import org.quiteoldorange.i3textutils.bsl.parser.OperationNode.Operator;
 
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
@@ -127,52 +126,8 @@ public class AbsractBSLElementNode
                 return new AnnotationNode(stream);
             case EmptyLine:
                 return new EmptyLineNode(stream);
-            default:
-                throw new BSLParsingException.UnexpectedToken(stream, t);
-            }
-
-        }
-
-        return null;
-    }
-
-    public AbsractBSLElementNode ParseExpressionNode(Lexer stream, Token.Type endingToken) throws BSLParsingException
-    {
-        while (true)
-        {
-            Token t = readTokenTracked(stream);
-
-            if (t == null)
-                break;
-
-            if (t.getType() == endingToken)
-                break;
-
-            switch (t.getType())
-            {
-            case Identifier:
-                //    return new ExpressionNode(stream, endingToken);
-            case NumericConstant:
-            case StringConstant:
-            case DateConstant:
-            case BooleanConst:
-                addChildren(new ConstantNode(stream));
-                break;
-            case PlusSign:
-                addChildren(new OperationNode(stream, Operator.Addition));
-                break;
-            case MinusSign:
-                addChildren(new OperationNode(stream, Operator.Substraction));
-                break;
-            case MultiplicationSign:
-                addChildren(new OperationNode(stream, Operator.Multiplication));
-                break;
-            case DivisionSign:
-                addChildren(new OperationNode(stream, Operator.Division));
-                break;
-            case ModuloSign:
-                addChildren(new OperationNode(stream, Operator.Modulo));
-                break;
+            case PreprocessorIf:
+                return new PrepropcessorIfElseStatementNode(stream);
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
             }

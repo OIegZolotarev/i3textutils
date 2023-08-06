@@ -6,6 +6,7 @@ package org.quiteoldorange.i3textutils.bsl.parser.expressions;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.quiteoldorange.i3textutils.Tuple;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.parser.AbsractBSLElementNode;
@@ -78,7 +79,7 @@ public class ExpressionNode
                 addChildren(new ExpressionClosingBracket(stream, 0));
                 break;
             case Dot:
-                addChildren(new ExpressionClosingBracket(stream, 0));
+                addChildren(new MemberAccessNode(stream));
                 break;
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
@@ -97,7 +98,41 @@ public class ExpressionNode
         reduce();
     }
 
+    @SuppressWarnings("unused")
+    private Tuple<Integer, ExpressionNode> parseBracketsExpression(AbsractBSLElementNode node,
+        List<AbsractBSLElementNode> children,
+        Class<?> openingBracket, Class<?> closingBracket) throws BSLParsingException
+    {
+        boolean reverse = node instanceof ExpressionClosingBracket;
+
+        AbsractBSLElementNode endingNode =
+            findEndingBracket(node, reverse, children, openingBracket, closingBracket);
+
+        int startIndex = 0;
+        int endIndex = 0;
+
+        if (reverse)
+        {
+            startIndex = children.indexOf(endingNode);
+            endIndex = children.indexOf(node) + 1;
+        }
+        else
+        {
+            startIndex = children.indexOf(node);
+            endIndex = children.indexOf(endingNode) + 1;
+        }
+
+        var slice = children.subList(startIndex, endIndex);
+        ExpressionNode compoundExpression = new ExpressionNode(slice.subList(1, slice.size() - 1), true);
+        slice.clear();
+
+        //children.add(startIndex, compoundExpression);
+
+        return new Tuple<>(startIndex, compoundExpression);
+    }
+
     /**
+     * @throws
      * @throws ExpectedClosingBracket
      */
     private void reduce() throws BSLParsingException
@@ -114,16 +149,46 @@ public class ExpressionNode
             if (node == null)
                 break;
 
-            if (node instanceof ExpressionOpeningBracket)
+            if (node instanceof ExpressionOpeningBracket || node instanceof ExpressionClosingBracket)
             {
-                AbsractBSLElementNode endingNode = findEndingBracket(node, children);
+                Tuple<Integer, ExpressionNode> compoundExpression =
+                    parseBracketsExpression(node, children, ExpressionOpeningBracket.class,
+                    ExpressionClosingBracket.class);
 
-                int startIndex = children.indexOf(node);
-                var slice = children.subList(startIndex, children.indexOf(endingNode) + 1);
-                ExpressionNode compoundExpression = new ExpressionNode(slice.subList(1, slice.size() - 1), true);
-                slice.clear();
+                int startIndex = compoundExpression.getFirst();
+                ExpressionNode expression = compoundExpression.getSecond();
 
-                children.add(startIndex, compoundExpression);
+                //          if (startIndex > 0)
+                //        {
+                //                var prevNode = children.get(startIndex - 1);
+
+                //              }
+//                else
+                    children.add(startIndex, expression);
+
+            }
+            else if (node instanceof MemberAccessNode)
+            {
+                MemberAccessNode memberNode = (MemberAccessNode)node;
+                int nodeIndex = children.indexOf(node);
+
+                if (nodeIndex == 0)
+                    throw new BSLParsingException.UnexpectedMemberRead();
+
+                if (nodeIndex == children.size() - 1)
+                    throw new BSLParsingException.UnexpectedMemberRead();
+
+                var leftNode = children.get(nodeIndex - 1);
+                var rightNode = children.get(nodeIndex + 1);
+
+                // TODO: MemberAccessExpression
+
+                memberNode.setLeftNode(leftNode);
+                memberNode.setRightNode(rightNode);
+
+                children.remove(nodeIndex + 1);
+                children.remove(nodeIndex);
+                children.remove(nodeIndex - 1);
 
             }
             else if (node instanceof OperationNode)
@@ -192,24 +257,24 @@ public class ExpressionNode
      * @return
      * @throws ExpectedClosingBracket
      */
-    private AbsractBSLElementNode findEndingBracket(AbsractBSLElementNode startNode,
-        List<AbsractBSLElementNode> children)
+    private AbsractBSLElementNode findEndingBracket(AbsractBSLElementNode startNode, boolean reverse,
+        List<AbsractBSLElementNode> children, Class<?> openingBracketType, Class<?> endingBracketType)
         throws ExpectedClosingBracket
     {
         int level = 0;
 
-        var iterator = children.listIterator(children.indexOf(startNode) + 1);
+        var iterator = children.listIterator(children.indexOf(startNode) + (reverse ? -1 : 1));
 
-        while (iterator.hasNext())
+        while (reverse ? iterator.hasPrevious() : iterator.hasNext())
         {
-            AbsractBSLElementNode node = iterator.next();
+            AbsractBSLElementNode node = reverse ? iterator.previous() : iterator.next();
 
-            if (node instanceof ExpressionClosingBracket && level == 0)
+            if (node.getClass() == (reverse ? openingBracketType : endingBracketType) && level == 0)
                 return node;
-            else if (node instanceof ExpressionClosingBracket && level != 0)
+            else if (node.getClass() == endingBracketType && level != 0)
                 level--;
 
-            if (node instanceof ExpressionOpeningBracket)
+            if (node.getClass() == openingBracketType)
                 level++;
         }
 

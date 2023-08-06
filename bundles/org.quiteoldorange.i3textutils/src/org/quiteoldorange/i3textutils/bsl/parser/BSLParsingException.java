@@ -18,6 +18,16 @@ public class BSLParsingException
      * @author ozolotarev
      *
      */
+    public static class UnexpectedMemberRead
+        extends BSLParsingException
+    {
+
+    }
+
+    /**
+     * @author ozolotarev
+     *
+     */
     public static class UnexpectedEndOfStream
         extends BSLParsingException
     {

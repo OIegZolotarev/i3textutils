@@ -188,6 +188,13 @@
 <extension
       point="com._1c.g5.wiring.serviceProvider">
    <bundle symbolicName = "org.quiteoldorange.i3textutils"></bundle>
+</extension>
+<extension
+      point="org.eclipse.ui.workbench.texteditor.codeMiningProviders">
+   <codeMiningProvider
+         class="org.quiteoldorange.i3textutils.codemining.BSLCodeMiningProvider"
+         id="org.quiteoldorange.i3textutils.BSLCodeMiningProvider">
+   </codeMiningProvider>
 </extension>   
    
 </plugin>

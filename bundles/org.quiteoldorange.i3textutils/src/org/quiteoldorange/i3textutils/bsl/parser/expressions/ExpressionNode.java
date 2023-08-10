@@ -108,6 +108,10 @@ public class ExpressionNode
             case Comma:
                 addChildren(new MultipleExpressionsNode(stream));
                 break;
+            case EqualsSign:
+
+                // TODO: проверить на => и аналогично
+
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
             }

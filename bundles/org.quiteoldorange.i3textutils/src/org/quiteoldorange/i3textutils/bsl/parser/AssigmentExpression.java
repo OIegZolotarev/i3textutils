@@ -14,6 +14,13 @@ import org.quiteoldorange.i3textutils.bsl.parser.expressions.ExpressionNode;
 public class AssigmentExpression
     extends AbsractBSLElementNode
 {
+    @Override
+    public String toString()
+    {
+        // TODO Auto-generated method stub
+        return String.format("%s = %s", mVariableName, getChildren().get(0).toString()); //$NON-NLS-1$
+    }
+
     String mVariableName;
 
     /**

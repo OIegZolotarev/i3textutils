@@ -16,6 +16,8 @@ import org.quiteoldorange.i3textutils.bsl.parser.ConstantNode;
 import org.quiteoldorange.i3textutils.bsl.parser.IdentifierNode;
 import org.quiteoldorange.i3textutils.bsl.parser.expressions.OperationNode.Operator;
 
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+
 /**
  * @author ozolotarev
  *
@@ -23,6 +25,28 @@ import org.quiteoldorange.i3textutils.bsl.parser.expressions.OperationNode.Opera
 public class ExpressionNode
     extends AbsractBSLElementNode
 {
+    @Override
+    public String serialize(ScriptVariant scriptVariant)
+    {
+        StringBuilder builder = new StringBuilder();
+
+        for (AbsractBSLElementNode node : getChildren())
+        {
+            // TODO: проверка на необходимость лепить перенос
+            String nodeValue = node.serialize(scriptVariant);
+            builder.append(nodeValue);
+
+            if (getChildren().indexOf(node) != getChildren().size() - 1)
+                builder.append(", "); //$NON-NLS-1$
+        }
+
+        if (mCompound)
+            return "(" + builder.toString() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+        else
+            return builder.toString();
+    }
+
+    @SuppressWarnings("unused")
     private boolean mCompound;
 
     public AbsractBSLElementNode ParseExpressionNode(Lexer stream, Token.Type endingToken) throws BSLParsingException
@@ -81,6 +105,9 @@ public class ExpressionNode
             case Dot:
                 addChildren(new MemberAccessNode(stream));
                 break;
+            case Comma:
+                addChildren(new MultipleExpressionsNode(stream));
+                break;
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
             }
@@ -92,10 +119,12 @@ public class ExpressionNode
 
     public ExpressionNode(Lexer stream, Token.Type endToken) throws BSLParsingException
     {
-        super(stream);
+        super(null);
 
         ParseExpressionNode(stream, endToken);
-        reduce();
+        reduce(getChildren());
+
+        int a = 1;
     }
 
     @SuppressWarnings("unused")
@@ -135,10 +164,8 @@ public class ExpressionNode
      * @throws
      * @throws ExpectedClosingBracket
      */
-    private void reduce() throws BSLParsingException
+    private void reduce(List<AbsractBSLElementNode> children) throws BSLParsingException
     {
-        var children = getChildren();
-
         while (true)
         {
             if (children.size() < 2)
@@ -158,12 +185,18 @@ public class ExpressionNode
                 int startIndex = compoundExpression.getFirst();
                 ExpressionNode expression = compoundExpression.getSecond();
 
-                //          if (startIndex > 0)
-                //        {
-                //                var prevNode = children.get(startIndex - 1);
+                if (startIndex > 0)
+                {
+                   var prevNode = children.get(startIndex - 1);
 
-                //              }
-//                else
+                   if (prevNode instanceof IdentifierNode)
+                   {
+                       children.remove(startIndex - 1);
+                       children.add(startIndex - 1, new MethodCallNode((IdentifierNode)prevNode, expression));
+                   }
+
+                }
+                else
                     children.add(startIndex, expression);
 
             }
@@ -183,12 +216,16 @@ public class ExpressionNode
 
                 // TODO: MemberAccessExpression
 
-                memberNode.setLeftNode(leftNode);
-                memberNode.setRightNode(rightNode);
+                var memberAcessExpression = new MemberAccessExpression(null);
+
+                memberAcessExpression.setLeftNode(leftNode);
+                memberAcessExpression.setRightNode(rightNode);
 
                 children.remove(nodeIndex + 1);
                 children.remove(nodeIndex);
                 children.remove(nodeIndex - 1);
+
+                children.add(nodeIndex - 1, memberAcessExpression);
 
             }
             else if (node instanceof OperationNode)
@@ -217,12 +254,46 @@ public class ExpressionNode
         if (getChildren().size() == 0)
             return "<Bad expression>"; //$NON-NLS-1$
 
+        String result = ""; //$NON-NLS-1$
 
-        var node = getChildren().get(0);
-        String result = node.toString();
+        for (var item : getChildren())
+        {
+            result += item.toString() + ",";
+        }
 
         //if (mCompound)
         //  result = "(" + result + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+
+        if (getChildren().size() > 1)
+            return "{" + result.substring(0, result.length() - 1) + "}";
+        else
+            return result.substring(0, result.length() - 1);
+    }
+
+    private List<List<AbsractBSLElementNode>> splitMultipleExpressions(List<AbsractBSLElementNode> input)
+    {
+        List<List<AbsractBSLElementNode>> result = new LinkedList<>();
+
+        List<AbsractBSLElementNode> temp = new LinkedList<>();
+
+        var iterator = input.iterator();
+
+        while (iterator.hasNext())
+        {
+            var node = iterator.next();
+
+            if (node instanceof MultipleExpressionsNode)
+            {
+                result.add(temp);
+                temp = new LinkedList<>();
+                continue;
+            }
+
+            temp.add(node);
+        }
+
+        if (temp.size() > 0)
+            result.add(temp);
 
         return result;
     }
@@ -235,8 +306,18 @@ public class ExpressionNode
     {
         super(null);
 
-        setChildren(new LinkedList<>(slice));
-        reduce();
+        var expressions = splitMultipleExpressions(slice);
+
+        getChildren().clear();
+
+        for (var expressionList : expressions)
+        {
+            reduce(expressionList);
+            assert (expressionList.size() == 1);
+            addChildren(expressionList.get(0));
+        }
+
+        int a = 1;
     }
 
     /**
@@ -246,6 +327,7 @@ public class ExpressionNode
      */
     public ExpressionNode(List<AbsractBSLElementNode> subList, boolean compound) throws BSLParsingException
     {
+
         this(subList);
 
         mCompound = compound;
@@ -263,18 +345,22 @@ public class ExpressionNode
     {
         int level = 0;
 
-        var iterator = children.listIterator(children.indexOf(startNode) + (reverse ? -1 : 1));
+        //  + (reverse ? -1 : 1)
+        var iterator = children.listIterator(children.indexOf(startNode));
+
+        var endClass = (reverse ? openingBracketType : endingBracketType);
+        var openingClass = (reverse ? endingBracketType : openingBracketType);
 
         while (reverse ? iterator.hasPrevious() : iterator.hasNext())
         {
             AbsractBSLElementNode node = reverse ? iterator.previous() : iterator.next();
 
-            if (node.getClass() == (reverse ? openingBracketType : endingBracketType) && level == 0)
+            if (node.getClass() == endClass && level == 0)
                 return node;
-            else if (node.getClass() == endingBracketType && level != 0)
+            else if (node.getClass() == endClass && level != 0)
                 level--;
 
-            if (node.getClass() == openingBracketType)
+            if (node.getClass() == openingClass)
                 level++;
         }
 
@@ -307,4 +393,5 @@ public class ExpressionNode
 
         return best;
     }
+
 }

@@ -12,6 +12,7 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedToken;
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode.MethodTypes;
+import org.quiteoldorange.i3textutils.bsl.parser.expressions.ExpressionNode;
 
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
@@ -71,6 +72,12 @@ public class AbsractBSLElementNode
     public AbsractBSLElementNode ParseNode(Lexer stream)
         throws BSLParsingException
     {
+        int prevLine = -1;
+        var currentToken = stream.current();
+
+        if (currentToken != null)
+            prevLine = currentToken.getRow();
+
         while (true)
         {
             Token t = readTokenTracked(stream);
@@ -107,13 +114,10 @@ public class AbsractBSLElementNode
                 {
                 case EqualsSign:
                     return new AssigmentExpression(stream);
-                case OpeningBracket:
-                    return new MethodCallNode(stream);
-                case Dot:
-                    return new MemberExpression(stream);
+                default:
+                    stream.rollback();
+                    return new ExpressionNode(stream, Type.ExpressionEnd);
                 }
-
-                throw new BSLParsingException.UnexpectedToken(stream, t);
 
             case KeywordVar:
                 return new VariableDeclNode(stream);
@@ -126,7 +130,10 @@ public class AbsractBSLElementNode
             case AnnotationAround:
                 return new AnnotationNode(stream);
             case EmptyLine:
-                return new EmptyLineNode(stream);
+                if (t.getRow() != prevLine)
+                    return new EmptyLineNode(stream);
+                else
+                    continue;
             case PreprocessorIf:
                 return new PrepropcessorIfElseStatementNode(stream);
             default:

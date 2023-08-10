@@ -19,6 +19,12 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 public class MethodNode
     extends AbsractBSLElementNode
 {
+    @Override
+    public String toString()
+    {
+        return "MethodNode [mMethodName=" + mMethodName + ", mType=" + mType + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
+
     String mLazySource;
     LinkedList<ArgumentDefinition> mArguments = new LinkedList<>();
     boolean mExported = false;

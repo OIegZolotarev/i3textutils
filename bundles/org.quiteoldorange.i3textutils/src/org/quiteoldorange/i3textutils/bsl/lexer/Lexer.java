@@ -54,7 +54,7 @@ public class Lexer
 
         while (true)
         {
-            if (mOffset == mSource.length())
+            if (mOffset >= mSource.length())
             {
                 break;
             }
@@ -73,9 +73,6 @@ public class Lexer
 
             if (curChar == '\n')
             {
-                mColumn = 1;
-                mRow++;
-
                 mOffset++;
 
                 if (accumulator.isEmpty())
@@ -83,6 +80,10 @@ public class Lexer
                     accumulator += curChar;
                     Token.Type type = Token.CalculateTokenType(accumulator);
                     mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
+
+                    mColumn = 1;
+                    mRow++;
+
                     return mTokensStack.peek();
                 }
 
@@ -117,6 +118,31 @@ public class Lexer
                 else
                     tokenStart++;
             }
+            else if (curChar == '"')
+            {
+                if (atString)
+                {
+                    mOffset++;
+
+                    // 1С-овское экранирование кавычек - две подряд
+                    if (nextChar == '"')
+                    {
+                        accumulator += "\"\""; //$NON-NLS-1$
+                    }
+                    else
+                    {
+                        Token.Type type = Token.Type.StringConstant;
+                        mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
+                        return mTokensStack.peek();
+                    }
+                }
+                else
+                {
+                    tokenStart = mOffset;
+                    atString = true;
+                    accumulator = ""; //$NON-NLS-1$
+                }
+            }
             else if (isOneSymbolToken(curChar) && !atString)
             {
 
@@ -134,30 +160,6 @@ public class Lexer
                 Token.Type type = Token.CalculateTokenType(accumulator);
                 mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
                 return mTokensStack.peek();
-            }
-            else if (curChar == '"')
-            {
-                if (atString)
-                {
-                    // 1С-овское экранирование кавычек - две подряд
-                    if (nextChar == '"')
-                    {
-                        accumulator += "\"\""; //$NON-NLS-1$
-                        mOffset++;
-                    }
-                    else
-                    {
-                        Token.Type type = Token.Type.StringConstant;
-                        mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
-                        return mTokensStack.peek();
-                    }
-                }
-                else
-                {
-                    tokenStart = mOffset;
-                    atString = true;
-                    accumulator = ""; //$NON-NLS-1$
-                }
             }
             else
             {
@@ -181,6 +183,8 @@ public class Lexer
 
     public Token current()
     {
+        if (mTokensStack.empty())
+            return null;
         return mTokensStack.peek();
     }
 

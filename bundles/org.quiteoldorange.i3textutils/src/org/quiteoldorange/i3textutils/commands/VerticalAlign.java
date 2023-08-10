@@ -9,6 +9,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
+import org.quiteoldorange.i3textutils.StringUtils;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
 public class VerticalAlign
@@ -33,46 +34,10 @@ public class VerticalAlign
         int offset = sel.getOffset();
         int length = sel.getLength();
 
-        //////////////////////////////
-        var lines = text.split("\n");
-
-        int maxOffset = 0;
-
-        for (String line : lines)
-        {
-            maxOffset = Math.max(maxOffset, line.indexOf('='));
-        }
-
-        StringBuilder newLines = new StringBuilder();
-
-        for (String line : lines)
-        {
-            int currentOffset = line.indexOf('=');
-
-            if (currentOffset == -1)
-            {
-                newLines.append(line + "\n");
-                continue;
-            }
-
-            if (currentOffset == maxOffset)
-            {
-                newLines.append(line + "\n");
-                continue;
-            }
-
-            int spacesToAdd = maxOffset - currentOffset;
-
-            line = line.substring(0, currentOffset) + " ".repeat(spacesToAdd) + line.substring(currentOffset);
-            newLines.append(line + "\n");
-        }
-
-        //////////////////////////////
+        String result = StringUtils.verticalAlignSimple(text, '=');
 
         try
         {
-            String result = newLines.toString();
-            result = result.substring(0, result.length() - 1);
             doc.replace(offset, length, result);
         }
         catch (BadLocationException e)
@@ -84,6 +49,8 @@ public class VerticalAlign
         return null;
 
     }
+
+
 
 
 

@@ -56,4 +56,51 @@ public class StringUtils
         return result;
     }
 
+
+    /**
+     * @param text
+     * @return
+     */
+    public static String verticalAlignSimple(String text, char anchor)
+    {
+        //////////////////////////////
+        var lines = text.split("\n"); //$NON-NLS-1$
+
+        int maxOffset = 0;
+
+        for (String line : lines)
+        {
+            maxOffset = Math.max(maxOffset, line.indexOf(anchor));
+        }
+
+        StringBuilder newLines = new StringBuilder();
+
+        for (String line : lines)
+        {
+            int currentOffset = line.indexOf(anchor);
+
+            if (currentOffset == -1)
+            {
+                newLines.append(line + "\n"); //$NON-NLS-1$
+                continue;
+            }
+
+            if (currentOffset == maxOffset)
+            {
+                newLines.append(line + "\n");
+                continue;
+            }
+
+            int spacesToAdd = maxOffset - currentOffset;
+
+            line = line.substring(0, currentOffset) + " ".repeat(spacesToAdd) + line.substring(currentOffset); //$NON-NLS-1$
+            newLines.append(line + "\n"); //$NON-NLS-1$
+        }
+
+        //////////////////////////////
+
+        String result = newLines.toString();
+        result = result.substring(0, result.length() - 1);
+        return result;
+    }
 }

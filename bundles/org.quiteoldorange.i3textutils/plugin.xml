@@ -42,6 +42,12 @@
                   id="org.quiteoldorange.i3textutils.debugparser"
                   name="Отладка парсера">
             </command>
+            
+            <command
+                  defaultHandler="org.quiteoldorange.i3textutils.commands.MoveArgumentsOnSeparateLines"
+                  id="org.quiteoldorange.i3textutils.moveArgumentsOnSeparateLines"
+                  name="Расположить аргументы на отдельных строках">
+            </command>
       
    </extension>
    <extension point="org.eclipse.ui.menus">
@@ -117,6 +123,18 @@
               </visibleWhen>
            </command>
            
+                                 <command
+                 commandId="org.quiteoldorange.i3textutils.moveArgumentsOnSeparateLines"
+                 style="push"
+                 tooltip="Расположить аргументы на отдельных строках">
+              <visibleWhen
+                    checkEnabled="true">
+                 <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
+                 </reference>
+              </visibleWhen>
+           </command>
+           
         </menu>
         
     </menuContribution>
@@ -166,6 +184,7 @@
          class="org.quiteoldorange.i3textutils.qfix.methodmissingpragmas.MissingMethodPragmaQuickFixProvider">
    </externalQuickfixProvider>
 </extension>
+
 <extension
       point="com._1c.g5.wiring.serviceProvider">
    <bundle symbolicName = "org.quiteoldorange.i3textutils"></bundle>

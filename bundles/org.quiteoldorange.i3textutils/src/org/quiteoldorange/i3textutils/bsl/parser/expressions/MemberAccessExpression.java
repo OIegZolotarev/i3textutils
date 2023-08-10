@@ -10,9 +10,8 @@ import org.quiteoldorange.i3textutils.bsl.parser.AbsractBSLElementNode;
  * @author ozolotarev
  *
  */
-public class MemberAccessNode
+public class MemberAccessExpression
     extends AbsractBSLElementNode
-    implements IOperationNode
 {
 
     private AbsractBSLElementNode mLeftNode = null;
@@ -33,26 +32,25 @@ public class MemberAccessNode
     /**
      * @param stream
      */
-    public MemberAccessNode(Lexer stream)
+    public MemberAccessExpression(Lexer stream)
     {
         super(stream);
-        // TODO Auto-generated constructor stub
     }
 
-    @Override
-    public int precedence()
+    /**
+     * @param leftNode the leftNode to set
+     */
+    public void setLeftNode(AbsractBSLElementNode leftNode)
     {
-        // TODO Auto-generated method stub
-        return 1;
+        mLeftNode = leftNode;
     }
 
-    public void setLeftNode(AbsractBSLElementNode node)
+    /**
+     * @param rightNode the rightNode to set
+     */
+    public void setRightNode(AbsractBSLElementNode rightNode)
     {
-        mLeftNode = node;
+        mRightNode = rightNode;
     }
 
-    public void setRightNode(AbsractBSLElementNode node)
-    {
-        mRightNode = node;
-    }
 }

@@ -68,6 +68,14 @@ public class ModuleASTTree
     }
 
     /**
+     * @param text
+     */
+    public ModuleASTTree(String text)
+    {
+        this(new Lexer(text));
+    }
+
+    /**
      * @param moduleASTTree
      */
     private void mergeMethodAnnotationsAndDocs(AbsractBSLElementNode node)

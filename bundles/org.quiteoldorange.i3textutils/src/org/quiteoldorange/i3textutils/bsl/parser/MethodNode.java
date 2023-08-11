@@ -22,7 +22,7 @@ public class MethodNode
     @Override
     public String toString()
     {
-        return "MethodNode [mMethodName=" + mMethodName + ", mType=" + mType + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return "MethodNode [mMethodName=" + getMethodName() + ", mType=" + mType + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     String mLazySource;
@@ -119,6 +119,7 @@ public class MethodNode
                 throw new BSLParsingException.UnexpectedToken(stream, token, Type.Identifier);
 
             String argName = token.getValue();
+            String defaultValue = "";
 
             // Смотрим следующий токен
             // а) запятая
@@ -129,13 +130,13 @@ public class MethodNode
             switch (token.getType())
             {
             case Comma:
-                mArguments.add(new ArgumentDefinition(argName, null, byValue));
+                getArguments().add(new ArgumentDefinition(argName, null, byValue));
                 continue;
             case EqualsSign:
 
                 token = readTokenTracked(stream); // Значение аргумента
 
-                String defaultValue;
+
                 switch (token.getType())
                 {
                 case Identifier:
@@ -150,10 +151,11 @@ public class MethodNode
                 }
 
 
-                mArguments.add(new ArgumentDefinition(argName, defaultValue, byValue));
+                getArguments().add(new ArgumentDefinition(argName, defaultValue, byValue));
 
                 continue;
             case ClosingBracket:
+                getArguments().add(new ArgumentDefinition(argName, defaultValue, byValue));
                 break argParserLoop;
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, token);
@@ -264,12 +266,28 @@ public class MethodNode
     }
 
     /**
-     * @param childNode
+     * @param childNodeObject
      */
     public void addDocumentationBlock(CommentsBlock childNode)
     {
         childNode.setParent(this);
         getChildren().add(0, childNode);
+    }
+
+    /**
+     * @return the methodName
+     */
+    public String getMethodName()
+    {
+        return mMethodName;
+    }
+
+    /**
+     * @return the arguments
+     */
+    public LinkedList<ArgumentDefinition> getArguments()
+    {
+        return mArguments;
     }
 
 }

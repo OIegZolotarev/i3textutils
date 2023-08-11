@@ -14,10 +14,10 @@ import org.quiteoldorange.i3textutils.bsl.parser.BSLRegionNode;
 import org.quiteoldorange.i3textutils.bsl.parser.CommentNode;
 import org.quiteoldorange.i3textutils.bsl.parser.CommentsBlock;
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode;
+import org.quiteoldorange.i3textutils.bsl.parser.expressions.MethodCallNode;
 import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
 
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
-
 
 /**
  * @author ozolotarev
@@ -176,7 +176,7 @@ public class ModuleASTTree
      */
     public BSLRegionNode findRegion(String name)
     {
-        for(var item : getChildren())
+        for (var item : getChildren())
         {
             if (!(item instanceof BSLRegionNode))
                 continue;
@@ -187,6 +187,37 @@ public class ModuleASTTree
         }
 
         return null;
+    }
+
+    private MethodNode findMethodDefinitionRecursive(MethodCallNode methodCallNode, AbsractBSLElementNode node)
+    {
+        for (var item : node.getChildren())
+        {
+            if (item instanceof MethodNode)
+            {
+                MethodNode methodNode = (MethodNode)item;
+                if (methodCallNode.methodName().equals(methodNode.getMethodName()))
+                {
+                    return methodNode;
+                }
+            }
+
+            MethodNode nextItem = findMethodDefinitionRecursive(methodCallNode, item);
+
+            if (nextItem != null)
+                return nextItem;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param methodCallNode
+     * @return
+     */
+    public MethodNode findMethodDefinition(MethodCallNode methodCallNode)
+    {
+        return findMethodDefinitionRecursive(methodCallNode, this);
     }
 
 }

@@ -24,7 +24,7 @@ public class MethodCallNode
 
     public String serialize(ScriptVariant scriptVariant, boolean putArgsOnNewLines)
     {
-        assert (mMethod != null && mArgs != null);
+        assert (mMethodName != null && mArgs != null);
 
         StringBuilder builder = new StringBuilder();
 
@@ -43,19 +43,19 @@ public class MethodCallNode
                 builder.append("\n"); //$NON-NLS-1$
         }
 
-        return String.format("%s(%s)", mMethod.serialize(scriptVariant), builder.toString());
+        return String.format("%s(%s)", mMethodName.serialize(scriptVariant), builder.toString()); //$NON-NLS-1$
     }
 
     @Override
     public String toString()
     {
-        if (mMethod != null && mArgs != null)
-            return mMethod.toString() + " " + mArgs.toString(); //$NON-NLS-1$
+        if (mMethodName != null && mArgs != null)
+            return mMethodName.toString() + " " + mArgs.toString(); //$NON-NLS-1$
         else
             return ""; //$NON-NLS-1$
     }
 
-    IdentifierNode mMethod = null;
+    IdentifierNode mMethodName = null;
     ExpressionNode mArgs = null;
 
     /**
@@ -67,8 +67,23 @@ public class MethodCallNode
         super(null);
 
         mArgs = expression;
-        mMethod = methodNode;
+        mMethodName = methodNode;
     }
 
+    /**
+     * @return
+     */
+    public String methodName()
+    {
+        return mMethodName.value();
+    }
+
+    /**
+     * @return
+     */
+    public ExpressionNode getArgumentsExpression()
+    {
+        return mArgs;
+    }
 
 }

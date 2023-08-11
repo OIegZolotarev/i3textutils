@@ -130,10 +130,7 @@ public class AbsractBSLElementNode
             case AnnotationAround:
                 return new AnnotationNode(stream);
             case EmptyLine:
-                if (t.getRow() != prevLine)
-                    return new EmptyLineNode(stream);
-                else
-                    continue;
+                return new EmptyLineNode(stream);
             case PreprocessorIf:
                 return new PrepropcessorIfElseStatementNode(stream);
             default:
@@ -172,7 +169,8 @@ public class AbsractBSLElementNode
             }
 
             AbsractBSLElementNode newNode = ParseNode(stream);
-            addChildren(newNode);
+            if (newNode != null)
+                addChildren(newNode);
         }
     }
 
@@ -209,4 +207,25 @@ public class AbsractBSLElementNode
         return builder.toString();
     }
 
+    public int getStartingOffset()
+    {
+        if (mTokens.size() < 1)
+        {
+            return -1;
+        }
+
+        return mTokens.get(0).getOffset();
+    }
+
+    public int getEndOffset()
+    {
+        if (mTokens.size() < 1)
+        {
+            return -1;
+        }
+
+        var endtoken = mTokens.get(mTokens.size() - 1);
+
+        return endtoken.getOffset() + endtoken.getValue().length();
+    }
 }

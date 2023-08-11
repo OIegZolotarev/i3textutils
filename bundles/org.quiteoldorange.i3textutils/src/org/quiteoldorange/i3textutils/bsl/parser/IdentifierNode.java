@@ -35,4 +35,9 @@ public class IdentifierNode
     {
         return mTokens.get(0).getValue();
     }
+
+    public String value()
+    {
+        return mTokens.get(0).getValue();
+    }
 }

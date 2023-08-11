@@ -124,9 +124,6 @@ public class i3TextUtilsPlugin
             hackContentassistColors();
         });
 
-
-
-
     }
 
 

@@ -7,8 +7,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
+import org.quiteoldorange.i3textutils.codemining.CodeminingsChangeListener;
 import org.quiteoldorange.i3textutils.core.QuickFixAdapter;
 
+import com._1c.g5.v8.dt.core.handle.V8ModelCore;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -61,6 +63,7 @@ public class ServicesAdapter
     IFormItemMovementService formItemMovementService;
 
 
+
     private static ServicesAdapter sInstance;
 
     public ServicesAdapter()
@@ -79,6 +82,8 @@ public class ServicesAdapter
         try
         {
             QuickFixAdapter.bindQuickFixes();
+            V8ModelCore.getV8Model().addElementChangeListener(new CodeminingsChangeListener());
+
         }
         catch (Exception e)
         {
@@ -250,5 +255,6 @@ public class ServicesAdapter
     {
         return formItemMovementService;
     }
+
 
 }

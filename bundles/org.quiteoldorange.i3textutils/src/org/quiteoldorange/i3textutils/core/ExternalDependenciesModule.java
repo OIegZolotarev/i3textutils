@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 
+import com._1c.g5.v8.dt.core.handle.IV8Model;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.form.service.item.IFormItemManagementService;
@@ -60,6 +61,7 @@ public class ExternalDependenciesModule
         bind(IFormItemTypeManagementService.class).toService();
         bind(IFormItemManagementService.class).toService();
         bind(IFormItemMovementService.class).toService();
+        bind(IV8Model.class).toService();
 
     }
 

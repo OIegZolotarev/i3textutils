@@ -47,4 +47,21 @@
 | ----------- | ----------- |
 | ![изображение](https://github.com/OIegZolotarev/i3textutils/assets/5837087/767ecdf8-ece7-42c9-b1ac-c224175eeb19) | ![изображение](https://github.com/OIegZolotarev/i3textutils/assets/5837087/863c8b49-2c4e-4526-8450-df9f01e3e6f3)
 
+### Функция "Расположить аргументы на отдельной строке"
+WIP
+
+### Подсказки параметров в вызовах методов
+
+*Функция в разработке (сейчас поддерживаются только вызовы внутри текущего модуля)*
+
+Плагин реализует подсказки к параметрам с помощью codeminings и дает результат похожий на тот что есть в платформе от IntelliJ:
+
+| Без подсказок | С подсказками |
+| ----------- | ----------- |
+| ![D6k_fYo-T9k](https://github.com/OIegZolotarev/i3textutils/assets/5837087/52ac8fc1-0ae9-4ec0-9565-34dddc1bc3da) | ![lyI0rWTJDzk](https://github.com/OIegZolotarev/i3textutils/assets/5837087/9486628b-5c8f-4041-8ff1-06764d626ed8)|
+
+
+
+
+
 

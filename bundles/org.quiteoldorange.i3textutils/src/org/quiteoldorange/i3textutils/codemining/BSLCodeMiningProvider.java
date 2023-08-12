@@ -129,6 +129,8 @@ public class BSLCodeMiningProvider
             }
 
         }
+
+        // TODO: Циклы, попытки-исключения
     }
 
     private void traverseEDTModule(Module module, List<ICodeMining> result, ScriptVariant scriptVariant)
@@ -145,8 +147,8 @@ public class BSLCodeMiningProvider
     private void makeParametersHints(EList<Expression> invocationParams, List<String> paramsNames,
         List<ICodeMining> result)
     {
-        if (paramsNames.size() < 2)
-            return;
+//        if (paramsNames.size() < 2)
+//            return;
 
         int index = 0;
         for (var item : paramsNames)
@@ -160,10 +162,10 @@ public class BSLCodeMiningProvider
 
             String upperCaseParam = item.toUpperCase();
 
-            if (s.indexOf(upperCaseParam) > -1)
-            {
-                return;
-            }
+//            if (s.indexOf(upperCaseParam) > -1)
+//            {
+//                return;
+//            }
 
             Position position = new Position(node.getOffset(), 1);
 

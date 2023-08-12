@@ -22,7 +22,9 @@ Require-Bundle: org.eclipse.xtext.ui;bundle-version="[2.22.0,3.0.0)",
  com._1c.g5.v8.dt.mcore,
  com._1c.g5.v8.dt.form,
  org.eclipse.ui.workbench.texteditor,
- org.eclipse.handly
+ org.eclipse.handly,
+ org.eclipse.core.runtime,
+ org.eclipse.ui
 Import-Package: com._1c.chassis.gears.lifecycle,
  com._1c.g5.v8.bm.core,
  com._1c.g5.v8.bm.integration,

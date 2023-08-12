@@ -1,200 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension
+    <extension
          point="org.eclipse.ui.commands">
-      <command
+        <command
             categoryId="com._1c.g5.v8.dt.ui.aef.commands"
             defaultHandler="org.quiteoldorange.i3textutils.commands.AddMissingPragmas"
             id="org.quiteoldorange.i3textutils.commands.AddMissingPragmas"
-            name="%addMissingPragmas.name">
-      </command>
-      <command
+            name="%addMissingPragmas.name"></command>
+        <command
             categoryId="com._1c.g5.v8.dt.ui.aef.commands"
             defaultHandler="org.quiteoldorange.i3textutils.commands.FillModuleStructure"
             id="org.quiteoldorange.i3textutils.commands.fillModuleStructure"
-            name="%fillModuleStructure.name">
-      </command>      
-            <command
+            name="%fillModuleStructure.name"></command>
+        <command
                   categoryId="com._1c.g5.v8.dt.ui.aef.commands"
                   defaultHandler="org.quiteoldorange.i3textutils.commands.ReformatModule"
                   id="org.quiteoldorange.i3textutils.commands.ReformatModule"
-                  name="%reformatModule.name">
-      </command>
-            <command
+                  name="%reformatModule.name"></command>
+        <command
                   categoryId="com._1c.g5.v8.dt.ui.aef.commands"
                   defaultHandler="org.quiteoldorange.i3textutils.commands.VerticalAlign"
                   id="org.quiteoldorange.i3textutils.verticalalign"
-                  name="Выровнять вертикально">
-            </command>
-            <command
+                  name="Выровнять вертикально"></command>
+        <command
                   defaultHandler="org.quiteoldorange.i3textutils.commands.CleanupEmptyLines"
                   id="org.quiteoldorange.i3textutils.cleanupemptylines"
-                  name="Очистить лишние отступы">
-            </command>
-            <command
+                  name="Очистить лишние отступы"></command>
+        <command
                   defaultHandler="org.quiteoldorange.i3textutils.commands.GroupUIItemsCommand"
                   id="org.quiteoldorange.i3textutils.ui.groupitems"
-                  name="Сгруппировать элементы">
-            </command>
-            <command
+                  name="Сгруппировать элементы"></command>
+        <command
                   defaultHandler="org.quiteoldorange.i3textutils.commands.DebugParserCommand"
                   id="org.quiteoldorange.i3textutils.debugparser"
-                  name="Отладка парсера">
-            </command>
-            
-            <command
+                  name="Отладка парсера"></command>
+        <command
                   defaultHandler="org.quiteoldorange.i3textutils.commands.MoveArgumentsOnSeparateLines"
                   id="org.quiteoldorange.i3textutils.moveArgumentsOnSeparateLines"
-                  name="Расположить аргументы на отдельных строках">
-            </command>
-      
-   </extension>
-   <extension point="org.eclipse.ui.menus">
-    <menuContribution
+                  name="Расположить аргументы на отдельных строках"></command>
+    </extension>
+    <extension point="org.eclipse.ui.menus">
+        <menuContribution
         locationURI="popup:#BslEditorContext?endof=group.open">
-        
-        <menu
+            <menu
               id="labeli3Tools"
               label="%i3ToolsTextGroup">
-           
-           <command commandId ="org.quiteoldorange.i3textutils.commands.ReformatModule" style="push">
-              <visibleWhen checkEnabled="true">
-                 <reference
-                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                 </reference>
-              </visibleWhen>
-           </command>              
-              
-           <command
+                <command commandId ="org.quiteoldorange.i3textutils.commands.ReformatModule" style="push">
+                    <visibleWhen checkEnabled="true">
+                        <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened"></reference>
+                    </visibleWhen>
+                </command>
+                <command
                  commandId="org.quiteoldorange.i3textutils.commands.AddMissingPragmas"
                  style="push"
                  tooltip="%addMissingPragmas.tooltip">
-              <visibleWhen
+                    <visibleWhen
                     checkEnabled="true">
-                 <reference
-                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                 </reference>
-              </visibleWhen>
-           </command>
-           <command
+                        <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened"></reference>
+                    </visibleWhen>
+                </command>
+                <command
                  commandId="org.quiteoldorange.i3textutils.commands.fillModuleStructure"
                  style="push"
                  tooltip="%fillModuleStructure.tooltip">
-              <visibleWhen
+                    <visibleWhen
                     checkEnabled="true">
-                 <reference
-                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                 </reference>
-              </visibleWhen>
-           </command>
-           <command
+                        <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened"></reference>
+                    </visibleWhen>
+                </command>
+                <command
                  commandId="org.quiteoldorange.i3textutils.verticalalign"
                  id="org.quiteoldorange.i3textutils.verticalalign"
                  label="Выровнять вертикально">
-            <visibleWhen
+                    <visibleWhen
                     checkEnabled="true">
-                 <reference
-                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                 </reference>
-              </visibleWhen>
-           </command>
-           <command
+                        <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened"></reference>
+                    </visibleWhen>
+                </command>
+                <command
                  commandId="org.quiteoldorange.i3textutils.cleanupemptylines"
                  style="push"
                  tooltip="%fillModuleStructure.tooltip">
-              <visibleWhen
+                    <visibleWhen
                     checkEnabled="true">
-                 <reference
-                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                 </reference>
-              </visibleWhen>
-           </command>
-           
-                      <command
+                        <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened"></reference>
+                    </visibleWhen>
+                </command>
+                <command
                  commandId="org.quiteoldorange.i3textutils.debugparser"
                  style="push"
                  tooltip="Отладка парсера">
-              <visibleWhen
+                    <visibleWhen
                     checkEnabled="true">
-                 <reference
-                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                 </reference>
-              </visibleWhen>
-           </command>
-           
-                                 <command
+                        <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened"></reference>
+                    </visibleWhen>
+                </command>
+                <command
                  commandId="org.quiteoldorange.i3textutils.moveArgumentsOnSeparateLines"
                  style="push"
                  tooltip="Расположить аргументы на отдельных строках">
-              <visibleWhen
+                    <visibleWhen
                     checkEnabled="true">
-                 <reference
-                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened">
-                 </reference>
-              </visibleWhen>
-           </command>
-           
-        </menu>
-        
-    </menuContribution>
-    <menuContribution
+                        <reference
+                       definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.opened"></reference>
+                    </visibleWhen>
+                </command>
+            </menu>
+        </menuContribution>
+        <menuContribution
           allPopups="false"
           locationURI="menu:org.eclipse.ui.main.menu?after=help">
-       <menu
+            <menu
              id="labeli3Tools"
              label="%i3ToolsTextGroup">
-          <command
+                <command
                 commandId="org.quiteoldorange.i3textutils.ui.groupitems"
                 label="Сгруппировать элементы"
-                style="push">
-          </command>
-       </menu>
-    </menuContribution>
-    <menuContribution
+                style="push"></command>
+            </menu>
+        </menuContribution>
+        <menuContribution
           allPopups="false"
           locationURI="toolbar:com._1c.g5.v8.dt.form.ui.formEditor.items?after=wysiwyg">
-       <command
+            <command
              commandId="org.quiteoldorange.i3textutils.ui.groupitems"
              label="Сгруппировать элементы 111"
-             style="push">
-       </command>
-    </menuContribution>
-</extension>
-   
-<!-- <extension point="com.e1c.g5.v8.dt.check.fixes">
-<fix class="org.quiteoldorange.i3textutils.core.ExecutableExtensionFactory:org.quiteoldorange.i3textutils.qfix.MissingPragmaQFix"/>
-</extension> -->
-
-<extension
+             style="push"></command>
+        </menuContribution>
+    </extension>
+    <!-- <extension point="com.e1c.g5.v8.dt.check.fixes"><fix class="org.quiteoldorange.i3textutils.core.ExecutableExtensionFactory:org.quiteoldorange.i3textutils.qfix.MissingPragmaQFix"/></extension> -->
+    <extension
       point="com._1c.g5.v8.dt.bsl.externalBslValidator">
-   <externalValidator
-         class="org.quiteoldorange.i3textutils.qfix.quickactions.MethodQuickActionsMarkerGenerator">
-   </externalValidator>
-</extension>
-<extension
+        <externalValidator
+         class="org.quiteoldorange.i3textutils.qfix.quickactions.MethodQuickActionsMarkerGenerator"></externalValidator>
+    </extension>
+    <extension
       point="com._1c.g5.v8.dt.bsl.ui.externalQuickfixProvider">
-   <externalQuickfixProvider
-         class="org.quiteoldorange.i3textutils.qfix.quickactions.MethodQuickActions">
-   </externalQuickfixProvider>
-   <externalQuickfixProvider
-         class="org.quiteoldorange.i3textutils.qfix.movemethodtoregion.ModuleRegionQuickFixProvider">
-   </externalQuickfixProvider>
-   <externalQuickfixProvider
-         class="org.quiteoldorange.i3textutils.qfix.methodmissingpragmas.MissingMethodPragmaQuickFixProvider">
-   </externalQuickfixProvider>
-</extension>
-
-<extension
+        <externalQuickfixProvider
+         class="org.quiteoldorange.i3textutils.qfix.quickactions.MethodQuickActions"></externalQuickfixProvider>
+        <externalQuickfixProvider
+         class="org.quiteoldorange.i3textutils.qfix.movemethodtoregion.ModuleRegionQuickFixProvider"></externalQuickfixProvider>
+        <externalQuickfixProvider
+         class="org.quiteoldorange.i3textutils.qfix.methodmissingpragmas.MissingMethodPragmaQuickFixProvider"></externalQuickfixProvider>
+    </extension>
+    <extension
       point="com._1c.g5.wiring.serviceProvider">
-   <bundle symbolicName = "org.quiteoldorange.i3textutils"></bundle>
-</extension>
-<extension
+        <bundle symbolicName = "org.quiteoldorange.i3textutils"></bundle>
+    </extension>
+    <extension
       point="org.eclipse.ui.workbench.texteditor.codeMiningProviders">
-   <codeMiningProvider
+        <codeMiningProvider
          class="org.quiteoldorange.i3textutils.codemining.BSLCodeMiningProvider"
-         id="org.quiteoldorange.i3textutils.BSLCodeMiningProvider">
-   </codeMiningProvider>
-</extension>   
-   
+         id="org.quiteoldorange.i3textutils.BSLCodeMiningProvider"></codeMiningProvider>
+    </extension>
+    <extension
+      point="org.eclipse.ui.preferencePages">
+        <page
+         class="org.quiteoldorange.i3textutils.preferences.PluginPreferencePage"
+         id="org.quiteoldorange.i3textutils.preferences.PluginPreferencePage"
+         name="Инструменты i3"></page>
+    </extension>
+    <extension
+      point="org.eclipse.core.runtime.preferences">
+        <initializer
+         class="org.quiteoldorange.i3textutils.preferences.PreferenceInitializer"></initializer>
+    </extension>
 </plugin>

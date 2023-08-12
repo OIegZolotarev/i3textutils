@@ -48,7 +48,7 @@ public class Token
         OperatorElseIf,
         OperatorEndIf,
         LessSign,
-        GreateSign,
+        GreaterSign,
         OperatorFor,
         OperatorWhile,
         OperatorEndLoop,
@@ -85,7 +85,8 @@ public class Token
         AnnotationAtServerNoContext,
         AnnotationBefore,
         AnnotationAfter,
-        AnnotationAround
+        AnnotationAround,
+        KeywordReturn
 
     }
 
@@ -240,7 +241,7 @@ public class Token
         sTokenDictionary.put(Type.OperatorElseIf, new KeywordDictionaryEntry("ИначеЕсли", "ElseIf")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.OperatorEndIf, new KeywordDictionaryEntry("КонецЕсли", "EndIf")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.LessSign, new KeywordDictionaryEntry("<", "<")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.GreateSign, new KeywordDictionaryEntry(">", ">")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.GreaterSign, new KeywordDictionaryEntry(">", ">")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.OperatorFor, new KeywordDictionaryEntry("Для", "For")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.OperatorWhile, new KeywordDictionaryEntry("Пока", "While")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.OperatorEndLoop, new KeywordDictionaryEntry("КонецЦикла", "EndLoop")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -281,6 +282,7 @@ public class Token
         sTokenDictionary.put(Type.AnnotationBefore, new KeywordDictionaryEntry("&Перед", "&Before")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.AnnotationAfter, new KeywordDictionaryEntry("&После", "&After")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.AnnotationAround, new KeywordDictionaryEntry("&Вместо", "&Around")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordReturn, new KeywordDictionaryEntry("Возврат", "Return")); //$NON-NLS-1$ //$NON-NLS-2$
 
         for (var entry: sTokenDictionary.entrySet())
         {

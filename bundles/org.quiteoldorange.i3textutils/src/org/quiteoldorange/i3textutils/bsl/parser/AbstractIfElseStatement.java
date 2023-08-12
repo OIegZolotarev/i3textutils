@@ -3,6 +3,9 @@
  */
 package org.quiteoldorange.i3textutils.bsl.parser;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
@@ -122,7 +125,7 @@ public class AbstractIfElseStatement
     static TokenSet sBSLCodeSet =
         new TokenSet(Type.OperatorIf, Type.OperatorElse, Type.OperatorElseIf, Type.OperatorEndIf);
 
-    class ConditionNode
+    public class ConditionNode
         extends AbsractBSLElementNode
     {
 
@@ -133,13 +136,13 @@ public class AbstractIfElseStatement
             if (index == 0)
             {
                 r.append(String.format("%s %s %s", mKind.serializeIfToken(scriptVariant), //$NON-NLS-1$
-                    mConditionalExpression.serialize(scriptVariant),
+                    getConditionalExpression().serialize(scriptVariant),
                     mKind.serializeThenToken(scriptVariant)));
             }
-            else if (mConditionalExpression != null)
+            else if (getConditionalExpression() != null)
             {
                 r.append(String.format("%s %s %s", mKind.serializeElseIfToken(scriptVariant), //$NON-NLS-1$
-                        mConditionalExpression.serialize(scriptVariant),
+                    getConditionalExpression().serialize(scriptVariant),
                         mKind.serializeThenToken(scriptVariant)));
             }
             else
@@ -177,6 +180,14 @@ public class AbstractIfElseStatement
 
         }
 
+        /**
+         * @return the conditionalExpression
+         */
+        public ExpressionNode getConditionalExpression()
+        {
+            return mConditionalExpression;
+        }
+
     }
 
     private TokenSet mKind;
@@ -200,7 +211,10 @@ public class AbstractIfElseStatement
 
             if (token_type == kind.getIfToken() || token_type == kind.getElseIftoken())
             {
-                AbsractBSLElementNode expression = new ExpressionNode(stream, Token.Type.OperatorThen);
+                Set<Token.Type> endingTokens = new HashSet<>();
+                endingTokens.add(Token.Type.OperatorThen);
+
+                AbsractBSLElementNode expression = new ExpressionNode(stream, endingTokens);
 
                 ConditionNode conditionNode = new ConditionNode(stream, (ExpressionNode)expression, kind);
                 addChildren(conditionNode);

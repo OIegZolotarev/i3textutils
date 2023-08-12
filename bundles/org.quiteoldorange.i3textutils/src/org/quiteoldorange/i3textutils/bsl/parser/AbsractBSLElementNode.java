@@ -3,9 +3,11 @@
  */
 package org.quiteoldorange.i3textutils.bsl.parser;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token;
@@ -116,7 +118,18 @@ public class AbsractBSLElementNode
                     return new AssigmentExpression(stream);
                 default:
                     stream.rollback();
-                    return new ExpressionNode(stream, Type.ExpressionEnd);
+
+                    Set<Token.Type> endingTokens = new HashSet<>();
+                    endingTokens.add(Type.ExpressionEnd);
+                    endingTokens.add(Type.OperatorElse);
+                    endingTokens.add(Type.OperatorElseIf);
+                    endingTokens.add(Type.OperatorEndIf);
+                    endingTokens.add(Type.OperatorEndTry);
+                    endingTokens.add(Type.OperatorEndLoop);
+                    endingTokens.add(Type.EndProcedure);
+                    endingTokens.add(Type.EndFunction);
+
+                    return new ExpressionNode(stream, endingTokens);
                 }
 
             case KeywordVar:
@@ -133,6 +146,10 @@ public class AbsractBSLElementNode
                 return new EmptyLineNode(stream);
             case PreprocessorIf:
                 return new PrepropcessorIfElseStatementNode(stream);
+            case OperatorIf:
+                return new IfElseStatementNode(stream);
+            case KeywordReturn:
+                return new ReturnStatementNode(stream);
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
             }

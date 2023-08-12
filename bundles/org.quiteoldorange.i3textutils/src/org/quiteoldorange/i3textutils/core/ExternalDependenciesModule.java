@@ -13,9 +13,8 @@
 package org.quiteoldorange.i3textutils.core;
 
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 
+import com._1c.g5.v8.dt.bsl.ui.BslDocumentationProvider;
 import com._1c.g5.v8.dt.core.handle.IV8Model;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -49,10 +48,6 @@ public class ExternalDependenciesModule
     protected void doConfigure()
     {
         // Какая-то java-хуйня
-
-        URI uri = URI.createURI("*.bsl"); //$NON-NLS-1$
-        final IResourceServiceProvider rsp = IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(uri);
-
         bind(IV8ProjectManager.class).toService();
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();
@@ -62,6 +57,7 @@ public class ExternalDependenciesModule
         bind(IFormItemManagementService.class).toService();
         bind(IFormItemMovementService.class).toService();
         bind(IV8Model.class).toService();
+        bind(BslDocumentationProvider.class).toService();
 
     }
 

@@ -50,7 +50,7 @@ public class MethodCallNode
     public String toString()
     {
         if (mMethodName != null && mArgs != null)
-            return mMethodName.toString() + " " + mArgs.toString(); //$NON-NLS-1$
+            return mMethodName.toString() + "(" + mArgs.toString() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
         else
             return ""; //$NON-NLS-1$
     }

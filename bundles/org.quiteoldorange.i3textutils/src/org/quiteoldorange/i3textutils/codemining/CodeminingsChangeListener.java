@@ -25,6 +25,7 @@ public class CodeminingsChangeListener
     @Override
     public void elementChanged(IElementChangeEvent event)
     {
+
         for (IElementDelta iterator : event.getDeltas())
         {
             ElementDelta delta = (ElementDelta)iterator;

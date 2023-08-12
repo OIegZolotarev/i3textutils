@@ -5,6 +5,7 @@ package org.quiteoldorange.i3textutils.bsl.parser.expressions;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.quiteoldorange.i3textutils.Tuple;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
@@ -27,11 +28,11 @@ public class ExpressionNode
 {
     private boolean mCompound;
 
-    public ExpressionNode(Lexer stream, Token.Type endToken) throws BSLParsingException
+    public ExpressionNode(Lexer stream, Set<Token.Type> endTokens) throws BSLParsingException
     {
         super(null);
 
-        ParseExpressionNode(stream, endToken);
+        ParseExpressionNode(stream, endTokens);
         reduce(getChildren());
 
         int a = 1;
@@ -45,6 +46,9 @@ public class ExpressionNode
     {
         super(null);
 
+        if (slice == null)
+            return;
+
         var expressions = splitMultipleExpressions(slice);
 
         getChildren().clear();
@@ -52,8 +56,13 @@ public class ExpressionNode
         for (var expressionList : expressions)
         {
             reduce(expressionList);
-            assert (expressionList.size() == 1);
-            addChildren(expressionList.get(0));
+            if (expressionList.size() > 1)
+                throw new BSLParsingException.UnexpectedEndOfStream();
+
+            if (expressionList.size() > 0)
+                addChildren(expressionList.get(0));
+            else
+                addChildren(new ExpressionNode(null));
         }
 
         int a = 1;
@@ -166,16 +175,28 @@ public class ExpressionNode
         return new Tuple<>(startIndex, compoundExpression);
     }
 
-    public AbsractBSLElementNode ParseExpressionNode(Lexer stream, Token.Type endingToken) throws BSLParsingException
+    public AbsractBSLElementNode ParseExpressionNode(Lexer stream, Set<Token.Type> endingTokens) throws BSLParsingException
     {
         while (true)
         {
-            Token t = readTokenTracked(stream);
+            Token t = stream.peekNext();
 
             if (t == null)
                 break;
 
-            if (t.getType() == endingToken)
+            if (endingTokens.contains(t.getType()))
+            {
+
+                // Костыль для того чтобы корректно отпарсить "КонецФункции" и подобное без точки с запятой
+                if (t.getType() == Token.Type.ExpressionEnd || t.getType() == Token.Type.OperatorThen)
+                    readTokenTracked(stream);
+
+                break;
+            }
+
+            t = readTokenTracked(stream);
+
+            if (t == null)
                 break;
 
             switch (t.getType())
@@ -227,9 +248,19 @@ public class ExpressionNode
             case Comma:
                 addChildren(new MultipleExpressionsNode(stream));
                 break;
-            case EqualsSign:
+            case OperatorNew:
+                addChildren(new OperatorNewNode(stream));
+                break;
 
-                // TODO: проверить на => и аналогично
+            case GreaterSign:
+                addChildren(new OperationNode(stream, Operator.Greater));
+                break;
+            case LessSign:
+                addChildren(new OperationNode(stream, Operator.Less));
+                break;
+
+            case EqualsSign:
+                addChildren(new OperationNode(stream, Operator.Equal));
                 break;
 
             default:
@@ -240,6 +271,7 @@ public class ExpressionNode
 
         return null;
     }
+
 
     /**
      * @throws
@@ -272,9 +304,38 @@ public class ExpressionNode
 
                    if (prevNode instanceof IdentifierNode)
                    {
-                       children.remove(startIndex - 1);
-                       children.add(startIndex - 1, new MethodCallNode((IdentifierNode)prevNode, expression));
+
+                       if (startIndex > 1)
+                       {
+                           var prevNode2 = children.get(startIndex - 2);
+
+                           if (prevNode2 instanceof OperatorNewNode)
+                           {
+                               children.remove((startIndex - 1));
+                               children.remove((startIndex - 2));
+
+                               children.add(startIndex - 2,
+                                   new OperatorNewExpression((IdentifierNode)prevNode, expression));
+                           }
+                           else
+                           {
+                               children.remove(startIndex - 1);
+                               children.add(startIndex - 1, new MethodCallNode((IdentifierNode)prevNode, expression));
+                           }
+                       }
+                       else
+                       {
+                           children.remove(startIndex - 1);
+                           children.add(startIndex - 1, new MethodCallNode((IdentifierNode)prevNode, expression));
+                       }
                    }
+                   else if (prevNode instanceof OperatorNewNode)
+                   {
+                       children.remove(startIndex - 1);
+                       children.add(startIndex - 1, new OperatorNewExpression(expression));
+                   }
+                   else
+                       children.add(startIndex, expression);
 
                 }
                 else
@@ -358,11 +419,19 @@ public class ExpressionNode
 
         var iterator = input.iterator();
 
+        int level = 0;
+
         while (iterator.hasNext())
         {
             var node = iterator.next();
 
-            if (node instanceof MultipleExpressionsNode)
+            if (node instanceof ExpressionOpeningBracket)
+                level++;
+
+            if (node instanceof ExpressionClosingBracket)
+                level--;
+
+            if (node instanceof MultipleExpressionsNode && level == 0)
             {
                 result.add(temp);
                 temp = new LinkedList<>();

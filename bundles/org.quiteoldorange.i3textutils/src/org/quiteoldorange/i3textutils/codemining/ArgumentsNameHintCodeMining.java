@@ -51,6 +51,8 @@ public class ArgumentsNameHintCodeMining
     {
         MethodNode methodDef = module.findMethodDefinition(methodCallNode);
 
+
+
         if (methodDef == null)
             return;
 
@@ -61,6 +63,10 @@ public class ArgumentsNameHintCodeMining
         int index = 0;
         for (var arg : callArgs.getChildren())
         {
+            if (arg.getStartingOffset() < 0)
+            {
+                int a = 1;
+            }
             Position position = new Position(arg.getStartingOffset(), 1);
             String argName = argsDef.get(index).getName();
 

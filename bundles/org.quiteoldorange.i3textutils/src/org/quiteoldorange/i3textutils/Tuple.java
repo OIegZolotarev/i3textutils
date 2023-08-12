@@ -59,7 +59,7 @@ public class Tuple<T, U>
     @Override
     public String toString()
     {
-        return "Tuple(" + first + ", " + second + ")";
+        return "Tuple(" + first + ", " + second + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 }

@@ -14,6 +14,15 @@ public class MemberAccessExpression
     extends AbsractBSLElementNode
 {
 
+    @Override
+    public int getStartingOffset()
+    {
+        if (mLeftNode != null)
+            return mLeftNode.getStartingOffset();
+
+        return super.getStartingOffset();
+    }
+
     private AbsractBSLElementNode mLeftNode = null;
     private AbsractBSLElementNode mRightNode = null;
 

@@ -15,30 +15,17 @@ import org.quiteoldorange.i3textutils.bsl.parser.expressions.ExpressionNode;
  * @author ozolotarev
  *
  */
-public class AssigmentExpression
+public class ReturnStatementNode
     extends AbsractBSLElementNode
 {
-    @Override
-    public String toString()
-    {
-        // TODO Auto-generated method stub
-        return String.format("%s = %s", mVariableName, getChildren().get(0).toString()); //$NON-NLS-1$
-    }
-
-    String mVariableName;
 
     /**
      * @param stream
+     * @throws BSLParsingException
      */
-    public AssigmentExpression(Lexer stream) throws BSLParsingException
+    public ReturnStatementNode(Lexer stream) throws BSLParsingException
     {
         super(stream);
-
-        // Первый токен - имя переменной
-
-        mVariableName = mTokens.get(0).getValue();
-
-        checkTokenTracked(stream, Type.EqualsSign);
 
         Set<Token.Type> endingTokens = new HashSet<>();
         endingTokens.add(Type.ExpressionEnd);
@@ -51,6 +38,7 @@ public class AssigmentExpression
         endingTokens.add(Type.EndFunction);
 
         addChildren(new ExpressionNode(stream, endingTokens));
+
     }
 
 }

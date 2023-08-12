@@ -13,6 +13,12 @@ public class EmptyLineNode
     extends AbsractBSLElementNode
 {
 
+    @Override
+    public String toString()
+    {
+        return "<Пустая строка>"; //$NON-NLS-1$
+    }
+
     /**
      * @param stream
      */

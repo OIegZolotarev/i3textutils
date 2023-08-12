@@ -9,7 +9,7 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
  * @author ozolotarev
  *
  */
-public class IfElseStatement
+public class IfElseStatementNode
     extends AbstractIfElseStatement
 {
 
@@ -18,7 +18,7 @@ public class IfElseStatement
      * @param kind
      * @throws BSLParsingException
      */
-    public IfElseStatement(Lexer stream) throws BSLParsingException
+    public IfElseStatementNode(Lexer stream) throws BSLParsingException
     {
         super(stream, AbstractIfElseStatement.sBSLCodeSet);
         // TODO Auto-generated constructor stub

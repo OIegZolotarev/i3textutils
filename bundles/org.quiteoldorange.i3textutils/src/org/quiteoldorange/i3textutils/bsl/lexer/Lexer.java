@@ -48,6 +48,7 @@ public class Lexer
     {
         String accumulator = ""; //$NON-NLS-1$
         int tokenStart = mOffset;
+        int startingRow = mRow;
 
         boolean atComment = false;
         boolean atString = false;
@@ -74,16 +75,14 @@ public class Lexer
             if (curChar == '\n')
             {
                 mOffset++;
+                mRow++;
+                mColumn = 1;
 
                 if (accumulator.isEmpty())
                 {
                     accumulator += curChar;
                     Token.Type type = Token.CalculateTokenType(accumulator);
-                    mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
-
-                    mColumn = 1;
-                    mRow++;
-
+                    mTokensStack.push(new Token(type, accumulator, tokenStart, startingRow, mColumn));
                     return mTokensStack.peek();
                 }
 
@@ -95,7 +94,7 @@ public class Lexer
                 if (!accumulator.isEmpty())
                 {
                     Token.Type type = Token.CalculateTokenType(accumulator);
-                    mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
+                    mTokensStack.push(new Token(type, accumulator, tokenStart, startingRow, mColumn));
                     return mTokensStack.peek();
                 }
 
@@ -112,7 +111,7 @@ public class Lexer
                 if (!accumulator.isEmpty())
                 {
                     Token.Type type = Token.CalculateTokenType(accumulator);
-                    mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
+                    mTokensStack.push(new Token(type, accumulator, tokenStart, startingRow, mColumn));
                     return mTokensStack.peek();
                 }
                 else
@@ -132,13 +131,14 @@ public class Lexer
                     else
                     {
                         Token.Type type = Token.Type.StringConstant;
-                        mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
+                        mTokensStack.push(new Token(type, accumulator, tokenStart, startingRow, mColumn));
                         return mTokensStack.peek();
                     }
                 }
                 else
                 {
                     tokenStart = mOffset;
+                    startingRow = mRow;
                     atString = true;
                     accumulator = ""; //$NON-NLS-1$
                 }
@@ -149,7 +149,7 @@ public class Lexer
                 if (!accumulator.isEmpty())
                 {
                     Token.Type type = Token.CalculateTokenType(accumulator);
-                    mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
+                    mTokensStack.push(new Token(type, accumulator, tokenStart, startingRow, mColumn));
                     return mTokensStack.peek();
                 }
 
@@ -158,7 +158,7 @@ public class Lexer
                 accumulator += curChar;
 
                 Token.Type type = Token.CalculateTokenType(accumulator);
-                mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
+                mTokensStack.push(new Token(type, accumulator, tokenStart, startingRow, mColumn));
                 return mTokensStack.peek();
             }
             else
@@ -174,7 +174,7 @@ public class Lexer
         if (!accumulator.isEmpty())
         {
             Token.Type type = Token.CalculateTokenType(accumulator);
-            mTokensStack.push(new Token(type, accumulator, tokenStart, mRow, mColumn));
+            mTokensStack.push(new Token(type, accumulator, tokenStart, startingRow, mColumn));
             return mTokensStack.peek();
         }
 

@@ -62,7 +62,7 @@ public class ServicesAdapter
     @Inject
     IFormItemMovementService formItemMovementService;
 
-
+    CodeminingsChangeListener codeMiningChangeListener = new CodeminingsChangeListener();
 
     private static ServicesAdapter sInstance;
 
@@ -82,7 +82,7 @@ public class ServicesAdapter
         try
         {
             QuickFixAdapter.bindQuickFixes();
-            V8ModelCore.getV8Model().addElementChangeListener(new CodeminingsChangeListener());
+            V8ModelCore.getV8Model().addElementChangeListener(codeMiningChangeListener);
 
         }
         catch (Exception e)
@@ -109,7 +109,14 @@ public class ServicesAdapter
     @Override
     public void deactivate()
     {
-        // TODO Auto-generated method stub
+        try
+        {
+            V8ModelCore.getV8Model().removeElementChangeListener(codeMiningChangeListener);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
     }
 

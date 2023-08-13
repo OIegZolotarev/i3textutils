@@ -1,6 +1,7 @@
 package org.quiteoldorange.i3textutils.codemining;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -23,6 +24,8 @@ import org.quiteoldorange.i3textutils.bsl.parser.AbstractIfElseStatement;
 import org.quiteoldorange.i3textutils.bsl.parser.AbstractIfElseStatement.ConditionNode;
 import org.quiteoldorange.i3textutils.bsl.parser.expressions.ExpressionNode;
 import org.quiteoldorange.i3textutils.bsl.parser.expressions.MethodCallNode;
+import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
+import org.quiteoldorange.i3textutils.preferences.PreferenceConstants;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
 import com._1c.g5.v8.dt.bsl.model.BinaryExpression;
@@ -48,9 +51,17 @@ public class BSLCodeMiningProvider
     implements ICodeMiningProvider
 {
 
+    boolean mCodeminingsEnabled = true;
+    boolean mShowWhenOneParameter = false;
+    boolean mShowWhenContainsSubstring = false;
+
     public BSLCodeMiningProvider()
     {
-        // TODO Auto-generated constructor stub
+        var store = i3TextUtilsPlugin.getDefault().getPreferenceStore();
+        mCodeminingsEnabled = store.getBoolean(PreferenceConstants.CODEMININGS_ENABLED);
+        mShowWhenContainsSubstring =
+            store.getBoolean(PreferenceConstants.CODEMININGS_SHOW_WHEN_INPUT_CONTAINS_PARAMETER_NAME);
+        mShowWhenOneParameter = store.getBoolean(PreferenceConstants.CODEMININGS_SHOW_WHEN_ONE_PARAMETER);
     }
 
     @Override
@@ -59,6 +70,9 @@ public class BSLCodeMiningProvider
     {
         // TODO Auto-generated method stub
         return CompletableFuture.supplyAsync(() -> {
+
+            if (!mCodeminingsEnabled)
+                return Collections.emptyList();
 
             IXtextDocument document = (IXtextDocument)viewer.getDocument();
 
@@ -204,8 +218,8 @@ public class BSLCodeMiningProvider
     private void makeParametersHints(EList<Expression> invocationParams, List<String> paramsNames,
         List<ICodeMining> result)
     {
-//        if (paramsNames.size() < 2)
-//            return;
+        if (paramsNames.size() < 2 && !mShowWhenOneParameter)
+            return;
 
         int index = 0;
         for (var item : paramsNames)
@@ -215,14 +229,17 @@ public class BSLCodeMiningProvider
                 break;
 
             var node = NodeModelUtils.findActualNodeFor(invocationParams.get(index));
-            String s = node.getText().toUpperCase();
 
+            if (!mShowWhenContainsSubstring)
+            {
 
+                String s = node.getText().toUpperCase();
 
-//            if (s.indexOf(upperCaseParam) > -1)
-//            {
-//                return;
-//            }
+                if (s.indexOf(item.toUpperCase()) > -1)
+                {
+                    return;
+                }
+            }
 
             Position position = new Position(node.getOffset(), 1);
 
@@ -233,7 +250,7 @@ public class BSLCodeMiningProvider
         }
     }
 
-    private boolean dumpParametersNameFromMethod(EObject context,EObject feature, List<String> names, Invocation inv,
+    private boolean dumpParametersNameFromMethod(EObject context, EObject feature, List<String> names, Invocation inv,
         ScriptVariant variant)
     {
         if (feature instanceof Method)
@@ -291,7 +308,6 @@ public class BSLCodeMiningProvider
             return true;
         }
 
-
         return false;
     }
 
@@ -348,6 +364,7 @@ public class BSLCodeMiningProvider
      * @param tree
      * @param result
      */
+    @SuppressWarnings("unused")
     private void traversei3Tree(ModuleASTTree module, AbsractBSLElementNode tree, List<ICodeMining> result)
     {
 

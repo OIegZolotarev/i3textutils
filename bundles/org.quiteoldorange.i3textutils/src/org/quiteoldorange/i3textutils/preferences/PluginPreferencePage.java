@@ -3,9 +3,6 @@ package org.quiteoldorange.i3textutils.preferences;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
@@ -25,43 +22,61 @@ import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
  */
 
 public class PluginPreferencePage
-	extends FieldEditorPreferencePage
-	implements IWorkbenchPreferencePage {
+    extends FieldEditorPreferencePage
+    implements IWorkbenchPreferencePage
+{
 
-	public PluginPreferencePage() {
-		super(GRID);
-		setPreferenceStore(i3TextUtilsPlugin.getDefault().getPreferenceStore());
+    @Override
+    public boolean performOk()
+    {
+        // TODO Auto-generated method stub
+        return super.performOk();
+    }
+
+    public PluginPreferencePage()
+    {
+        super(GRID);
+        setPreferenceStore(i3TextUtilsPlugin.getDefault().getPreferenceStore());
         setDescription("Настройки плагина");
-	}
+    }
 
-	/**
-	 * Creates the field editors. Field editors are abstractions of
-	 * the common GUI blocks needed to manipulate various types
-	 * of preferences. Each field editor knows how to save and
-	 * restore itself.
-	 */
-	@Override
-    public void createFieldEditors() {
+    /**
+     * Creates the field editors. Field editors are abstractions of
+     * the common GUI blocks needed to manipulate various types
+     * of preferences. Each field editor knows how to save and
+     * restore itself.
+     */
+    @Override
+    public void createFieldEditors()
+    {
 
-	    Group group = new Group(getFieldEditorParent(), SWT.NONE);
-        group.setText("Исправление подсказки в темной теме");
+        var p = getFieldEditorParent();
 
-        group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, true));
 
-        addField(new BooleanFieldEditor(PreferenceConstants.FORCE_CONTENT_ASSIST_COLOR_HACK,
-            "Исправлять принудительно",
-            group));
+        addField(
+            new BooleanFieldEditor(PreferenceConstants.FORCE_CONTENT_ASSIST_COLOR_HACK,
+                "Исправлять принудительно подсказку в темной теме", p));
 
         addField(new ColorFieldEditor(PreferenceConstants.FORCE_CONTENT_ASSIST_COLOR_HACK_VALUE,
-            "Цвет текста в подсказке",
-            group));
-	}
+            "Цвет при принудительном исправлении", p));
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
-	@Override
-    public void init(IWorkbench workbench) {
-	}
+        addField(new BooleanFieldEditor(PreferenceConstants.CODEMININGS_ENABLED,
+            "Включить подсказки параметров (Eclipse codeminigs)", p));
+
+        addField(new BooleanFieldEditor(PreferenceConstants.CODEMININGS_SHOW_WHEN_ONE_PARAMETER,
+            "Показывать подсказки параметров для вызовов с одним аргументом", p));
+
+        addField(new BooleanFieldEditor(PreferenceConstants.CODEMININGS_SHOW_WHEN_INPUT_CONTAINS_PARAMETER_NAME,
+            "Показывать подсказки параметров когда переменная параметра содержит в своем имени имя параметра", p));
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
+     */
+    @Override
+    public void init(IWorkbench workbench)
+    {
+    }
 
 }

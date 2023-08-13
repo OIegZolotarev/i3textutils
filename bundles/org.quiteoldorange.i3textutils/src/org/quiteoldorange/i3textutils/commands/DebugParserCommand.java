@@ -62,8 +62,6 @@ public class DebugParserCommand
         Lexer lex = new Lexer(doc.get());
         ModuleASTTree tree = new ModuleASTTree(lex);
 
-        tree.getChildren().get(0);
-
         return null;
     }
 

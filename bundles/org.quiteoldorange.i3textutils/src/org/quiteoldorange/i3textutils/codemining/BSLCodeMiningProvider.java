@@ -8,6 +8,9 @@ import java.util.concurrent.CompletableFuture;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.codemining.ICodeMining;
@@ -26,14 +29,19 @@ import com._1c.g5.v8.dt.bsl.model.BinaryExpression;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
+import com._1c.g5.v8.dt.bsl.model.ForEachStatement;
+import com._1c.g5.v8.dt.bsl.model.ForToStatement;
 import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
+import com._1c.g5.v8.dt.bsl.model.SourceObjectLinkProvider;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
+import com._1c.g5.v8.dt.bsl.model.WhileStatement;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 public class BSLCodeMiningProvider
@@ -129,8 +137,57 @@ public class BSLCodeMiningProvider
             }
 
         }
+        else if (statement instanceof TryExceptStatement)
+        {
+            TryExceptStatement te = (TryExceptStatement)statement;
 
-        // TODO: Циклы, попытки-исключения
+            for (var stmt : te.getTryStatements())
+            {
+                traverseStatement(stmt, result, variant);
+            }
+
+            for (var stmt : te.getExceptStatements())
+            {
+                traverseStatement(stmt, result, variant);
+            }
+        }
+        else if (statement instanceof WhileStatement)
+        {
+            WhileStatement ls = (WhileStatement)statement;
+
+            for (var stmt : ls.getStatements())
+            {
+                traverseStatement(stmt, result, variant);
+            }
+
+            traverseExpression(ls.getPredicate(), result, variant);
+
+        }
+        else if (statement instanceof ForToStatement)
+        {
+            ForToStatement ls = (ForToStatement)statement;
+
+            for (var stmt : ls.getStatements())
+            {
+                traverseStatement(stmt, result, variant);
+            }
+
+            traverseExpression(ls.getInitializer(), result, variant);
+            traverseExpression(ls.getBound(), result, variant);
+
+        }
+        else if (statement instanceof ForEachStatement)
+        {
+            ForEachStatement ls = (ForEachStatement)statement;
+
+            for (var stmt : ls.getStatements())
+            {
+                traverseStatement(stmt, result, variant);
+            }
+
+            traverseExpression(ls.getCollection(), result, variant);
+        }
+
     }
 
     private void traverseEDTModule(Module module, List<ICodeMining> result, ScriptVariant scriptVariant)
@@ -160,7 +217,7 @@ public class BSLCodeMiningProvider
             var node = NodeModelUtils.findActualNodeFor(invocationParams.get(index));
             String s = node.getText().toUpperCase();
 
-            String upperCaseParam = item.toUpperCase();
+
 
 //            if (s.indexOf(upperCaseParam) > -1)
 //            {
@@ -176,7 +233,7 @@ public class BSLCodeMiningProvider
         }
     }
 
-    private boolean dumpParametersNameFromMethod(EObject feature, List<String> names, Invocation inv,
+    private boolean dumpParametersNameFromMethod(EObject context,EObject feature, List<String> names, Invocation inv,
         ScriptVariant variant)
     {
         if (feature instanceof Method)
@@ -191,25 +248,49 @@ public class BSLCodeMiningProvider
             return true;
 
         }
+
         else if (feature instanceof com._1c.g5.v8.dt.mcore.Method)
         {
-            com._1c.g5.v8.dt.mcore.Method methodImp = (com._1c.g5.v8.dt.mcore.Method)feature;
-
-            var paramSet = methodImp.actualParamSet(inv.getParams().size());
-
-            if (paramSet == null)
-                return false;
-
-            for (var item : paramSet.getParams())
+            if (feature instanceof SourceObjectLinkProvider)
             {
-                if (variant == ScriptVariant.RUSSIAN)
-                    names.add(item.getNameRu());
-                else
-                    names.add(item.getName());
+                SourceObjectLinkProvider solp = (SourceObjectLinkProvider)feature;
+
+                InternalEObject source = (InternalEObject)EcoreFactory.eINSTANCE.createEObject();
+                source.eSetProxyURI(solp.getSourceUri());
+
+                var resolvedObject = EcoreUtil.resolve(source, context);
+
+                if (resolvedObject instanceof Method)
+                {
+                    Method m = (Method)resolvedObject;
+
+                    for (var item : m.getFormalParams())
+                    {
+                        names.add(item.getName());
+                    }
+                }
             }
 
+            else
+            {
+                com._1c.g5.v8.dt.mcore.Method methodImp = (com._1c.g5.v8.dt.mcore.Method)feature;
+
+                var paramSet = methodImp.actualParamSet(inv.getParams().size());
+
+                if (paramSet == null)
+                    return false;
+
+                for (var item : paramSet.getParams())
+                {
+                    if (variant == ScriptVariant.RUSSIAN)
+                        names.add(item.getNameRu());
+                    else
+                        names.add(item.getName());
+                }
+            }
             return true;
         }
+
 
         return false;
     }
@@ -239,7 +320,7 @@ public class BSLCodeMiningProvider
                 EObject feature = entry.getFeature();
                 List<String> names = new LinkedList<>();
 
-                if (!dumpParametersNameFromMethod(feature, names, inv, variant))
+                if (!dumpParametersNameFromMethod(inv, feature, names, inv, variant))
                     continue;
 
                 makeParametersHints(inv.getParams(), names, result);

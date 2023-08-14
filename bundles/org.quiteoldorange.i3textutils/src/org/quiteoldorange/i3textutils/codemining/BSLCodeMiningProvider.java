@@ -13,9 +13,15 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.ITextViewerExtension2;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.codemining.ICodeMining;
 import org.eclipse.jface.text.codemining.ICodeMiningProvider;
+import org.eclipse.jface.text.source.Annotation;
+import org.eclipse.jface.text.source.AnnotationPainter;
+import org.eclipse.jface.text.source.IAnnotationAccess;
+import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.text.source.ISourceViewerExtension5;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
@@ -59,15 +65,48 @@ public class BSLCodeMiningProvider
     {
         var store = i3TextUtilsPlugin.getDefault().getPreferenceStore();
         mCodeminingsEnabled = store.getBoolean(PreferenceConstants.CODEMININGS_ENABLED);
-        mShowWhenContainsSubstring =
-            store.getBoolean(PreferenceConstants.CODEMININGS_SHOW_WHEN_INPUT_CONTAINS_PARAMETER_NAME);
+        mShowWhenContainsSubstring = store.getBoolean(PreferenceConstants.CODEMININGS_SHOW_WHEN_INPUT_CONTAINS_PARAMETER_NAME);
         mShowWhenOneParameter = store.getBoolean(PreferenceConstants.CODEMININGS_SHOW_WHEN_ONE_PARAMETER);
+
+
+    }
+
+    private static void addAnnotationPainter(ISourceViewer viewer)
+    {
+        IAnnotationAccess annotationAccess = new IAnnotationAccess()
+        {
+            @Override
+            public Object getType(Annotation annotation)
+            {
+                return annotation.getType();
+            }
+
+            @Override
+            public boolean isMultiLine(Annotation annotation)
+            {
+                return true;
+            }
+
+            @Override
+            public boolean isTemporary(Annotation annotation)
+            {
+                return true;
+            }
+
+        };
+        AnnotationPainter painter = new BSLAnnotationPainter(viewer, annotationAccess);
+        ((ITextViewerExtension2)viewer).addPainter(painter);
+        // Register this annotation painter as CodeMining annotation painter.
+        ((ISourceViewerExtension5)viewer).setCodeMiningAnnotationPainter(painter);
     }
 
     @Override
     public CompletableFuture<List<? extends ICodeMining>> provideCodeMinings(ITextViewer viewer,
         IProgressMonitor monitor)
     {
+        //addAnnotationPainter((ISourceViewer)viewer);
+
+
         // TODO Auto-generated method stub
         return CompletableFuture.supplyAsync(() -> {
 

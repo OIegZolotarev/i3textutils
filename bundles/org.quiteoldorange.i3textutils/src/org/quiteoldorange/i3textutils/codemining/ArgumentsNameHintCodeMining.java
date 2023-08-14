@@ -12,6 +12,11 @@ import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.codemining.ICodeMining;
 import org.eclipse.jface.text.codemining.ICodeMiningProvider;
 import org.eclipse.jface.text.codemining.LineContentCodeMining;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode;
 import org.quiteoldorange.i3textutils.bsl.parser.expressions.ExpressionNode;
@@ -25,6 +30,28 @@ public class ArgumentsNameHintCodeMining
     extends LineContentCodeMining
 {
 
+    @Override
+    public Point draw(GC gc, StyledText textWidget, Color color, int x, int y)
+    {
+        var ext = gc.stringExtent(getLabel());
+
+        // Фон
+        gc.setBackground(new Color(new RGB(10, 10, 10)));
+        gc.fillRoundRectangle(x, y, ext.x, ext.y, 8, 8);
+        // Фон
+
+
+        // Текст
+        gc.setForeground(new Color(new RGB(0, 0, 0)));
+        gc.setForeground(new Color(new RGB(255, 255, 255)));
+
+        gc.drawString(getLabel(), x + 4, y, true);
+        // Текст
+
+
+        return ext;
+    }
+
     String mArgName;
 
     @Override
@@ -32,6 +59,7 @@ public class ArgumentsNameHintCodeMining
     {
         return CompletableFuture.runAsync(() -> {
             this.setLabel(mArgName + ": "); //$NON-NLS-1$
+
         });
     }
 
@@ -42,8 +70,8 @@ public class ArgumentsNameHintCodeMining
     public ArgumentsNameHintCodeMining(Position position, ICodeMiningProvider provider, String argName)
     {
         super(position, provider);
-
         mArgName = argName;
+
     }
 
     public static void makeNew(ICodeMiningProvider provider, MethodCallNode methodCallNode, ModuleASTTree module,

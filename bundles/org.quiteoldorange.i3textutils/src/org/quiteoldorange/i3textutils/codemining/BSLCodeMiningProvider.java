@@ -150,6 +150,8 @@ public class BSLCodeMiningProvider
                     traverseStatement(item, result, variant);
             }
 
+            // TODO: traverse else part;
+
         }
         else if (statement instanceof TryExceptStatement)
         {
@@ -201,6 +203,9 @@ public class BSLCodeMiningProvider
 
             traverseExpression(ls.getCollection(), result, variant);
         }
+
+        // TODO: traverse unary expressions
+        // TODO: исключение для "вставить"
 
     }
 

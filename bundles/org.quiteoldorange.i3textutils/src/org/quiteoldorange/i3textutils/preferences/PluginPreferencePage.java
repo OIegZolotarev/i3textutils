@@ -37,7 +37,7 @@ public class PluginPreferencePage
     {
         super(GRID);
         setPreferenceStore(i3TextUtilsPlugin.getDefault().getPreferenceStore());
-        setDescription("Настройки плагина");
+        setDescription(Messages.Pref_PluginSetup);
     }
 
     /**
@@ -55,19 +55,19 @@ public class PluginPreferencePage
 
         addField(
             new BooleanFieldEditor(PreferenceConstants.FORCE_CONTENT_ASSIST_COLOR_HACK,
-                "Исправлять принудительно подсказку в темной теме", p));
+                Messages.Pref_ForceContentAssistColorFix, p));
 
         addField(new ColorFieldEditor(PreferenceConstants.FORCE_CONTENT_ASSIST_COLOR_HACK_VALUE,
-            "Цвет при принудительном исправлении", p));
+            Messages.Pref_ContentAssistForcedColorFix, p));
 
         addField(new BooleanFieldEditor(PreferenceConstants.CODEMININGS_ENABLED,
-            "Включить подсказки параметров (Eclipse codeminigs)", p));
+            Messages.Pref_EnableCodeminings, p));
 
         addField(new BooleanFieldEditor(PreferenceConstants.CODEMININGS_SHOW_WHEN_ONE_PARAMETER,
-            "Показывать подсказки параметров для вызовов с одним аргументом", p));
+            Messages.Pref_ShowHintFor1ParameterInvocation, p));
 
         addField(new BooleanFieldEditor(PreferenceConstants.CODEMININGS_SHOW_WHEN_INPUT_CONTAINS_PARAMETER_NAME,
-            "Показывать подсказки параметров когда переменная параметра содержит в своем имени имя параметра", p));
+            Messages.Pref_ShowHintForObviousParameters, p));
 
     }
 
@@ -77,6 +77,7 @@ public class PluginPreferencePage
     @Override
     public void init(IWorkbench workbench)
     {
+        // empty for now
     }
 
 }

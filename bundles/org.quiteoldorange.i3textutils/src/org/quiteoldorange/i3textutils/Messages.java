@@ -25,6 +25,16 @@ final class Messages
     public static String DataProcessingHandlerDialog_Field;
     public static String DataProcessingHandlerDialog_Expressions;
 
+    public static String ServicesAdapter_Error;
+
+    public static String ServicesAdapter_NullCheckRepository;
+
+    public static String ServicesAdapter_NullChecksRepository;
+
+    public static String ServicesAdapter_NullFixRepository;
+
+    public static String ServicesAdapter_NullMarkerManager;
+
     static
     {
         // initialize resource bundle

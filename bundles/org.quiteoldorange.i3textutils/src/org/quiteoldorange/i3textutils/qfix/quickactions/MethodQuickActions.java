@@ -20,14 +20,14 @@ public class MethodQuickActions
     @Fix("MethodQuickActionsProcedure")
     public void methodQuickActionsProcedure(final Issue issue, IssueResolutionAcceptor acceptor)
     {
-        acceptor.accept(issue, "Преобразовать в функцию", "", null,
+        acceptor.accept(issue, Messages.MethodQuickActions_ConvertToFunction, "", null, //$NON-NLS-1$
             new MethodConverter(issue, ConversionDirection.ToFunction));
     }
 
     @Fix("MethodQuickActionsFunction")
     public void methodQuickActionsFunctions(final Issue issue, IssueResolutionAcceptor acceptor)
     {
-        acceptor.accept(issue, "Преобразовать в процедуру", "", null,
+        acceptor.accept(issue, Messages.MethodQuickActions_ConvertToProcedure, "", null, //$NON-NLS-1$
             new MethodConverter(issue, ConversionDirection.ToProcedure));
     }
 }

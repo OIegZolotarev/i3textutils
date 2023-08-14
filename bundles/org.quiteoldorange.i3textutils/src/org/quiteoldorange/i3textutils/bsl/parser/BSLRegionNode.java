@@ -32,7 +32,7 @@ public class BSLRegionNode
         // TODO: проверить что у области нет комментария, иначе будет двоить
         //       проверить что впереди нет "EmptyLineNode"
         builder.append(
-            String.format("%s // %s\n", Token.getKeywordValue(Type.PreprocessorEndRegion, variant), mRegionName));
+            String.format("%s // %s\n", Token.getKeywordValue(Type.PreprocessorEndRegion, variant), mRegionName)); //$NON-NLS-1$
 
         return builder.toString();
     }

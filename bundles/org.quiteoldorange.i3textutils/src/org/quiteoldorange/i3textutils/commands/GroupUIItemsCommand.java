@@ -15,8 +15,6 @@ import org.quiteoldorange.i3textutils.ServicesAdapter;
 import org.quiteoldorange.i3textutils.Tuple;
 
 import com._1c.g5.v8.bm.integration.IBmEditingContext;
-import com._1c.g5.v8.bm.integration.IBmModel;
-import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.model.FormItemContainer;
@@ -57,8 +55,8 @@ extends AbstractHandler
 
     Tuple<String, String> suggestNewGroupName(List<FormItem> items)
     {
-        String resultName = "Группа";
-        String resultTitle = "Зоголовок";
+        String resultName = "Группа"; //$NON-NLS-1$
+        String resultTitle = "Зоголовок"; //$NON-NLS-1$
 
         for (var item : items)
         {
@@ -85,10 +83,10 @@ extends AbstractHandler
         @SuppressWarnings("deprecation")
         IBmEditingContext editingContext = formEditor.getEditingContext();
 
-        var iV8Project = formEditor.getV8projectManager().getProject(f).getDtProject();
+        //var iV8Project = formEditor.getV8projectManager().getProject(f).getDtProject();
 
-        IBmModelManager bmModelManager = ServicesAdapter.instance().getBmModelManager();
-        IBmModel model = bmModelManager.getModel(iV8Project);
+//        IBmModelManager bmModelManager = ServicesAdapter.instance().getBmModelManager();
+//        IBmModel model = bmModelManager.getModel(iV8Project);
 
         var selRaw = (IModelApiAwareSelection)formEditor.getEditorInput().getSelection();
         var itemsList = selRaw.toList();
@@ -103,8 +101,8 @@ extends AbstractHandler
         {
 
             Map<String, String> titles = new HashMap<>();
-            titles.put("ru", newGroupNames.getSecond());
-            titles.put("en", newGroupNames.getSecond());
+            titles.put("ru", newGroupNames.getSecond()); //$NON-NLS-1$
+            titles.put("en", newGroupNames.getSecond()); //$NON-NLS-1$
 
             AddGroupTask tsk = new AddGroupTask(f, ManagedFormGroupType.USUAL_GROUP, 0,
                 new FormNewItemDescriptor(newGroupNames.getFirst(), titles, false));

@@ -50,7 +50,7 @@ public class ModuleReformatterContext
 
     public void run()
     {
-        RequiredRegionsCalculator regionsCalculator = new RequiredRegionsCalculator(mProject, mModule);
+        //RequiredRegionsCalculator regionsCalculator = new RequiredRegionsCalculator(mProject, mModule);
         //List<AddRegionTask> missingRegions = regionsCalculator.calculateMissingRegions();
 
         Lexer lex = new Lexer(mDoc.get());
@@ -77,7 +77,7 @@ public class ModuleReformatterContext
 
     public static String cleanupConsecutiveBlankLines(String source)
     {
-        String lines[] = source.split("\n");
+        String lines[] = source.split("\n"); //$NON-NLS-1$
 
         StringBuilder builder = new StringBuilder();
 
@@ -89,14 +89,13 @@ public class ModuleReformatterContext
                 continue;
             else if (line.isBlank() && !hasEmptyLine)
             {
-                builder.append("\n");
+                builder.append("\n"); //$NON-NLS-1$
                 hasEmptyLine = true;
             }
             else
             {
                 hasEmptyLine = false;
                 builder.append(line);
-                builder.append("\n"); //$NON-NLS-1$
             }
         }
 

@@ -60,6 +60,7 @@ public class DebugParserCommand
 //        debug(m, docum);
 
         Lexer lex = new Lexer(doc.get());
+        @SuppressWarnings("unused")
         ModuleASTTree tree = new ModuleASTTree(lex);
 
         return null;
@@ -69,12 +70,13 @@ public class DebugParserCommand
      * @param m
      * @param docum
      */
+    @SuppressWarnings("unused")
     private void debug(Module m, BslDocumentationProvider docum)
     {
         try
         {
             String d = docum.getDocFromUrl(new URL(
-                "platform:/resource/Заказы/src/Documents/ЗаказКлиента/Forms/ФормаВыбора/Module.bsl#/_method/Тест/0"));
+                "platform:/resource/Заказы/src/Documents/ЗаказКлиента/Forms/ФормаВыбора/Module.bsl#/_method/Тест/0")); //$NON-NLS-1$
 
             var method = m.allMethods().get(1);
             var st = method.allStatements();

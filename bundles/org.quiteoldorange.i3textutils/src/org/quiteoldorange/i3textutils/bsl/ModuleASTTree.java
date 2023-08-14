@@ -64,7 +64,7 @@ public class ModuleASTTree
 
         mergeCommentNodes(this);
         mergeMethodAnnotationsAndDocs(this);
-        int f = 1;
+
     }
 
     /**

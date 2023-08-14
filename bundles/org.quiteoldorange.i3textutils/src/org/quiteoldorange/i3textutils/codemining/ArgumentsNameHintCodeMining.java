@@ -65,7 +65,7 @@ public class ArgumentsNameHintCodeMining
         {
             if (arg.getStartingOffset() < 0)
             {
-                int a = 1;
+                //int a = 1;
             }
             Position position = new Position(arg.getStartingOffset(), 1);
             String argName = argsDef.get(index).getName();

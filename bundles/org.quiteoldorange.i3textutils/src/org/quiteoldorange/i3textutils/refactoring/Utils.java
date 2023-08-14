@@ -128,7 +128,7 @@ public class Utils
         }
         catch (BadLocationException e)
         {
-
+            // Do nothing...
         }
 
         String sourceText = doc.get(startingOffset, endingOffset - startingOffset);

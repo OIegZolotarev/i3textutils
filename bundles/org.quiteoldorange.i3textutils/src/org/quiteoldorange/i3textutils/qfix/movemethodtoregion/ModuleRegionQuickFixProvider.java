@@ -48,12 +48,12 @@ public class ModuleRegionQuickFixProvider
 
         if (suggestions != null)
         {
-            acceptor.accept(issue, "Переместить метод в другую область...", "", null,
+            acceptor.accept(issue, Messages.ModuleRegionQuickFixProvider_MoveMethodToOtherRegion, "", null, //$NON-NLS-1$
                 new BadRegionIssueResolver(issue, suggestions.getRecommendedRegions(), suggestions.getBadRegions()));
 
             // TODO: английский вариант
-            acceptor.accept(issue, String.format("Переместить метод в область \"%s\"", "СлужебныеПроцедурыИФункции"),
-                "<Описание>", null, new BadRegionIssueResolver(issue, "СлужебныеПроцедурыИФункции"));
+            acceptor.accept(issue, String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion, Messages.ModuleRegionQuickFixProvider_Private),
+                Messages.ModuleRegionQuickFixProvider_Description, null, new BadRegionIssueResolver(issue, Messages.ModuleRegionQuickFixProvider_Private));
 
             return;
         }
@@ -68,7 +68,7 @@ public class ModuleRegionQuickFixProvider
 
             String suggestedRegion = recommendedRegions.get(0);
 
-            acceptor.accept(issue, String.format("Переместить метод в область \"%s\"", suggestedRegion), "<Описание>",
+            acceptor.accept(issue, String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion, suggestedRegion), Messages.ModuleRegionQuickFixProvider_Description,
                 null, new BadRegionIssueResolver(issue, suggestedRegion));
 
             return;
@@ -81,7 +81,7 @@ public class ModuleRegionQuickFixProvider
     {
         var suggestedRegions = parseSuggestedRegions_ModuleStructureMethodInRegions(issue);
 
-        acceptor.accept(issue, "Переместить метод в другую область...", "<Описание>", null,
+        acceptor.accept(issue, Messages.ModuleRegionQuickFixProvider_MoveMethodToOtherRegion, Messages.ModuleRegionQuickFixProvider_Description, null,
             new BadRegionIssueResolver(issue, suggestedRegions, new LinkedList<>()));
     }
 

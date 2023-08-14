@@ -15,27 +15,27 @@ public class MethodQuickActionsMarkerGenerator
     @Override
     public void validate(EObject object, CustomValidationMessageAcceptor messageAcceptor)
     {
-        var f = object.eClass().getEStructuralFeature("name");
+        var f = object.eClass().getEStructuralFeature("name"); //$NON-NLS-1$
 
 
         if (object instanceof ProcedureImpl)
         {
-            messageAcceptor.acceptInfo("Выберите быстрые действия", // Message
+            messageAcceptor.acceptInfo(Messages.MethodQuickActionsMarkerGenerator_ChooseQuickAction, // Message
             object,  // Object
             f, // Feature
             0, // Index
-                "MethodQuickActionsProcedure" // Code
+                "MethodQuickActionsProcedure" // Code //$NON-NLS-1$
             );
         }
         else
         {
             if (object instanceof FunctionImpl)
             {
-                messageAcceptor.acceptInfo("Выберите быстрые действия", // Message
+                messageAcceptor.acceptInfo(Messages.MethodQuickActionsMarkerGenerator_ChooseQuickAction, // Message
                     object, // Object
                     f, // Feature
                     0, // Index
-                    "MethodQuickActionsFunction" // Code
+                    "MethodQuickActionsFunction" // Code //$NON-NLS-1$
                 );
             }
         }

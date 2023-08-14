@@ -74,11 +74,6 @@ public class AbsractBSLElementNode
     public AbsractBSLElementNode ParseNode(Lexer stream)
         throws BSLParsingException
     {
-        int prevLine = -1;
-        var currentToken = stream.current();
-
-        if (currentToken != null)
-            prevLine = currentToken.getRow();
 
         while (true)
         {

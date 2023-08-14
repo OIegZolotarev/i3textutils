@@ -147,10 +147,10 @@ public class AbstractIfElseStatement
             }
             else
             {
-                r.append(String.format("%s", mKind.serializeElseToken(scriptVariant)));
+                r.append(String.format("%s", mKind.serializeElseToken(scriptVariant))); //$NON-NLS-1$
             }
 
-            r.append("\n");
+            r.append("\n"); //$NON-NLS-1$
             r.append(serializeChildren(scriptVariant, true));
 
             return r.toString();

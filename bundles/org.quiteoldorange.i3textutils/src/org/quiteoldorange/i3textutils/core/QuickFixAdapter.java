@@ -161,7 +161,7 @@ public class QuickFixAdapter
         fixMethod.getDeclaredAnnotations();
         Class<?> superclass = fixMethod.getClass().getSuperclass();
 
-        Field declaredField = superclass.getDeclaredField("declaredAnnotations");
+        Field declaredField = superclass.getDeclaredField("declaredAnnotations"); //$NON-NLS-1$
         declaredField.setAccessible(true);
 
         @SuppressWarnings("unchecked")

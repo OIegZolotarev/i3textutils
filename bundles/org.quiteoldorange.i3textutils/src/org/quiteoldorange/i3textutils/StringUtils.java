@@ -87,7 +87,7 @@ public class StringUtils
 
             if (currentOffset == maxOffset)
             {
-                newLines.append(line + "\n");
+                newLines.append(line + "\n"); //$NON-NLS-1$
                 continue;
             }
 

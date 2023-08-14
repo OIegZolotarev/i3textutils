@@ -26,10 +26,11 @@ public class ModuleElement
     List<ModuleElement> mChidlren = null;
 
     private final static String METHOD = "Method"; //$NON-NLS-1$
-    private final static String DECLARATION = "Declaration"; //$NON-NLS-1$
-    private final static String REGION = "Region"; //$NON-NLS-1$
-    private final static String MAINPROGRAM = "MainProgram"; //$NON-NLS-1$
-
+//    private final static String DECLARATION = "Declaration"; //$NON-NLS-1$
+//    private final static String REGION = "Region"; //$NON-NLS-1$
+//    private final static String MAINPROGRAM = "MainProgram"; //$NON-NLS-1$
+//
+    @SuppressWarnings("unused")
     private String mType;
 
     /**

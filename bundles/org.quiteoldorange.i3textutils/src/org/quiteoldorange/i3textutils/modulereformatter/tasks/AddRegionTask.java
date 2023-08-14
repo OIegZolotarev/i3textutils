@@ -23,7 +23,7 @@ public class AddRegionTask
     @Override
     public String getDescription()
     {
-        return String.format("Добавить область %s", mRegionName);
+        return String.format(Messages.AddRegionTask_CreateNewRegion, mRegionName);
     }
 
     @Override

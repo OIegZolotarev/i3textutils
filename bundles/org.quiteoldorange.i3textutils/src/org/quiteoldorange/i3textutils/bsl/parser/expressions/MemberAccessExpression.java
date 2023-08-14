@@ -31,7 +31,7 @@ public class MemberAccessExpression
     {
         if (mLeftNode != null && mRightNode != null)
         {
-            return mLeftNode.toString() + "." + mRightNode.toString();
+            return mLeftNode.toString() + "." + mRightNode.toString(); //$NON-NLS-1$
         }
 
         //

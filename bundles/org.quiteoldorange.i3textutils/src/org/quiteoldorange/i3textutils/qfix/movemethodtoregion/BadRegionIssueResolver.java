@@ -73,7 +73,7 @@ final class BadRegionIssueResolver
             String message = null;
             if (mIssueSuggestedRegions.size() > 1)
             {
-                message = "Выберите область в которую нужно переместить метод";
+                message = Messages.BadRegionIssueResolver_ChooseRegionIntoWhichToMoveMethod;
             }
             else
             {
@@ -147,18 +147,18 @@ if (docEdited == doc)
 
             if (variant == ScriptVariant.RUSSIAN)
             {
-                builder.append(String.format("#Область %s\n", regionDesc.getName()));
-                builder.append("\n" + info.getSourceText().trim() + "\n\n");
-                builder.append(String.format("#КонецОбласти // %s\n\n", regionDesc.getName()));
+                builder.append(String.format("#Область %s\n", regionDesc.getName())); //$NON-NLS-1$
+                builder.append("\n" + info.getSourceText().trim() + "\n\n"); //$NON-NLS-1$ //$NON-NLS-2$
+                builder.append(String.format("#КонецОбласти // %s\n\n", regionDesc.getName())); //$NON-NLS-1$
             }
             else
             {
-                builder.append(String.format("#Region %s\n", regionDesc.getName()));
-                builder.append("\n" + info.getSourceText().trim() + "\n\n");
-                builder.append(String.format("#EndRegion // %s\n\n", regionDesc.getName()));
+                builder.append(String.format("#Region %s\n", regionDesc.getName())); //$NON-NLS-1$
+                builder.append("\n" + info.getSourceText().trim() + "\n\n"); //$NON-NLS-1$ //$NON-NLS-2$
+                builder.append(String.format("#EndRegion // %s\n\n", regionDesc.getName())); //$NON-NLS-1$
             }
 
-            doc.replace(info.getStartOffset(), info.getLength(), "");
+            doc.replace(info.getStartOffset(), info.getLength(), ""); //$NON-NLS-1$
             doc.replace(0, 0, builder.toString());
             return 0;
         }
@@ -208,7 +208,7 @@ if (docEdited == doc)
     private void moveMethodBodyToTarget(IXtextDocument doc, MethodSourceInfo info, int targetOffset, int replaceLength)
         throws BadLocationException
     {
-        String targetText = "\n" + info.getSourceText().trim() + "\n";
+        String targetText = "\n" + info.getSourceText().trim() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
 
         if (replaceLength > 0)
         {

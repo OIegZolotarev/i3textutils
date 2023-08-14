@@ -303,6 +303,6 @@ public class Token
     @Override
     public String toString()
     {
-        return String.format("%s (%s)", mValue, mType.toString());
+        return String.format("%s (%s)", mValue, mType.toString()); //$NON-NLS-1$
     }
 }

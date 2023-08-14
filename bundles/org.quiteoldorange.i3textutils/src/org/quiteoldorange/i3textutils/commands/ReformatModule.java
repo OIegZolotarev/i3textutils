@@ -51,6 +51,7 @@ public class ReformatModule
     /**
      * @param doc
      */
+    @SuppressWarnings("unused")
     private void legacy(IXtextDocument doc)
     {
         var elements = ModuleElement.collectFromModule(doc);
@@ -80,6 +81,7 @@ public class ReformatModule
     /**
      * @param doc
      */
+    @SuppressWarnings("unused")
     private void debugParser(IXtextDocument doc, ExecutionEvent event)
     {
         Lexer l = new Lexer(doc.get());

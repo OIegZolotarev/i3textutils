@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.quiteoldorange.i3textutils.core;
 
@@ -22,17 +22,17 @@ class TrayIconDemo
         SystemTray tray = SystemTray.getSystemTray();
 
         //If the icon is a file
-        java.awt.Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+        java.awt.Image image = Toolkit.getDefaultToolkit().createImage("icon.png"); //$NON-NLS-1$
         //Alternative (if the icon is on the classpath):
         //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("icon.png"));
 
-        TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
+        TrayIcon trayIcon = new TrayIcon(image, "Tray Demo"); //$NON-NLS-1$
         //Let the system resize the image if needed
         trayIcon.setImageAutoSize(true);
         //Set tooltip text for the tray icon
-        trayIcon.setToolTip("System tray icon demo");
+        trayIcon.setToolTip("System tray icon demo"); //$NON-NLS-1$
         tray.add(trayIcon);
 
-        trayIcon.displayMessage("Hello, World", "notification demo", MessageType.INFO);
+        trayIcon.displayMessage("Hello, World", "notification demo", MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

@@ -34,8 +34,6 @@ public class ExpressionNode
 
         ParseExpressionNode(stream, endTokens);
         reduce(getChildren());
-
-        int a = 1;
     }
 
     /**
@@ -64,8 +62,6 @@ public class ExpressionNode
             else
                 addChildren(new ExpressionNode(null));
         }
-
-        int a = 1;
     }
 
     /**
@@ -344,7 +340,6 @@ public class ExpressionNode
             }
             else if (node instanceof MemberAccessNode)
             {
-                MemberAccessNode memberNode = (MemberAccessNode)node;
                 int nodeIndex = children.indexOf(node);
 
                 if (nodeIndex == 0)
@@ -457,14 +452,14 @@ public class ExpressionNode
 
         for (var item : getChildren())
         {
-            result += item.toString() + ",";
+            result += item.toString() + ","; //$NON-NLS-1$
         }
 
         //if (mCompound)
         //  result = "(" + result + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 
         if (getChildren().size() > 1)
-            return "{" + result.substring(0, result.length() - 1) + "}";
+            return "{" + result.substring(0, result.length() - 1) + "}"; //$NON-NLS-1$ //$NON-NLS-2$
         else
             return result.substring(0, result.length() - 1);
     }

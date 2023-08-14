@@ -55,13 +55,13 @@ final class MethodConverter
 
         if (mDirection == ConversionDirection.ToFunction)
         {
-            newBody = newBody.replaceAll("(?i)Процедура ", "Функция ");
-            newBody = newBody.replaceAll("(?i)КонецПроцедуры.*", String.format("КонецФункции // %s", methodName));
+            newBody = newBody.replaceAll("(?i)Процедура ", "Функция "); //$NON-NLS-1$ //$NON-NLS-2$
+            newBody = newBody.replaceAll("(?i)КонецПроцедуры.*", String.format("КонецФункции // %s", methodName)); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else
         {
-            newBody = newBody.replaceAll("(?i)Функция ", "Процедура ");
-            newBody = newBody.replaceAll("(?i)КонецФункции.*", String.format("КонецПроцедуры // %s", methodName));
+            newBody = newBody.replaceAll("(?i)Функция ", "Процедура "); //$NON-NLS-1$ //$NON-NLS-2$
+            newBody = newBody.replaceAll("(?i)КонецФункции.*", String.format("КонецПроцедуры // %s", methodName)); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         doc.replace(info.getStartOffset(), info.getLength(), newBody);

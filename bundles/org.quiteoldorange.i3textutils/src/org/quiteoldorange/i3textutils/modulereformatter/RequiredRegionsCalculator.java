@@ -47,6 +47,7 @@ public class RequiredRegionsCalculator
 
         for (var marker : moduleMarkers)
         {
+            @SuppressWarnings("unused")
             var markerId = marker.getMarkerId();
             var checkId = marker.getCheckId();
             var message = marker.getMessage();
@@ -54,10 +55,10 @@ public class RequiredRegionsCalculator
             var v8checkid = sUIDMappings.get(checkId);
 
             var extraInfo = marker.getExtraInfo();
-            String uriKey = "uriToProblem";
+            String uriKey = "uriToProblem"; //$NON-NLS-1$
 
             String methodName = StringUtils.parseMethodFromURIToProblem(extraInfo.get(uriKey));
-            builder.append(String.format("%s : %s (SUID: %s) -> %s\n", methodName, v8checkid, checkId, message));
+            builder.append(String.format("%s : %s (SUID: %s) -> %s\n", methodName, v8checkid, checkId, message)); //$NON-NLS-1$
         }
 
         String s = builder.toString();

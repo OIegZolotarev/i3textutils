@@ -21,7 +21,7 @@ public class OperatorNewNode
     @Override
     public String toString()
     {
-        return "Новый";
+        return "Новый"; //$NON-NLS-1$
     }
 
     @Override

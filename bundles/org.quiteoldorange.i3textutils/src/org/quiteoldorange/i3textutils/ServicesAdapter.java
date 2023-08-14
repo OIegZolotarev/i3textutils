@@ -94,7 +94,7 @@ public class ServicesAdapter
     @Override
     public void activate()
     {
-
+        // Do nothing
     }
 
     public ScriptVariant getProjectScriptVariant(IProject proj)
@@ -126,8 +126,8 @@ public class ServicesAdapter
         {
             MessageBox msgBox = new MessageBox(Display.getDefault().getActiveShell(), SWT.ICON_ERROR);
 
-            msgBox.setText("Ошибка");
-            msgBox.setMessage("Произошла ошибка при инциализации плагина - fixRepository == null");
+            msgBox.setText(Messages.ServicesAdapter_Error);
+            msgBox.setMessage(Messages.ServicesAdapter_NullFixRepository);
             msgBox.open();
 
             return false;
@@ -137,8 +137,8 @@ public class ServicesAdapter
         {
             MessageBox msgBox = new MessageBox(Display.getDefault().getActiveShell(), SWT.ICON_ERROR);
 
-            msgBox.setText("Ошибка");
-            msgBox.setMessage("Произошла ошибка при инциализации плагина - checksRepository == null");
+            msgBox.setText(Messages.ServicesAdapter_Error);
+            msgBox.setMessage(Messages.ServicesAdapter_NullCheckRepository);
             msgBox.open();
 
             return false;
@@ -148,8 +148,8 @@ public class ServicesAdapter
         {
             MessageBox msgBox = new MessageBox(Display.getDefault().getActiveShell(), SWT.ICON_ERROR);
 
-            msgBox.setText("Ошибка");
-            msgBox.setMessage("Произошла ошибка при инциализации плагина - markerManager == null");
+            msgBox.setText(Messages.ServicesAdapter_Error);
+            msgBox.setMessage(Messages.ServicesAdapter_NullMarkerManager);
             msgBox.open();
 
             return false;
@@ -167,8 +167,8 @@ public class ServicesAdapter
         {
             MessageBox msgBox = new MessageBox(Display.getDefault().getActiveShell(), SWT.ICON_ERROR);
 
-            msgBox.setText("Ошибка");
-            msgBox.setMessage("Произошла ошибка при инциализации плагина - fixRepository == null");
+            msgBox.setText(Messages.ServicesAdapter_Error);
+            msgBox.setMessage(Messages.ServicesAdapter_NullFixRepository);
             msgBox.open();
 
             return null;
@@ -186,8 +186,8 @@ public class ServicesAdapter
         {
             MessageBox msgBox = new MessageBox(Display.getDefault().getActiveShell(), SWT.ICON_ERROR);
 
-            msgBox.setText("Ошибка");
-            msgBox.setMessage("Произошла ошибка при инциализации плагина - markerManager == null");
+            msgBox.setText(Messages.ServicesAdapter_Error);
+            msgBox.setMessage(Messages.ServicesAdapter_NullMarkerManager);
             msgBox.open();
 
             return null;
@@ -213,8 +213,8 @@ public class ServicesAdapter
         {
             MessageBox msgBox = new MessageBox(Display.getDefault().getActiveShell(), SWT.ICON_ERROR);
 
-            msgBox.setText("Ошибка");
-            msgBox.setMessage("Произошла ошибка при инциализации плагина - checksRepository == null");
+            msgBox.setText(Messages.ServicesAdapter_Error);
+            msgBox.setMessage(Messages.ServicesAdapter_NullChecksRepository);
             msgBox.open();
 
             return null;

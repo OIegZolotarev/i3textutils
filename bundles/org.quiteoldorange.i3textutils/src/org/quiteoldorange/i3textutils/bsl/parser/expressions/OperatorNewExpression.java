@@ -27,9 +27,9 @@ public class OperatorNewExpression
     public String toString()
     {
         if (mClass == null)
-            return String.format("Новый %s", mArgs.toString());
+            return String.format("Новый %s", mArgs.toString()); //$NON-NLS-1$
         else
-            return String.format("Новый %s(%s)", mClass.toString(), mArgs.toString());
+            return String.format("Новый %s(%s)", mClass.toString(), mArgs.toString()); //$NON-NLS-1$
     }
 
     private ExpressionNode mArgs = null;

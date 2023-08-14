@@ -119,7 +119,7 @@ public class MoveArgumentsOnSeparateLines
 
             if (currentOffset == maxOffset)
             {
-                newLines.append(usedLine + "\n");
+                newLines.append(usedLine + "\n"); //$NON-NLS-1$
                 continue;
             }
 

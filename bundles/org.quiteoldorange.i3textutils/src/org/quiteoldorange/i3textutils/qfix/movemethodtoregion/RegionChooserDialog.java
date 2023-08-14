@@ -56,18 +56,18 @@ public class RegionChooserDialog
     @Override
     protected Control createDialogArea(Composite parent)
     {
-        setTitle(String.format("Перемещение метода \"%s\"", mMethodName));
+        setTitle(String.format(Messages.RegionChooserDialog_MoveMethodDialogTitle, mMethodName));
         setMessage(mIssueDescription);
 
         getShell().setText("Рефакторинг"); //$NON-NLS-1$
 
         Composite control = (Composite)super.createDialogArea(parent);
-        mRegionsTable = createDataTable(control, "Области модуля", mCandidates); //$NON-NLS-1$
+        mRegionsTable = createDataTable(control, Messages.RegionChooserDialog_ModuleRegions, mCandidates);
 
         if (hasNewRegionsSuggestions())
         {
             Label l = new Label(control, SWT.LEFT);
-            l.setText("* - область не существует в модуле и будет создана");
+            l.setText(Messages.RegionChooserDialog_RegionIsNotExistingInModuleAndWillBeCreated);
         }
 
 
@@ -146,7 +146,6 @@ public class RegionChooserDialog
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     protected void okPressed()
     {
         StructuredSelection sel = (StructuredSelection)mRegionsTable.getSelection();

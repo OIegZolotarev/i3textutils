@@ -17,7 +17,7 @@ public class MultipleExpressionsNode
     @Override
     public String toString()
     {
-        return "<,>";
+        return "<,>"; //$NON-NLS-1$
     }
 
     /**

@@ -21,7 +21,7 @@ public class BSLParsingException
     public static class UnexpectedMemberRead
         extends BSLParsingException
     {
-
+        // Do nothing
     }
 
     /**
@@ -31,7 +31,7 @@ public class BSLParsingException
     public static class UnexpectedEndOfStream
         extends BSLParsingException
     {
-
+        // Do nothing
     }
 
     /**
@@ -96,6 +96,6 @@ public class BSLParsingException
     public static class ExpectedClosingBracket
         extends BSLParsingException
     {
-
+        // Do nothing
     }
 }

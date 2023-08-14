@@ -23,7 +23,6 @@ import com.google.inject.Injector;
  *
  * @author Dmitriy Marmyshev
  */
-@SuppressWarnings("restriction")
 public class ExecutableExtensionFactory
     extends AbstractGuiceAwareExecutableExtensionFactory
 {

@@ -100,7 +100,7 @@ public class OperationNode
     @Override
     public String serialize(ScriptVariant scriptVariant)
     {
-        String opRepresentation = "";
+        String opRepresentation = ""; //$NON-NLS-1$
 
         switch (mOperator)
         {
@@ -132,7 +132,7 @@ public class OperationNode
             return "Unknown op"; //$NON-NLS-1$
         }
 
-        return String.format("%s %s %s", mLeftNode.serialize(scriptVariant), opRepresentation,
+        return String.format("%s %s %s", mLeftNode.serialize(scriptVariant), opRepresentation, //$NON-NLS-1$
             mRightNode.serialize(scriptVariant));
     }
 
@@ -150,7 +150,6 @@ public class OperationNode
     @Override
     public String toString()
     {
-        String result = "";
         String opRepresentation = null;
 
         switch (mOperator)

@@ -71,7 +71,7 @@ public class MethodNode
             return builder.toString();
         }
 
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
     /**
@@ -119,7 +119,7 @@ public class MethodNode
                 throw new BSLParsingException.UnexpectedToken(stream, token, Type.Identifier);
 
             String argName = token.getValue();
-            String defaultValue = "";
+            String defaultValue = ""; //$NON-NLS-1$
 
             // Смотрим следующий токен
             // а) запятая
@@ -222,6 +222,7 @@ public class MethodNode
     {
         private String mName = null;
         private String mDefaultValue = null;
+        @SuppressWarnings("unused")
         private boolean mByValue;
 
         /**

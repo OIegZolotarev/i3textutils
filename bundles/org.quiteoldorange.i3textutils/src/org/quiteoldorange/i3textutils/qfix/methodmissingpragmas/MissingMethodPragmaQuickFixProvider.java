@@ -85,7 +85,7 @@ public class MissingMethodPragmaQuickFixProvider
 
         for (FixVariant variant : resolutions)
         {
-            acceptor.accept(issue, variant.getDescription(), "", null,
+            acceptor.accept(issue, variant.getDescription(), "", null, //$NON-NLS-1$
                 new AddMissingPragmaModification(issue, variant));
         }
     }

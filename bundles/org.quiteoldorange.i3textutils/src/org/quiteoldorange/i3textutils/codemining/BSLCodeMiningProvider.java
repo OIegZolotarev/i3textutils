@@ -13,15 +13,9 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.ITextViewerExtension2;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.codemining.ICodeMining;
 import org.eclipse.jface.text.codemining.ICodeMiningProvider;
-import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.AnnotationPainter;
-import org.eclipse.jface.text.source.IAnnotationAccess;
-import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.ISourceViewerExtension5;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
@@ -51,6 +45,8 @@ import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com._1c.g5.v8.dt.bsl.model.WhileStatement;
+import com._1c.g5.v8.dt.mcore.Ctor;
+import com._1c.g5.v8.dt.mcore.Type;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 public class BSLCodeMiningProvider
@@ -65,39 +61,10 @@ public class BSLCodeMiningProvider
     {
         var store = i3TextUtilsPlugin.getDefault().getPreferenceStore();
         mCodeminingsEnabled = store.getBoolean(PreferenceConstants.CODEMININGS_ENABLED);
-        mShowWhenContainsSubstring = store.getBoolean(PreferenceConstants.CODEMININGS_SHOW_WHEN_INPUT_CONTAINS_PARAMETER_NAME);
+        mShowWhenContainsSubstring =
+            store.getBoolean(PreferenceConstants.CODEMININGS_SHOW_WHEN_INPUT_CONTAINS_PARAMETER_NAME);
         mShowWhenOneParameter = store.getBoolean(PreferenceConstants.CODEMININGS_SHOW_WHEN_ONE_PARAMETER);
 
-
-    }
-
-    private static void addAnnotationPainter(ISourceViewer viewer)
-    {
-        IAnnotationAccess annotationAccess = new IAnnotationAccess()
-        {
-            @Override
-            public Object getType(Annotation annotation)
-            {
-                return annotation.getType();
-            }
-
-            @Override
-            public boolean isMultiLine(Annotation annotation)
-            {
-                return true;
-            }
-
-            @Override
-            public boolean isTemporary(Annotation annotation)
-            {
-                return true;
-            }
-
-        };
-        AnnotationPainter painter = new BSLAnnotationPainter(viewer, annotationAccess);
-        ((ITextViewerExtension2)viewer).addPainter(painter);
-        // Register this annotation painter as CodeMining annotation painter.
-        ((ISourceViewerExtension5)viewer).setCodeMiningAnnotationPainter(painter);
     }
 
     @Override
@@ -105,7 +72,6 @@ public class BSLCodeMiningProvider
         IProgressMonitor monitor)
     {
         //addAnnotationPainter((ISourceViewer)viewer);
-
 
         // TODO Auto-generated method stub
         return CompletableFuture.supplyAsync(() -> {
@@ -146,10 +112,44 @@ public class BSLCodeMiningProvider
         }
         else if (exp instanceof OperatorStyleCreator)
         {
-            OperatorStyleCreator op = (OperatorStyleCreator)exp;
-            op.getType();
+            traverseOperatorStyleCreate(exp, result, variant);
+        }
+    }
+
+    /**
+     * @param exp
+     * @param result
+     * @param variant
+     */
+    private void traverseOperatorStyleCreate(Expression exp, List<ICodeMining> result, ScriptVariant variant)
+    {
+        OperatorStyleCreator op = (OperatorStyleCreator)exp;
+        var type = op.getType();
+
+        Ctor ctor = findBestCtor(type, op);
+
+        addCtorParametersHint(op, ctor, result, variant);
+    }
+
+    private Ctor findBestCtor(Type type, OperatorStyleCreator op)
+    {
+        int numParams = op.getParams().size();
+        Ctor best = type.getCtors().get(0);
+
+        for (Ctor ctor : type.getCtors())
+        {
+            if (numParams >= ctor.getMinParams() && (numParams <= ctor.getMaxParams() || ctor.getMaxParams() == -1))
+            {
+                int minParams = ctor.getMinParams();
+                if (minParams == numParams)
+                    return ctor;
+            }
+
+            best = ctor;
 
         }
+
+        return best;
     }
 
     private void traverseStatement(Statement statement, List<ICodeMining> result, ScriptVariant variant)
@@ -189,7 +189,8 @@ public class BSLCodeMiningProvider
                     traverseStatement(item, result, variant);
             }
 
-            // TODO: traverse else part;
+            for (var item : ifStatement.getElseStatements())
+                traverseStatement(item, result, variant);
 
         }
         else if (statement instanceof TryExceptStatement)
@@ -355,6 +356,59 @@ public class BSLCodeMiningProvider
         return false;
     }
 
+    private void addCtorParametersHint(OperatorStyleCreator op, Ctor constructor, List<ICodeMining> result,
+        ScriptVariant variant)
+    {
+        var formalParams = constructor.getParams();
+        var opParams = op.getParams();
+
+        int index = 0;
+
+        for (var opParam : opParams)
+        {
+            if (index >= formalParams.size())
+                break;
+
+            var fp = formalParams.get(index);
+
+            String paramName = ""; //$NON-NLS-1$
+
+            switch (variant)
+            {
+            case ENGLISH:
+                paramName = fp.getName();
+                break;
+            case RUSSIAN:
+                paramName = fp.getNameRu();
+                break;
+            default:
+                paramName = fp.getNameRu();
+                break;
+            }
+
+            var node = NodeModelUtils.findActualNodeFor(opParam);
+
+            if (!mShowWhenContainsSubstring)
+            {
+
+                String s = node.getText().toUpperCase();
+
+                if (s.indexOf(paramName.toUpperCase()) > -1)
+                {
+                    return;
+                }
+            }
+
+            Position position = new Position(node.getOffset(), 1);
+
+            ArgumentsNameHintCodeMining e = new ArgumentsNameHintCodeMining(position, this, paramName);
+            result.add(e);
+
+            index++;
+        }
+
+    }
+
     /**
      * @param left
      */
@@ -397,6 +451,9 @@ public class BSLCodeMiningProvider
                         if (source instanceof Invocation)
                             addInvocationParametersHint((Invocation)source, result, variant);
                     }
+                    else if (param instanceof OperatorStyleCreator)
+                        traverseOperatorStyleCreate(param, result, variant);
+
                 }
 
             }

@@ -54,8 +54,8 @@ public class BSLCodeMiningProvider
 {
 
     boolean mCodeminingsEnabled = true;
-    boolean mShowWhenOneParameter = false;
     boolean mShowWhenContainsSubstring = false;
+    boolean mShowWhenOneParameter = false;
 
     public BSLCodeMiningProvider()
     {
@@ -65,295 +65,6 @@ public class BSLCodeMiningProvider
             store.getBoolean(PreferenceConstants.CODEMININGS_SHOW_WHEN_INPUT_CONTAINS_PARAMETER_NAME);
         mShowWhenOneParameter = store.getBoolean(PreferenceConstants.CODEMININGS_SHOW_WHEN_ONE_PARAMETER);
 
-    }
-
-    @Override
-    public CompletableFuture<List<? extends ICodeMining>> provideCodeMinings(ITextViewer viewer,
-        IProgressMonitor monitor)
-    {
-        //addAnnotationPainter((ISourceViewer)viewer);
-
-        // TODO Auto-generated method stub
-        return CompletableFuture.supplyAsync(() -> {
-
-            if (!mCodeminingsEnabled)
-                return Collections.emptyList();
-
-            IXtextDocument document = (IXtextDocument)viewer.getDocument();
-
-            List<ICodeMining> result = new ArrayList<>();
-
-            //ModuleASTTree tree = new ModuleASTTree(document.get());
-            //traversei3Tree(tree, tree, result);
-
-            var module = Utils.getModuleFromXTextDocument(document);
-            var scriptVariant = Utils.getDocScriptVariant(document);
-
-            traverseEDTModule(module, result, scriptVariant);
-
-            return result;
-        });
-    }
-
-    private void traverseExpression(Expression exp, List<ICodeMining> result, ScriptVariant variant)
-    {
-        if (exp == null)
-            return;
-
-        if (exp instanceof Invocation)
-        {
-            addInvocationParametersHint((Invocation)exp, result, variant);
-        }
-        else if (exp instanceof BinaryExpression)
-        {
-            BinaryExpression bExp = (BinaryExpression)exp;
-            traverseExpression(bExp.getLeft(), result, variant);
-            traverseExpression(bExp.getRight(), result, variant);
-        }
-        else if (exp instanceof OperatorStyleCreator)
-        {
-            traverseOperatorStyleCreate(exp, result, variant);
-        }
-    }
-
-    /**
-     * @param exp
-     * @param result
-     * @param variant
-     */
-    private void traverseOperatorStyleCreate(Expression exp, List<ICodeMining> result, ScriptVariant variant)
-    {
-        OperatorStyleCreator op = (OperatorStyleCreator)exp;
-        var type = op.getType();
-
-        Ctor ctor = findBestCtor(type, op);
-
-        addCtorParametersHint(op, ctor, result, variant);
-    }
-
-    private Ctor findBestCtor(Type type, OperatorStyleCreator op)
-    {
-        int numParams = op.getParams().size();
-        Ctor best = type.getCtors().get(0);
-
-        for (Ctor ctor : type.getCtors())
-        {
-            if (numParams >= ctor.getMinParams() && (numParams <= ctor.getMaxParams() || ctor.getMaxParams() == -1))
-            {
-                int minParams = ctor.getMinParams();
-                if (minParams == numParams)
-                    return ctor;
-            }
-
-            best = ctor;
-
-        }
-
-        return best;
-    }
-
-    private void traverseStatement(Statement statement, List<ICodeMining> result, ScriptVariant variant)
-    {
-        if (statement instanceof SimpleStatement)
-        {
-            SimpleStatement ss = (SimpleStatement)statement;
-
-            var node = NodeModelUtils.findActualNodeFor(ss);
-            String s = node.getText();
-            s.toString();
-
-            traverseExpression(ss.getLeft(), result, variant);
-            traverseExpression(ss.getRight(), result, variant);
-        }
-        else if (statement instanceof IfStatement)
-        {
-            IfStatement ifStatement = (IfStatement)statement;
-
-            var ifPart = ifStatement.getIfPart();
-
-            if (ifPart != null)
-            {
-                traverseExpression(ifPart.getPredicate(), result, variant);
-
-                for (var item : ifPart.getStatements())
-                    traverseStatement(item, result, variant);
-            }
-
-            var elseifParts = ifStatement.getElsIfParts();
-
-            for (var part : elseifParts)
-            {
-                traverseExpression(part.getPredicate(), result, variant);
-
-                for (var item : part.getStatements())
-                    traverseStatement(item, result, variant);
-            }
-
-            for (var item : ifStatement.getElseStatements())
-                traverseStatement(item, result, variant);
-
-        }
-        else if (statement instanceof TryExceptStatement)
-        {
-            TryExceptStatement te = (TryExceptStatement)statement;
-
-            for (var stmt : te.getTryStatements())
-            {
-                traverseStatement(stmt, result, variant);
-            }
-
-            for (var stmt : te.getExceptStatements())
-            {
-                traverseStatement(stmt, result, variant);
-            }
-        }
-        else if (statement instanceof WhileStatement)
-        {
-            WhileStatement ls = (WhileStatement)statement;
-
-            for (var stmt : ls.getStatements())
-            {
-                traverseStatement(stmt, result, variant);
-            }
-
-            traverseExpression(ls.getPredicate(), result, variant);
-
-        }
-        else if (statement instanceof ForToStatement)
-        {
-            ForToStatement ls = (ForToStatement)statement;
-
-            for (var stmt : ls.getStatements())
-            {
-                traverseStatement(stmt, result, variant);
-            }
-
-            traverseExpression(ls.getInitializer(), result, variant);
-            traverseExpression(ls.getBound(), result, variant);
-
-        }
-        else if (statement instanceof ForEachStatement)
-        {
-            ForEachStatement ls = (ForEachStatement)statement;
-
-            for (var stmt : ls.getStatements())
-            {
-                traverseStatement(stmt, result, variant);
-            }
-
-            traverseExpression(ls.getCollection(), result, variant);
-        }
-
-        // TODO: traverse unary expressions
-        // TODO: исключение для "вставить"
-
-    }
-
-    private void traverseEDTModule(Module module, List<ICodeMining> result, ScriptVariant scriptVariant)
-    {
-        for (Method method : module.allMethods())
-        {
-            for (var statement : method.allStatements())
-            {
-                traverseStatement(statement, result, scriptVariant);
-            }
-        }
-    }
-
-    private void makeParametersHints(EList<Expression> invocationParams, List<String> paramsNames,
-        List<ICodeMining> result)
-    {
-        if (paramsNames.size() < 2 && !mShowWhenOneParameter)
-            return;
-
-        int index = 0;
-        for (var item : paramsNames)
-        {
-
-            if (index >= invocationParams.size())
-                break;
-
-            var node = NodeModelUtils.findActualNodeFor(invocationParams.get(index));
-
-            if (!mShowWhenContainsSubstring)
-            {
-
-                String s = node.getText().toUpperCase();
-
-                if (s.indexOf(item.toUpperCase()) > -1)
-                {
-                    return;
-                }
-            }
-
-            Position position = new Position(node.getOffset(), 1);
-
-            ArgumentsNameHintCodeMining e = new ArgumentsNameHintCodeMining(position, this, item);
-            result.add(e);
-
-            index++;
-        }
-    }
-
-    private boolean dumpParametersNameFromMethod(EObject context, EObject feature, List<String> names, Invocation inv,
-        ScriptVariant variant)
-    {
-        if (feature instanceof Method)
-        {
-            Method method = (Method)feature;
-
-            for (var item : method.getFormalParams())
-            {
-                names.add(item.getName());
-            }
-
-            return true;
-
-        }
-
-        else if (feature instanceof com._1c.g5.v8.dt.mcore.Method)
-        {
-            if (feature instanceof SourceObjectLinkProvider)
-            {
-                SourceObjectLinkProvider solp = (SourceObjectLinkProvider)feature;
-
-                InternalEObject source = (InternalEObject)EcoreFactory.eINSTANCE.createEObject();
-                source.eSetProxyURI(solp.getSourceUri());
-
-                var resolvedObject = EcoreUtil.resolve(source, context);
-
-                if (resolvedObject instanceof Method)
-                {
-                    Method m = (Method)resolvedObject;
-
-                    for (var item : m.getFormalParams())
-                    {
-                        names.add(item.getName());
-                    }
-                }
-            }
-
-            else
-            {
-                com._1c.g5.v8.dt.mcore.Method methodImp = (com._1c.g5.v8.dt.mcore.Method)feature;
-
-                var paramSet = methodImp.actualParamSet(inv.getParams().size());
-
-                if (paramSet == null)
-                    return false;
-
-                for (var item : paramSet.getParams())
-                {
-                    if (variant == ScriptVariant.RUSSIAN)
-                        names.add(item.getNameRu());
-                    else
-                        names.add(item.getName());
-                }
-            }
-            return true;
-        }
-
-        return false;
     }
 
     private void addCtorParametersHint(OperatorStyleCreator op, Ctor constructor, List<ICodeMining> result,
@@ -461,6 +172,189 @@ public class BSLCodeMiningProvider
 
     }
 
+    @Override
+    public void dispose()
+    {
+        // TODO Auto-generated method stub
+    }
+
+    private boolean dumpParametersNameFromMethod(EObject context, EObject feature, List<String> names, Invocation inv,
+        ScriptVariant variant)
+    {
+        if (feature instanceof Method)
+        {
+            Method method = (Method)feature;
+
+            for (var item : method.getFormalParams())
+            {
+                names.add(item.getName());
+            }
+
+            return true;
+
+        }
+
+        else if (feature instanceof com._1c.g5.v8.dt.mcore.Method)
+        {
+            if (feature instanceof SourceObjectLinkProvider)
+            {
+                SourceObjectLinkProvider solp = (SourceObjectLinkProvider)feature;
+
+                InternalEObject source = (InternalEObject)EcoreFactory.eINSTANCE.createEObject();
+                source.eSetProxyURI(solp.getSourceUri());
+
+                var resolvedObject = EcoreUtil.resolve(source, context);
+
+                if (resolvedObject instanceof Method)
+                {
+                    Method m = (Method)resolvedObject;
+
+                    for (var item : m.getFormalParams())
+                    {
+                        names.add(item.getName());
+                    }
+                }
+            }
+
+            else
+            {
+                com._1c.g5.v8.dt.mcore.Method methodImp = (com._1c.g5.v8.dt.mcore.Method)feature;
+
+                var paramSet = methodImp.actualParamSet(inv.getParams().size());
+
+                if (paramSet == null)
+                    return false;
+
+                for (var item : paramSet.getParams())
+                {
+                    if (variant == ScriptVariant.RUSSIAN)
+                        names.add(item.getNameRu());
+                    else
+                        names.add(item.getName());
+                }
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    private Ctor findBestCtor(Type type, OperatorStyleCreator op)
+    {
+        int numParams = op.getParams().size();
+        Ctor best = type.getCtors().get(0);
+
+        for (Ctor ctor : type.getCtors())
+        {
+            if (numParams >= ctor.getMinParams() && (numParams <= ctor.getMaxParams() || ctor.getMaxParams() == -1))
+            {
+                int minParams = ctor.getMinParams();
+                if (minParams == numParams)
+                    return ctor;
+            }
+
+            best = ctor;
+
+        }
+
+        return best;
+    }
+
+    private void makeParametersHints(EList<Expression> invocationParams, List<String> paramsNames,
+        List<ICodeMining> result)
+    {
+        if (paramsNames.size() < 2 && !mShowWhenOneParameter)
+            return;
+
+        int index = 0;
+        for (var item : paramsNames)
+        {
+
+            if (index >= invocationParams.size())
+                break;
+
+            var node = NodeModelUtils.findActualNodeFor(invocationParams.get(index));
+
+            if (!mShowWhenContainsSubstring)
+            {
+
+                String s = node.getText().toUpperCase();
+
+                if (s.indexOf(item.toUpperCase()) > -1)
+                {
+                    return;
+                }
+            }
+
+            Position position = new Position(node.getOffset(), 1);
+
+            ArgumentsNameHintCodeMining e = new ArgumentsNameHintCodeMining(position, this, item);
+            result.add(e);
+
+            index++;
+        }
+    }
+
+    @Override
+    public CompletableFuture<List<? extends ICodeMining>> provideCodeMinings(ITextViewer viewer,
+        IProgressMonitor monitor)
+    {
+        //addAnnotationPainter((ISourceViewer)viewer);
+
+        // TODO Auto-generated method stub
+        return CompletableFuture.supplyAsync(() -> {
+
+            if (!mCodeminingsEnabled)
+                return Collections.emptyList();
+
+            IXtextDocument document = (IXtextDocument)viewer.getDocument();
+
+            List<ICodeMining> result = new ArrayList<>();
+
+            //ModuleASTTree tree = new ModuleASTTree(document.get());
+            //traversei3Tree(tree, tree, result);
+
+            var module = Utils.getModuleFromXTextDocument(document);
+            var scriptVariant = Utils.getDocScriptVariant(document);
+
+            traverseEDTModule(module, result, scriptVariant);
+
+            return result;
+        });
+    }
+
+    private void traverseEDTModule(Module module, List<ICodeMining> result, ScriptVariant scriptVariant)
+    {
+        for (Method method : module.allMethods())
+        {
+            for (var statement : method.allStatements())
+            {
+                traverseStatement(statement, result, scriptVariant);
+            }
+        }
+    }
+
+    private void traverseExpression(Expression exp, List<ICodeMining> result, ScriptVariant variant)
+    {
+        if (exp == null)
+            return;
+
+        if (exp instanceof Invocation)
+        {
+            addInvocationParametersHint((Invocation)exp, result, variant);
+        }
+        else if (exp instanceof BinaryExpression)
+        {
+            BinaryExpression bExp = (BinaryExpression)exp;
+            traverseExpression(bExp.getLeft(), result, variant);
+            traverseExpression(bExp.getRight(), result, variant);
+        }
+        else if (exp instanceof OperatorStyleCreator)
+        {
+            traverseOperatorStyleCreate(exp, result, variant);
+        }
+    }
+
     /**
      * @param tree
      * @param result
@@ -493,10 +387,116 @@ public class BSLCodeMiningProvider
 
     }
 
-    @Override
-    public void dispose()
+    /**
+     * @param exp
+     * @param result
+     * @param variant
+     */
+    private void traverseOperatorStyleCreate(Expression exp, List<ICodeMining> result, ScriptVariant variant)
     {
-        // TODO Auto-generated method stub
+        OperatorStyleCreator op = (OperatorStyleCreator)exp;
+        var type = op.getType();
+
+        Ctor ctor = findBestCtor(type, op);
+
+        addCtorParametersHint(op, ctor, result, variant);
+    }
+
+    private void traverseStatement(Statement statement, List<ICodeMining> result, ScriptVariant variant)
+    {
+        if (statement instanceof SimpleStatement)
+        {
+            SimpleStatement ss = (SimpleStatement)statement;
+
+            var node = NodeModelUtils.findActualNodeFor(ss);
+            String s = node.getText();
+            s.toString();
+
+            traverseExpression(ss.getLeft(), result, variant);
+            traverseExpression(ss.getRight(), result, variant);
+        }
+        else if (statement instanceof IfStatement)
+        {
+            IfStatement ifStatement = (IfStatement)statement;
+
+            var ifPart = ifStatement.getIfPart();
+
+            if (ifPart != null)
+            {
+                traverseExpression(ifPart.getPredicate(), result, variant);
+
+                for (var item : ifPart.getStatements())
+                    traverseStatement(item, result, variant);
+            }
+
+            var elseifParts = ifStatement.getElsIfParts();
+
+            for (var part : elseifParts)
+            {
+                traverseExpression(part.getPredicate(), result, variant);
+
+                for (var item : part.getStatements())
+                    traverseStatement(item, result, variant);
+            }
+
+            for (var item : ifStatement.getElseStatements())
+                traverseStatement(item, result, variant);
+
+        }
+        else if (statement instanceof TryExceptStatement)
+        {
+            TryExceptStatement te = (TryExceptStatement)statement;
+
+            for (var stmt : te.getTryStatements())
+            {
+                traverseStatement(stmt, result, variant);
+            }
+
+            for (var stmt : te.getExceptStatements())
+            {
+                traverseStatement(stmt, result, variant);
+            }
+        }
+        else if (statement instanceof WhileStatement)
+        {
+            WhileStatement ls = (WhileStatement)statement;
+
+            for (var stmt : ls.getStatements())
+            {
+                traverseStatement(stmt, result, variant);
+            }
+
+            traverseExpression(ls.getPredicate(), result, variant);
+
+        }
+        else if (statement instanceof ForToStatement)
+        {
+            ForToStatement ls = (ForToStatement)statement;
+
+            for (var stmt : ls.getStatements())
+            {
+                traverseStatement(stmt, result, variant);
+            }
+
+            traverseExpression(ls.getInitializer(), result, variant);
+            traverseExpression(ls.getBound(), result, variant);
+
+        }
+        else if (statement instanceof ForEachStatement)
+        {
+            ForEachStatement ls = (ForEachStatement)statement;
+
+            for (var stmt : ls.getStatements())
+            {
+                traverseStatement(stmt, result, variant);
+            }
+
+            traverseExpression(ls.getCollection(), result, variant);
+        }
+
+        // TODO: traverse unary expressions
+        // TODO: исключение для "вставить"
+
     }
 
 }

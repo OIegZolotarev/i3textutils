@@ -74,6 +74,12 @@ public class ArgumentsNameHintCodeMining
 
     }
 
+    @Override
+    public String toString()
+    {
+        return "ArgumentsNameHintCodeMining [mArgName=" + mArgName + ", getPosition()=" + getPosition() + "]";
+    }
+
     public static void makeNew(ICodeMiningProvider provider, MethodCallNode methodCallNode, ModuleASTTree module,
         List<ICodeMining> result)
     {

@@ -172,12 +172,6 @@ public class BSLCodeMiningProvider
 
     }
 
-    @Override
-    public void dispose()
-    {
-        // TODO Auto-generated method stub
-    }
-
     private boolean dumpParametersNameFromMethod(EObject context, EObject feature, List<String> names, Invocation inv,
         ScriptVariant variant)
     {
@@ -496,6 +490,13 @@ public class BSLCodeMiningProvider
 
         // TODO: traverse unary expressions
         // TODO: исключение для "вставить"
+
+    }
+
+    @Override
+    public void dispose()
+    {
+        // TODO Auto-generated method stub
 
     }
 

@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.qfix.quickactions;
+package org.quiteoldorange.i3textutils.qfix;
 
 import org.eclipse.xtext.ui.editor.model.edit.IModification;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
@@ -16,7 +16,7 @@ import com._1c.g5.v8.dt.bsl.model.Method;
  * @author ozolotarev
  *
  */
-final class MethodConverter
+public final class MethodConverter
     implements IModification
 {
     public enum ConversionDirection
@@ -34,7 +34,7 @@ final class MethodConverter
     /**
      * @param issue
      */
-    MethodConverter(Issue issue, ConversionDirection direction)
+    public MethodConverter(Issue issue, ConversionDirection direction)
     {
         mIssue = issue;
         mDirection = direction;

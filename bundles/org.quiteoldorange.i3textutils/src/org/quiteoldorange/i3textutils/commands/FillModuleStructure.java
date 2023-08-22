@@ -3,15 +3,11 @@
  */
 package org.quiteoldorange.i3textutils.commands;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -34,15 +30,16 @@ public class FillModuleStructure
 
         Module moduleModel = Utils.getModuleFromXTextDocument(doc);
 
+
         if (moduleModel == null)
         {
             return;
         }
 
-        IFile templatePath = project.getFile(Utils.getFileTemplatePathForModuleType(moduleModel.getModuleType()));
-        File f = templatePath.getLocation().toFile();
+        String templateSource = Utils.getBSLModuleTemplate(moduleModel.getModuleType(), project);
 
-        String templateSource = Files.readString(Paths.get(f.getAbsolutePath()));
+        if (templateSource == null)
+            return;
 
         if (templateSource.indexOf(codeMarker) > 0)
         {

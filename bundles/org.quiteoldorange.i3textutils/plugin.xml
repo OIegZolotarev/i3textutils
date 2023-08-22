@@ -149,6 +149,12 @@
          class="org.quiteoldorange.i3textutils.qfix.movemethodtoregion.ModuleRegionQuickFixProvider"></externalQuickfixProvider>
         <externalQuickfixProvider
          class="org.quiteoldorange.i3textutils.qfix.methodmissingpragmas.MissingMethodPragmaQuickFixProvider"></externalQuickfixProvider>
+        <externalQuickfixProvider
+              class="org.quiteoldorange.i3textutils.qfix.WrapObjectModuleWithPreprocessorDefinitions">
+        </externalQuickfixProvider>
+        <externalQuickfixProvider
+              class="org.quiteoldorange.i3textutils.qfix.ConvertFunctionToProcedure">
+        </externalQuickfixProvider>
     </extension>
     <extension
       point="com._1c.g5.wiring.serviceProvider">

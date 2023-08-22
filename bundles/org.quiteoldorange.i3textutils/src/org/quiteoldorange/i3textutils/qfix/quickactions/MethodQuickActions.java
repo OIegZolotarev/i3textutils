@@ -6,7 +6,8 @@ package org.quiteoldorange.i3textutils.qfix.quickactions;
 import org.eclipse.xtext.ui.editor.quickfix.Fix;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
-import org.quiteoldorange.i3textutils.qfix.quickactions.MethodConverter.ConversionDirection;
+import org.quiteoldorange.i3textutils.qfix.MethodConverter;
+import org.quiteoldorange.i3textutils.qfix.MethodConverter.ConversionDirection;
 
 import com._1c.g5.v8.dt.bsl.ui.quickfix.AbstractExternalQuickfixProvider;
 

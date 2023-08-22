@@ -3,21 +3,15 @@
  */
 package org.quiteoldorange.i3textutils.modulereformatter;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLRegionNode;
-import org.quiteoldorange.i3textutils.refactoring.Utils;
 
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
@@ -157,22 +151,24 @@ public class ModuleReformatterContext
 
     public ModuleASTTree getStandardModuleStructure()
     {
-        IFile templatePath = mProject.getFile(Utils.getFileTemplatePathForModuleType(mModule.getModuleType()));
-        File f = templatePath.getLocation().toFile();
-
-        try
-        {
-            String templateSource = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
-
-            Lexer lex = new Lexer(templateSource);
-            ModuleASTTree tree = new ModuleASTTree(lex);
-
-            return tree;
-        }
-        catch (IOException e)
-        {
-            return null;
-        }
+        // TODO: review
+        return null;
+//        IFile templatePath = mProject.getFile(Utils.getFileTemplatePathForModuleType(mModule.getModuleType()));
+//        File f = templatePath.getLocation().toFile();
+//
+//        try
+//        {
+//            String templateSource = new String(Files.readAllBytes(Paths.get(f.getAbsolutePath())));
+//
+//            Lexer lex = new Lexer(templateSource);
+//            ModuleASTTree tree = new ModuleASTTree(lex);
+//
+//            return tree;
+//        }
+//        catch (IOException e)
+//        {
+//            return null;
+//        }
 
     }
 }

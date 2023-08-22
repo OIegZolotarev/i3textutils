@@ -3,11 +3,18 @@
  */
 package org.quiteoldorange.i3textutils.refactoring;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.ui.IFileEditorInput;
@@ -27,6 +34,9 @@ import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+import com.google.common.io.CharSource;
+import com.google.common.io.CharStreams;
+import com.google.common.io.Resources;
 
 /**
  * @author ozolotarev
@@ -247,70 +257,82 @@ public class Utils
         return (T)bundleContext.getService(serviceRef);
     }
 
-    public static String getFileTemplatePathForModuleType(ModuleType type)
+    @SuppressWarnings("nls")
+    public static String getFileTemplateNameForModuleType(ModuleType type)
     {
-        if (type == ModuleType.COMMON_MODULE)
+        switch (type)
         {
-            return ".settings/templates/common_module.bsl"; //$NON-NLS-1$
+        case BOT_MODULE:
+            return "bot_module.bsl";
+        case COMMAND_MODULE:
+            return "command_module.bsl";
+        case COMMON_MODULE:
+            return "common_module.bsl";
+        case EXTERNAL_CONN_MODULE:
+            return "external_conn_module.bsl";
+        case FORM_MODULE:
+            return "form_module.bsl";
+        case HTTP_SERVICE_MODULE:
+            return "http_service_module.bsl";
+        case INTEGRATION_SERVICE_MODULE:
+            return "integration_service_module.bsl";
+        case MANAGED_APP_MODULE:
+            return "managed_app_module.bsl";
+        case MANAGER_MODULE:
+            return "manager_module.bsl";
+        case OBJECT_MODULE:
+            return "object_module.bsl";
+        case ORDINARY_APP_MODULE:
+            return "ordinary_app_module.bsl";
+        case RECORDSET_MODULE:
+            return "recordset_module.bsl";
+        case SESSION_MODULE:
+            return "session_module.bsl";
+        case VALUE_MANAGER_MODULE:
+            return "value_manager_module.bsl";
+        case WEB_SERVICE_MODULE:
+            return "web_service_module.bsl";
+        default:
+            break;
+
         }
-        else if (type == ModuleType.ORDINARY_APP_MODULE)
+        return null;
+    }
+
+    public static String getBSLModuleTemplate(ModuleType type, IProject project)
+    {
+        String fileName = getFileTemplateNameForModuleType(type);
+
+        if (fileName == null)
+            return null;
+
+        String templateFile = ".settings/templates/" + fileName;
+        Path p = new Path(templateFile);
+
+        if (project.exists(p))
         {
-            return ".settings/templates/ordinary_app_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.BOT_MODULE)
-        {
-            return ".settings/templates/bot_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.COMMAND_MODULE)
-        {
-            return ".settings/templates/command_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.EXTERNAL_CONN_MODULE)
-        {
-            return ".settings/templates/external_conn_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.FORM_MODULE)
-        {
-            return ".settings/templates/form_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.HTTP_SERVICE_MODULE)
-        {
-            return ".settings/templates/http_service_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.INTEGRATION_SERVICE_MODULE)
-        {
-            return ".settings/templates/integration_service_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.MANAGED_APP_MODULE)
-        {
-            return ".settings/templates/managed_app_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.MANAGER_MODULE)
-        {
-            return ".settings/templates/manager_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.OBJECT_MODULE)
-        {
-            return ".settings/templates/object_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.RECORDSET_MODULE)
-        {
-            return ".settings/templates/recordset_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.SESSION_MODULE)
-        {
-            return ".settings/templates/session_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.VALUE_MANAGER_MODULE)
-        {
-            return ".settings/templates/value_manager_module.bsl"; //$NON-NLS-1$
-        }
-        else if (type == ModuleType.WEB_SERVICE_MODULE)
-        {
-            return ".settings/templates/web_service_module.bsl"; //$NON-NLS-1$
+
+            try
+            {
+                IFile templatePath = project.getFile(templateFile);
+                File f = templatePath.getLocation().toFile();
+
+                String templateSource = Files.readString(Paths.get(f.getAbsolutePath().toString()));
+
+                return templateSource;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
 
-        return null;
+        // TODO: английские варианты шаблонов (чтобы по красоте все было)
+        String internalPath = "bsl_templates/ru/" + fileName;
+        var charSource = getFileInputSupplier(internalPath);
+
+        return readContents(charSource, internalPath);
+
     }
 
     public static ScriptVariant getDocScriptVariant(IXtextDocument doc)
@@ -319,6 +341,24 @@ public class Utils
         var project = file.getProject();
 
         return ServicesAdapter.instance().getProjectScriptVariant(project);
+    }
+
+    private static CharSource getFileInputSupplier(String partName)
+    {
+        return Resources.asCharSource(Utils.class.getResource("/resources/" + partName), //$NON-NLS-1$
+            StandardCharsets.UTF_8);
+    }
+
+    private static String readContents(CharSource source, String path)
+    {
+        try (Reader reader = source.openBufferedStream())
+        {
+            return CharStreams.toString(reader);
+        }
+        catch (IOException | NullPointerException e)
+        {
+            return ""; //$NON-NLS-1$
+        }
     }
 
 }

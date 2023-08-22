@@ -14,6 +14,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.xtext.ui.editor.quickfix.Fix;
 import org.quiteoldorange.i3textutils.Log;
 import org.quiteoldorange.i3textutils.ServicesAdapter;
+import org.quiteoldorange.i3textutils.qfix.WrapObjectModuleWithPreprocessorDefinitions;
 import org.quiteoldorange.i3textutils.qfix.methodmissingpragmas.MissingMethodPragmaQuickFixProvider;
 import org.quiteoldorange.i3textutils.qfix.movemethodtoregion.ModuleRegionQuickFixProvider;
 
@@ -53,6 +54,14 @@ public class QuickFixAdapter
 
         rebindQuickFix(p, "form-module-missing-pragma", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
             MissingMethodPragmaQuickFixProvider.class, "run"); //$NON-NLS-1$
+
+        rebindQuickFix(p, "module-accessibility-at-client", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
+            WrapObjectModuleWithPreprocessorDefinitions.class, "run"); //$NON-NLS-1$
+
+        // А эта проверка использует старую систему, лол
+        //rebindQuickFix(p, "function-should-return-value", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
+        //ConvertFunctionToProcedure.class, "run"); //$NON-NLS-1$
+
 
         TrayIconDemo td = new TrayIconDemo();
         try

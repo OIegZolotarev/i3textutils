@@ -22,6 +22,7 @@ public class ContentAssistColorFix
     {
         IPreferenceStore store = i3TextUtilsPlugin.getDefault().getPreferenceStore();
 
+
         boolean forceHack = store.getBoolean(PreferenceConstants.FORCE_CONTENT_ASSIST_COLOR_HACK);
         String forcedColor = store.getString(PreferenceConstants.FORCE_CONTENT_ASSIST_COLOR_HACK_VALUE);
 

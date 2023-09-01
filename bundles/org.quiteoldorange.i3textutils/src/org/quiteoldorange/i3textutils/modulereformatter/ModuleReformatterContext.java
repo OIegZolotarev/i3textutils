@@ -89,7 +89,7 @@ public class ModuleReformatterContext
             else
             {
                 hasEmptyLine = false;
-                builder.append(line);
+                builder.append(line + "\n");
             }
         }
 

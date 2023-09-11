@@ -114,26 +114,6 @@
                 </command>
             </menu>
         </menuContribution>
-        <menuContribution
-          allPopups="false"
-          locationURI="menu:org.eclipse.ui.main.menu?after=help">
-            <menu
-             id="labeli3Tools"
-             label="%i3ToolsTextGroup">
-                <command
-                commandId="org.quiteoldorange.i3textutils.ui.groupitems"
-                label="Сгруппировать элементы"
-                style="push"></command>
-            </menu>
-        </menuContribution>
-        <menuContribution
-          allPopups="false"
-          locationURI="toolbar:com._1c.g5.v8.dt.form.ui.formEditor.items?after=wysiwyg">
-            <command
-             commandId="org.quiteoldorange.i3textutils.ui.groupitems"
-             label="Сгруппировать элементы 111"
-             style="push"></command>
-        </menuContribution>
     </extension>
     <!-- <extension point="com.e1c.g5.v8.dt.check.fixes"><fix class="org.quiteoldorange.i3textutils.core.ExecutableExtensionFactory:org.quiteoldorange.i3textutils.qfix.MissingPragmaQFix"/></extension> -->
     <extension

@@ -92,7 +92,7 @@ public class ModuleReformatterContext
                 builder.append(line + "\n");
             }
         }
-
+        //Log.Debug(builder.toString());
         return builder.toString();
     }
 

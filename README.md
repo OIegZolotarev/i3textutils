@@ -8,15 +8,16 @@
 Функция используется в комбинации с проверкой "Стандартов разработки" и позволяет быстро перемещать тело процедуры\функции
 в соответствующую стандарту область. Механизм анализирует результаты проверок плагином и в зависимости от найденных проблем предлагает:
 * Пользователю выбрать область в которую следует переместить тело процедуры\функции:
-  ![изображение](https://github.com/OIegZolotarev/i3textutils/assets/5837087/ad91611c-35e8-4342-bb95-91e15a37a5b9)
+  ![image](https://github.com/OIegZolotarev/i3textutils/assets/5837087/f0e47035-c1bf-4723-8af1-5153a90f9116)
 * Переместить в тело процедуры\функции в конкретную область, если она единственная из допустимых:
-  ![изображение](https://github.com/OIegZolotarev/i3textutils/assets/5837087/63453318-2413-416f-83dd-67dec52285ea)
+  ![image](https://github.com/OIegZolotarev/i3textutils/assets/5837087/94cb7ec9-170e-4f9c-95db-ef5a255b2a22)
+
 
 #### Добавить директиву "&НаСервере"
 Для соотвествия "стандартам разработки" функция позволяет расставить всем процедурам и функциям в модуле без директивы компиляции
 директиву "&НаСервере". Также реализовано быстрое исправление для добавления этой директивы конкретной процедуре\функции:
 
-![изображение](https://github.com/OIegZolotarev/i3textutils/assets/5837087/8448997d-8120-4d8d-8b91-94ed5901e506)
+![image](https://github.com/OIegZolotarev/i3textutils/assets/5837087/a8d115ef-7652-41f6-95dd-46442725b455)
 
 *Функция доступна из контекстного меню "Инструменты i3" редактора модуля, также можно назначить на нее горячую клавишу.*
 
@@ -34,7 +35,7 @@
 
 | До выравнивания | После выравнивания|
 | ----------- | ----------- |
-| ![изображение](https://github.com/OIegZolotarev/i3textutils/assets/5837087/5b0e5cd7-8c0b-4eb2-b54b-0f79ac9068fd) | ![изображение](https://github.com/OIegZolotarev/i3textutils/assets/5837087/d0f5b0f9-858e-407a-a493-da961c7a67fb) |
+| ![image](https://github.com/OIegZolotarev/i3textutils/assets/5837087/b3396d28-3e3b-41bc-8c1b-ccde11b2d519) | ![image](https://github.com/OIegZolotarev/i3textutils/assets/5837087/99e5a283-ee5f-4d34-b17a-1690dc3bd8fe) |
 
 *Функция доступна из контекстного меню "Инструменты i3" редактора модуля, также можно назначить на нее горячую клавишу.*
 
@@ -45,12 +46,13 @@
 
 | До | После |
 | ----------- | ----------- |
-| ![изображение](https://github.com/OIegZolotarev/i3textutils/assets/5837087/767ecdf8-ece7-42c9-b1ac-c224175eeb19) | ![изображение](https://github.com/OIegZolotarev/i3textutils/assets/5837087/863c8b49-2c4e-4526-8450-df9f01e3e6f3)
+| ![image](https://github.com/OIegZolotarev/i3textutils/assets/5837087/88f3a84f-38ac-4e08-ac63-ce042adfd42f)| ![image](https://github.com/OIegZolotarev/i3textutils/assets/5837087/2dd7393e-bab6-4385-b716-88d97c937e3a)|
+
 
 ### Функция "Расположить аргументы на отдельной строке"
 WIP
 
-### Подсказки параметров в вызовах методов
+### Подсказки параметров в вызовах методов (WIP)
 
 *Функция в разработке (сейчас поддерживаются только вызовы внутри текущего модуля)*
 
@@ -58,7 +60,7 @@ WIP
 
 | Без подсказок | С подсказками |
 | ----------- | ----------- |
-| ![D6k_fYo-T9k](https://github.com/OIegZolotarev/i3textutils/assets/5837087/52ac8fc1-0ae9-4ec0-9565-34dddc1bc3da) | ![lyI0rWTJDzk](https://github.com/OIegZolotarev/i3textutils/assets/5837087/9486628b-5c8f-4041-8ff1-06764d626ed8)|
+| ![image](https://github.com/OIegZolotarev/i3textutils/assets/5837087/54590430-e023-44b6-a936-832ecdb5ad96) |![image](https://github.com/OIegZolotarev/i3textutils/assets/5837087/9042704f-2fa5-428f-bb96-035ba7547c77) |
 
 
 

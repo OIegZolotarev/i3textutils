@@ -133,7 +133,7 @@
               class="org.quiteoldorange.i3textutils.qfix.WrapObjectModuleWithPreprocessorDefinitions">
         </externalQuickfixProvider>
         <externalQuickfixProvider
-              class="org.quiteoldorange.i3textutils.qfix.ConvertFunctionToProcedure">
+              class="org.quiteoldorange.i3textutils.qfix.ConvertMethodTypeQFix">
         </externalQuickfixProvider>
     </extension>
     <extension

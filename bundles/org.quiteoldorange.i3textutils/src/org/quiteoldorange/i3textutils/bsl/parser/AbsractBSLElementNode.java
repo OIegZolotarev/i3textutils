@@ -221,6 +221,9 @@ public class AbsractBSLElementNode
 
     public int getStartingOffset()
     {
+        if (mChildren.size() > 0)
+            return mChildren.get(0).getStartingOffset();
+
         if (mTokens.size() < 1)
         {
             return -1;
@@ -231,6 +234,9 @@ public class AbsractBSLElementNode
 
     public int getEndOffset()
     {
+        if (mChildren.size() > 0)
+            return mChildren.get(mChildren.size() - 1).getEndOffset();
+
         if (mTokens.size() < 1)
         {
             return -1;
@@ -240,4 +246,10 @@ public class AbsractBSLElementNode
 
         return endtoken.getOffset() + endtoken.getValue().length();
     }
+
+    public int getLength()
+    {
+        return getEndOffset() - getStartingOffset();
+    }
+
 }

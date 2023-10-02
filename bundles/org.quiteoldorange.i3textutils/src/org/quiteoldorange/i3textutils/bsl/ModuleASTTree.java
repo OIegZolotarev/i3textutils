@@ -5,6 +5,7 @@ package org.quiteoldorange.i3textutils.bsl;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.parser.AbsractBSLElementNode;
@@ -218,6 +219,33 @@ public class ModuleASTTree
     public MethodNode findMethodDefinition(MethodCallNode methodCallNode)
     {
         return findMethodDefinitionRecursive(methodCallNode, this);
+    }
+
+    /**
+     * @param offset
+     * @return
+     */
+    public MethodNode findMethodDefinition(int offset)
+    {
+        return findMethodDefinition(offset, getChildren());
+    }
+
+    private MethodNode findMethodDefinition(int offset, List<AbsractBSLElementNode> items)
+    {
+        for (var child : items)
+        {
+            if (!(child.getStartingOffset() <= offset && child.getEndOffset() > offset))
+                continue;
+
+            if (child instanceof MethodNode)
+            {
+                return (MethodNode)child;
+            }
+            else if (child.getChildren().size() > 0)
+                return findMethodDefinition(offset, child.getChildren());
+
+        }
+        return null;
     }
 
 }

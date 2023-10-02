@@ -65,9 +65,9 @@ public class MethodNode
             builder.append(node.serialize(scriptVariant));
         }
 
-        if (!mLazySource.isEmpty())
+        if (!getLazySource().isEmpty())
         {
-            builder.append(mLazySource);
+            builder.append(getLazySource());
             return builder.toString();
         }
 
@@ -152,6 +152,11 @@ public class MethodNode
 
 
                 getArguments().add(new ArgumentDefinition(argName, defaultValue, byValue));
+
+                token = stream.peekNext();
+
+                if (token.getType() == Type.Comma)
+                    readTokenTracked(stream);
 
                 continue;
             case ClosingBracket:
@@ -289,6 +294,11 @@ public class MethodNode
     public LinkedList<ArgumentDefinition> getArguments()
     {
         return mArguments;
+    }
+
+    public String getLazySource()
+    {
+        return mLazySource;
     }
 
 }

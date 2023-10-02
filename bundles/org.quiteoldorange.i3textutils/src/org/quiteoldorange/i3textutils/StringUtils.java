@@ -29,6 +29,10 @@ public class StringUtils
 
     public static String parseMethodFromURIToProblem(String value)
     {
+
+        // TODO: распарсить такое:
+        // platform:/resource/Заказы/src/CommonModules/ОбменДаннымиHTTP/Module.bsl#/0/@declareStatements.0/@ifPart/@item/@declareStatements.0/@itemAfter/@declareStatements.0/@item/@methods.4/@statements.0
+
         // #RU#/Заказы/src/Documents/ЗаказКлиента/Forms/ФормаВыбора/\MBS/_method/ПриСозданииНаСервере/0
 
         String methodMarker = "_method/"; //$NON-NLS-1$

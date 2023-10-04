@@ -269,6 +269,7 @@ if (docEdited == doc)
             result.add(new CandidateRegion(newItem, false));
         }
 
+
         return result;
     }
 

@@ -29,6 +29,16 @@ public class SuggestedRegionsComputer
         var l = new LinkedList<TestStrategy>();
         l.add(new TestStrategy("Метод \"(.+)\" не следует размещать в области \"(.+)\"", 2, ScriptVariant.RUSSIAN)); //$NON-NLS-1$
         l.add(new TestStrategy("Method \"(.+)\" can not be placed in the \"(.+)\" region", 2, ScriptVariant.ENGLISH)); //$NON-NLS-1$
+
+//        // ModuleStructureEventRegionsCheck_Only_event_methods__0
+        l.add(new TestStrategy("В области '(.+)' следует размещать только обработчики событий", 1, //$NON-NLS-1$
+            ScriptVariant.RUSSIAN));
+
+        l.add(new TestStrategy("Only event methods can be placed in the \"(.+)\" region", 1, //$NON-NLS-1$
+            ScriptVariant.ENGLISH));
+
+
+
         mTestsShouldNotBeInThisRegion = l;
 
         l = new LinkedList<>();
@@ -41,7 +51,6 @@ public class SuggestedRegionsComputer
         // ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1
         l.add(new TestStrategy("Обработчик событий \"(.+)\" следует разместить в область \"(.+)\"", 2, //$NON-NLS-1$
             ScriptVariant.RUSSIAN));
-
 
         mTestsShouldBeInSpecifiedRegion = l;
     }

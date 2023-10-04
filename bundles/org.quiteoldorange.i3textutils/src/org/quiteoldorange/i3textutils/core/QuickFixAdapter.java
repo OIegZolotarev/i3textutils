@@ -46,6 +46,9 @@ public class QuickFixAdapter
 
         assert (p != null);
 
+        rebindQuickFix(p, "module-structure-event-regions", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
+            ModuleRegionQuickFixProvider.class, "fixModuleStructureFormEventRegions"); //$NON-NLS-1$
+
         rebindQuickFix(p, "module-structure-form-event-regions", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
             ModuleRegionQuickFixProvider.class, "fixModuleStructureFormEventRegions"); //$NON-NLS-1$
 

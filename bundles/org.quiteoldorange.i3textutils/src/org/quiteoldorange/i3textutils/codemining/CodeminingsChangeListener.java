@@ -25,7 +25,15 @@ public class CodeminingsChangeListener
     @Override
     public void elementChanged(IElementChangeEvent event)
     {
+        var sourceViewer = getSourceViewer(event);
 
+        // TOOD: сделать что-то типа "обработчик ожидания" чтобы не спасить командами
+        if (sourceViewer != null)
+            sourceViewer.updateCodeMinings();
+    }
+
+    private ISourceViewerExtension5 getSourceViewer(IElementChangeEvent event)
+    {
         for (IElementDelta iterator : event.getDeltas())
         {
             ElementDelta delta = (ElementDelta)iterator;
@@ -72,7 +80,7 @@ public class CodeminingsChangeListener
                                     var p2 = v8File.getFile().getFullPath();
 
                                     if (p1.equals(p2))
-                                        svEX5.updateCodeMinings();
+                                        return svEX5; //.updateCodeMinings();
                                 }
 
                             }
@@ -83,6 +91,8 @@ public class CodeminingsChangeListener
             }
 
         }
+
+        return null;
     }
 
 }

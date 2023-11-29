@@ -12,6 +12,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 
+import com._1c.g5.v8.dt.core.ICoreConstants;
 import com._1c.g5.v8.dt.core.handle.IV8File;
 
 /**
@@ -26,6 +27,8 @@ public class CodeminingsChangeListener
     public void elementChanged(IElementChangeEvent event)
     {
         var sourceViewer = getSourceViewer(event);
+
+        var a = ICoreConstants.V8_EXTENSION_NATURE;
 
         // TOOD: сделать что-то типа "обработчик ожидания" чтобы не спасить командами
         if (sourceViewer != null)

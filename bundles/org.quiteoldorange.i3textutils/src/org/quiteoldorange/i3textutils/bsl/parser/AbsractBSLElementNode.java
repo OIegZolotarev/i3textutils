@@ -143,8 +143,22 @@ public class AbsractBSLElementNode
                 return new PrepropcessorIfElseStatementNode(stream);
             case OperatorIf:
                 return new IfElseStatementNode(stream);
-            case KeywordReturn:
-                return new ReturnStatementNode(stream);
+            case OperatorFor:
+                {
+                    var nextToken = stream.peekNext();
+
+                    switch (nextToken.getType())
+                    {
+                    case Identifier:
+                        return new RangeForLoopNode(stream);
+                    case KeywordEach:
+                        return new ForEachLoopNode(stream);
+                    }
+
+                }
+            // Какая-то нода недочитала до конца - пропускаем, чтобы упереться
+            case ExpressionEnd:
+                return null;
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
             }

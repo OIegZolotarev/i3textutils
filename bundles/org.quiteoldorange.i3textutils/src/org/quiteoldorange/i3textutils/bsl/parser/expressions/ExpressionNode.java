@@ -3,6 +3,7 @@
  */
 package org.quiteoldorange.i3textutils.bsl.parser.expressions;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -33,6 +34,17 @@ public class ExpressionNode
         super(null);
 
         ParseExpressionNode(stream, endTokens);
+        reduce(getChildren());
+    }
+
+    public ExpressionNode(Lexer stream, Token.Type endToken) throws BSLParsingException
+    {
+        super(null);
+
+        Set<Token.Type> endingTokens = new HashSet<>();
+        endingTokens.add(endToken);
+
+        ParseExpressionNode(stream, endingTokens);
         reduce(getChildren());
     }
 

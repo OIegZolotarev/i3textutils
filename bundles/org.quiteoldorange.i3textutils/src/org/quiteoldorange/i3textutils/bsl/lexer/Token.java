@@ -70,8 +70,10 @@ public class Token
         KeywordNot,
         KeywordVar,
         KeywordLoop,
+        KeywordFrom,
         KeywordEach,
         KeywordVal,
+        KeywordTo,
         KeywordExcept,
         ModuloSign,
         KeywordGoto,
@@ -263,6 +265,7 @@ public class Token
         sTokenDictionary.put(Type.KeywordNot, new KeywordDictionaryEntry("Не", "Not")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.KeywordVar, new KeywordDictionaryEntry("Перем", "Var")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.KeywordLoop, new KeywordDictionaryEntry("Цикл", "Loop")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordFrom, new KeywordDictionaryEntry("Из", "From")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.KeywordEach, new KeywordDictionaryEntry("Каждого", "Each")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.KeywordVal, new KeywordDictionaryEntry("Знач", "Val")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.KeywordExcept, new KeywordDictionaryEntry("Исключение", "Except")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -283,6 +286,8 @@ public class Token
         sTokenDictionary.put(Type.AnnotationAfter, new KeywordDictionaryEntry("&После", "&After")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.AnnotationAround, new KeywordDictionaryEntry("&Вместо", "&Around")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.KeywordReturn, new KeywordDictionaryEntry("Возврат", "Return")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        sTokenDictionary.put(Type.KeywordTo, new KeywordDictionaryEntry("По", "To")); //$NON-NLS-1$ //$NON-NLS-2$
 
         for (var entry: sTokenDictionary.entrySet())
         {

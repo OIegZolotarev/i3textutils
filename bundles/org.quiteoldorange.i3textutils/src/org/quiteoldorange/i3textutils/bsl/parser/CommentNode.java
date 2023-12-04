@@ -20,7 +20,7 @@ public class CommentNode
         return mTokens.get(0).getValue();
     }
 
-    CommentNode(Lexer stream)
+    CommentNode(Lexer stream, AbsractBSLElementNode parent)
     {
         super(stream);
     }

@@ -24,9 +24,10 @@ public class AnnotationNode
 
     /**
      * @param stream
+     * @param parent TODO
      * @throws UnexpectedToken
      */
-    public AnnotationNode(Lexer stream) throws UnexpectedToken
+    public AnnotationNode(Lexer stream, AbsractBSLElementNode parent) throws UnexpectedToken
     {
         super(stream);
 

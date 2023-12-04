@@ -83,9 +83,10 @@ public class VariableDeclNode
 
     /**
      * @param stream
+     * @param parent TODO
      * @throws UnexpectedToken
      */
-    public VariableDeclNode(Lexer stream) throws UnexpectedToken
+    public VariableDeclNode(Lexer stream, AbsractBSLElementNode parent) throws UnexpectedToken
     {
         super(stream);
 

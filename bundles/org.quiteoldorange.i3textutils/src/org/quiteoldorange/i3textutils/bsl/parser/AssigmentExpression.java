@@ -29,8 +29,9 @@ public class AssigmentExpression
 
     /**
      * @param stream
+     * @param parent TODO
      */
-    public AssigmentExpression(Lexer stream) throws BSLParsingException
+    public AssigmentExpression(Lexer stream, AbsractBSLElementNode parent) throws BSLParsingException
     {
         super(stream);
 

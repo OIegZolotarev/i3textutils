@@ -24,9 +24,10 @@ public class RangeForLoopNode
 
     /**
      * @param stream
+     * @param parent TODO
      * @throws UnexpectedToken
      */
-    public RangeForLoopNode(Lexer stream) throws BSLParsingException
+    public RangeForLoopNode(Lexer stream, AbsractBSLElementNode parent) throws BSLParsingException
     {
         super(stream);
 

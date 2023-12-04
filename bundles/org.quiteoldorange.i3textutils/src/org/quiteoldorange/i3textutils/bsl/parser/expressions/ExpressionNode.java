@@ -458,7 +458,7 @@ public class ExpressionNode
     public String toString()
     {
         if (getChildren().size() == 0)
-            return "<Bad expression>"; //$NON-NLS-1$
+            return "<Bad or empty>"; //$NON-NLS-1$
 
         String result = ""; //$NON-NLS-1$
 

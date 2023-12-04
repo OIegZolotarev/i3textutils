@@ -39,9 +39,9 @@ public class MethodNode
 
     MethodTypes mType;
 
-    public MethodNode(Lexer stream, MethodTypes type, boolean asynch) throws BSLParsingException
+    public MethodNode(Lexer stream, MethodTypes type, boolean asynch, AbsractBSLElementNode parent) throws BSLParsingException
     {
-        this(stream, type);
+        this(stream, type, null);
         mAsynch = true;
     }
 
@@ -76,10 +76,11 @@ public class MethodNode
 
     /**
      * @param stream
+     * @param parent TODO
      * @throws UnexpectedTokenException
      * @throws UnexpectedEndOfStream
      */
-    public MethodNode(Lexer stream, MethodTypes type) throws BSLParsingException
+    public MethodNode(Lexer stream, MethodTypes type, AbsractBSLElementNode parent) throws BSLParsingException
     {
         super(stream);
         mType = type;
@@ -188,6 +189,8 @@ public class MethodNode
             break;
         }
 
+        addNodeEndingToken(finisher);
+
         if (stream.isLazyMode())
         {
             while (true)
@@ -206,6 +209,7 @@ public class MethodNode
 
         mLazySource = stream.getTokensSource(mTokens);
     }
+
 
     /**
      * @return the asynch

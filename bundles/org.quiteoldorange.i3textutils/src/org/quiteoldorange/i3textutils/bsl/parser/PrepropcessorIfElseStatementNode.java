@@ -12,7 +12,7 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 public class PrepropcessorIfElseStatementNode
     extends AbstractIfElseStatement
 {
-    public PrepropcessorIfElseStatementNode(Lexer stream) throws BSLParsingException
+    public PrepropcessorIfElseStatementNode(Lexer stream, AbsractBSLElementNode parent) throws BSLParsingException
     {
         super(stream, AbstractIfElseStatement.sPreprocessorSet);
 

@@ -25,13 +25,16 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 public class AbsractBSLElementNode
 {
     AbsractBSLElementNode mParent = null;
+    Set<Token.Type> mNodeEndingTokens = new HashSet<>();
+
 
     protected LinkedList<Token> mTokens = new LinkedList<>();
     private List<AbsractBSLElementNode> mChildren = new LinkedList<>();
 
-    public List<AbsractBSLElementNode> getChildren()
+    public AbsractBSLElementNode(Lexer stream)
     {
-        return mChildren;
+        if (stream != null)
+            mTokens.add(stream.current());
     }
 
     public void addChildren(AbsractBSLElementNode node)
@@ -40,12 +43,30 @@ public class AbsractBSLElementNode
         node.setParent(this);
     }
 
-    public void removeChildren(AbsractBSLElementNode node)
+    public void checkTokenTracked(Lexer stream, Token.Type expectedType) throws UnexpectedToken
     {
-        if (!mChildren.remove(node))
-            throw new NoSuchElementException();
+        stream.parseAndCheckToken(expectedType);
+        mTokens.add(stream.current());
+    }
 
-        node.setParent(null);
+    public List<AbsractBSLElementNode> getChildren()
+    {
+        return mChildren;
+    }
+
+    public int getEndOffset()
+    {
+        if (mChildren.size() > 0)
+            return mChildren.get(mChildren.size() - 1).getEndOffset();
+
+        if (mTokens.size() < 1)
+        {
+            return -1;
+        }
+
+        var endtoken = mTokens.get(mTokens.size() - 1);
+
+        return endtoken.getOffset() + endtoken.getValue().length();
     }
 
     public int getHierarchyLevel()
@@ -56,18 +77,22 @@ public class AbsractBSLElementNode
         return mParent.getHierarchyLevel() + 1;
     }
 
-    /**
-     * @param absractBSLElementNode
-     */
-    public void setParent(AbsractBSLElementNode node)
+    public int getLength()
     {
-        mParent = node;
+        return getEndOffset() - getStartingOffset();
     }
 
-    public AbsractBSLElementNode(Lexer stream)
+    public int getStartingOffset()
     {
-        if (stream != null)
-            mTokens.add(stream.current());
+        if (mChildren.size() > 0)
+            return mChildren.get(0).getStartingOffset();
+
+        if (mTokens.size() < 1)
+        {
+            return -1;
+        }
+
+        return mTokens.get(0).getOffset();
     }
 
     @SuppressWarnings("incomplete-switch")
@@ -85,13 +110,13 @@ public class AbsractBSLElementNode
             switch (t.getType())
             {
             case BeginFunction:
-                return new MethodNode(stream, MethodTypes.Function);
+                return new MethodNode(stream, MethodTypes.Function, this);
             case BeginProcedure:
-                return new MethodNode(stream, MethodTypes.Procedure);
+                return new MethodNode(stream, MethodTypes.Procedure, this);
             case PreprocessorRegion:
-                return new BSLRegionNode(stream);
+                return new BSLRegionNode(stream, this);
             case Comment:
-                return new CommentNode(stream);
+                return new CommentNode(stream, this);
             case KeywordAsynch:
                 t = readTokenTracked(stream);
 
@@ -99,10 +124,10 @@ public class AbsractBSLElementNode
                     throw new BSLParsingException.UnexpectedToken(stream, t, Type.BeginProcedure);
 
                 if (t.getType() == Type.BeginFunction)
-                    return new MethodNode(stream, MethodTypes.Function, true);
+                    return new MethodNode(stream, MethodTypes.Function, true, this);
 
                 if (t.getType() == Type.BeginProcedure)
-                    return new MethodNode(stream, MethodTypes.Procedure, true);
+                    return new MethodNode(stream, MethodTypes.Procedure, true, this);
             case Identifier:
 
                 Token next = stream.peekNext();
@@ -110,25 +135,14 @@ public class AbsractBSLElementNode
                 switch (next.getType())
                 {
                 case EqualsSign:
-                    return new AssigmentExpression(stream);
+                    return new AssigmentExpression(stream, this);
                 default:
                     stream.rollback();
-
-                    Set<Token.Type> endingTokens = new HashSet<>();
-                    endingTokens.add(Type.ExpressionEnd);
-                    endingTokens.add(Type.OperatorElse);
-                    endingTokens.add(Type.OperatorElseIf);
-                    endingTokens.add(Type.OperatorEndIf);
-                    endingTokens.add(Type.OperatorEndTry);
-                    endingTokens.add(Type.OperatorEndLoop);
-                    endingTokens.add(Type.EndProcedure);
-                    endingTokens.add(Type.EndFunction);
-
-                    return new ExpressionNode(stream, endingTokens);
+                    return new ExpressionNode(stream, validExpressionEndTokensForThisNode());
                 }
 
             case KeywordVar:
-                return new VariableDeclNode(stream);
+                return new VariableDeclNode(stream, this);
             case AnnotationAtClient:
             case AnnotationAtServer:
             case AnnotationAtServerNoContext:
@@ -136,13 +150,15 @@ public class AbsractBSLElementNode
             case AnnotationAfter:
             case AnnotationBefore:
             case AnnotationAround:
-                return new AnnotationNode(stream);
+                return new AnnotationNode(stream, this);
             case EmptyLine:
-                return new EmptyLineNode(stream);
+                return new EmptyLineNode(stream, this);
             case PreprocessorIf:
-                return new PrepropcessorIfElseStatementNode(stream);
+                return new PrepropcessorIfElseStatementNode(stream, this);
             case OperatorIf:
-                return new IfElseStatementNode(stream);
+                return new IfElseStatementNode(stream, this);
+            case KeywordReturn:
+                return new ReturnStatement(stream, this);
             case OperatorFor:
                 {
                     var nextToken = stream.peekNext();
@@ -150,9 +166,9 @@ public class AbsractBSLElementNode
                     switch (nextToken.getType())
                     {
                     case Identifier:
-                        return new RangeForLoopNode(stream);
+                        return new RangeForLoopNode(stream, this);
                     case KeywordEach:
-                        return new ForEachLoopNode(stream);
+                        return new ForEachLoopNode(stream, this);
                     }
 
                 }
@@ -166,19 +182,6 @@ public class AbsractBSLElementNode
         }
 
         return null;
-    }
-
-    public Token readTokenTracked(Lexer stream)
-    {
-        Token r = stream.parseNext();
-        mTokens.add(r);
-        return r;
-    }
-
-    public void checkTokenTracked(Lexer stream, Token.Type expectedType) throws UnexpectedToken
-    {
-        stream.parseAndCheckToken(expectedType);
-        mTokens.add(stream.current());
     }
 
     public void ParseUntilEndingToken(Lexer stream, Token.Type type)
@@ -200,20 +203,27 @@ public class AbsractBSLElementNode
         }
     }
 
+    public Token readTokenTracked(Lexer stream)
+    {
+        Token r = stream.parseNext();
+        mTokens.add(r);
+        return r;
+    }
+
+    public void removeChildren(AbsractBSLElementNode node)
+    {
+        if (!mChildren.remove(node))
+            throw new NoSuchElementException();
+
+        node.setParent(null);
+    }
+
     /**
      * @return
      */
     public String serialize(ScriptVariant scriptVariant)
     {
         return ""; //$NON-NLS-1$
-    }
-
-    /**
-     * @param slice
-     */
-    public void setChildren(List<AbsractBSLElementNode> slice)
-    {
-        mChildren = slice;
     }
 
     public String serializeChildren(ScriptVariant variant, boolean addNewline)
@@ -233,37 +243,49 @@ public class AbsractBSLElementNode
         return builder.toString();
     }
 
-    public int getStartingOffset()
+    /**
+     * @param slice
+     */
+    public void setChildren(List<AbsractBSLElementNode> slice)
     {
-        if (mChildren.size() > 0)
-            return mChildren.get(0).getStartingOffset();
-
-        if (mTokens.size() < 1)
-        {
-            return -1;
-        }
-
-        return mTokens.get(0).getOffset();
+        mChildren = slice;
     }
 
-    public int getEndOffset()
+    /**
+     * @param absractBSLElementNode
+     */
+    public void setParent(AbsractBSLElementNode node)
     {
-        if (mChildren.size() > 0)
-            return mChildren.get(mChildren.size() - 1).getEndOffset();
-
-        if (mTokens.size() < 1)
-        {
-            return -1;
-        }
-
-        var endtoken = mTokens.get(mTokens.size() - 1);
-
-        return endtoken.getOffset() + endtoken.getValue().length();
+        mParent = node;
     }
 
-    public int getLength()
+    /**
+     * В силу гениальной (сарказм) особеености языка - выражение может заканчиваться как точкой с запятой
+     * так и концом блоком, приходится городить такой огород.
+     *
+     * @return допустимый в этой ноде конец выражения
+     */
+    public Set<Token.Type> validExpressionEndTokensForThisNode()
     {
-        return getEndOffset() - getStartingOffset();
+        Set<Token.Type> result = new HashSet<>();
+
+        for (var key: mNodeEndingTokens)
+        {
+            result.add(key);
+        }
+
+        result.add(Type.ExpressionEnd);
+
+        return result;
+
+    }
+
+    /**
+     * @param finisher
+     */
+    protected void addNodeEndingToken(Type finisher)
+    {
+        mNodeEndingTokens.add(finisher);
     }
 
 }

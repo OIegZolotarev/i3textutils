@@ -39,7 +39,7 @@ public class BSLRegionNode
 
     private String mRegionName = null;
 
-    public BSLRegionNode(Lexer stream) throws BSLParsingException
+    public BSLRegionNode(Lexer stream, AbsractBSLElementNode parent) throws BSLParsingException
     {
         super(stream);
 
@@ -70,4 +70,12 @@ public class BSLRegionNode
     {
         return mRegionName;
     }
+
+    @Override
+    public String toString()
+    {
+
+        return String.format("[Область: %s]", mRegionName);
+    }
+
 }

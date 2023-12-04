@@ -21,9 +21,10 @@ public class ForEachLoopNode
 
     /**
      * @param stream
+     * @param parent TODO
      * @throws BSLParsingException
      */
-    public ForEachLoopNode(Lexer stream) throws BSLParsingException
+    public ForEachLoopNode(Lexer stream, AbsractBSLElementNode parent) throws BSLParsingException
     {
         super(stream);
 

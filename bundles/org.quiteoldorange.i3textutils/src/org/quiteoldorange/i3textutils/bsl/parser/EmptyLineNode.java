@@ -21,8 +21,9 @@ public class EmptyLineNode
 
     /**
      * @param stream
+     * @param parent TODO
      */
-    public EmptyLineNode(Lexer stream)
+    public EmptyLineNode(Lexer stream, AbsractBSLElementNode parent)
     {
         super(stream);
         // TODO Auto-generated constructor stub

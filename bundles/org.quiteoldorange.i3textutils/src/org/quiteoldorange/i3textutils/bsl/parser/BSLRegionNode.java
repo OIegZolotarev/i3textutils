@@ -43,7 +43,7 @@ public class BSLRegionNode
     {
         super(stream);
 
-        var token = stream.parseNext();
+        var token = readTokenTracked(stream);
 
         if (token == null)
             throw new BSLParsingException.UnexpectedEndOfStream();

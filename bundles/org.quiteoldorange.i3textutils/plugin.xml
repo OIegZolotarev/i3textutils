@@ -135,6 +135,9 @@
         <externalQuickfixProvider
               class="org.quiteoldorange.i3textutils.qfix.ConvertMethodTypeQFix">
         </externalQuickfixProvider>
+        <externalQuickfixProvider
+              class="org.quiteoldorange.i3textutils.qfix.DeleteEmptyRegionQuickFix">
+        </externalQuickfixProvider>
     </extension>
     <extension
       point="com._1c.g5.wiring.serviceProvider">

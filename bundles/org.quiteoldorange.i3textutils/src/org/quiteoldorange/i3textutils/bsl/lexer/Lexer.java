@@ -74,19 +74,39 @@ public class Lexer
 
             if (curChar == '\n')
             {
-                mOffset++;
-                mRow++;
-                mColumn = 1;
-
-                if (accumulator.isEmpty())
+                if (atString)
                 {
-                    accumulator += curChar;
-                    Token.Type type = Token.CalculateTokenType(accumulator);
-                    mTokensStack.push(new Token(type, accumulator, tokenStart, startingRow, mColumn));
-                    return mTokensStack.peek();
-                }
+                    do
+                    {
+                        mOffset++;
+                        curChar = mSource.charAt(mOffset);
+                    }
+                    while (Character.isWhitespace(curChar));
 
-                atComment = false;
+                    if (curChar == '|')
+                    {
+                        mOffset++;
+                        accumulator += '\n';
+                        continue;
+                    }
+
+                }
+                else
+                {
+                    mOffset++;
+                    mRow++;
+                    mColumn = 1;
+
+                    if (accumulator.isEmpty())
+                    {
+                        accumulator += curChar;
+                        Token.Type type = Token.CalculateTokenType(accumulator);
+                        mTokensStack.push(new Token(type, accumulator, tokenStart, startingRow, mColumn));
+                        return mTokensStack.peek();
+                    }
+
+                    atComment = false;
+                }
             }
 
             if (curChar == '/' && nextChar == '/' && !atComment && !atString)
@@ -97,7 +117,6 @@ public class Lexer
                     mTokensStack.push(new Token(type, accumulator, tokenStart, startingRow, mColumn));
                     return mTokensStack.peek();
                 }
-
 
                 atComment = true;
             }

@@ -27,7 +27,7 @@ public class ConvertMethodTypeQFix
     @Fix("procedure-return-value")
     public void convertToFunctionQFix(final Issue issue, IssueResolutionAcceptor acceptor)
     {
-        acceptor.accept(issue, Messages.MethodQuickActions_ConvertToProcedure, "", null, //$NON-NLS-1$
+        acceptor.accept(issue, Messages.MethodQuickActions_ConvertToFunction, "", null, //$NON-NLS-1$
             new MethodConverter(issue, ConversionDirection.ToFunction));
     }
 }

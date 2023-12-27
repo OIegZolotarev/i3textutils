@@ -2,6 +2,7 @@ package org.quiteoldorange.i3textutils.core;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.quiteoldorange.i3textutils.ContentAssistColorFix;
@@ -193,4 +194,13 @@ public class i3TextUtilsPlugin
                 + getBundle().getSymbolicName(), e);
         }
     }
+
+    @Override
+    protected void initializeImageRegistry(final ImageRegistry reg)
+    {
+        reg.put("images/gracefull_error.png",
+            imageDescriptorFromPlugin(PLUGIN_ID, "resources/images/gracefull_error.png"));
+    }
+
+
 }

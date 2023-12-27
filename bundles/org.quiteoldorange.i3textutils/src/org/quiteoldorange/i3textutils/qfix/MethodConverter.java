@@ -13,6 +13,7 @@ import org.eclipse.xtext.validation.Issue;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode;
+import org.quiteoldorange.i3textutils.dialogs.GracefullErrorDialog;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com.google.inject.Inject;
@@ -58,7 +59,6 @@ public final class MethodConverter
     public void apply(IModificationContext context) throws Exception
     {
         var doc = context.getXtextDocument();
-        //var module = Utils.getModuleFromXTextDocument(doc);
 
         Lexer l = new Lexer(doc.get());
         l.setLazyMode(true);
@@ -66,11 +66,15 @@ public final class MethodConverter
 
         MethodNode node = tree.findMethodDefinition(mIssue.getOffset());
 
-        //String methodName = StringUtils.parseMethodFromURIToProblem(mIssue.getUriToProblem().toString());
-        //Method method = Utils.findModuleMethod(methodName, module);
-        //MethodSourceInfo info = Utils.getMethodSourceInfo(method, doc);
+        if (node == null)
+        {
+            GracefullErrorDialog.constructAndShow("Не удалось найти описание метода",
+                "Возможно ошибка в парсере BSL или функция еще не доделана");
+            return;
+        }
 
         String newBody = node.getLazySource();
+
 
         if (mDirection == ConversionDirection.ToFunction)
         {

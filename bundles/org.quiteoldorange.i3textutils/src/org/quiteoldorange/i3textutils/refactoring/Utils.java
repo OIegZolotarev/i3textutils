@@ -112,7 +112,7 @@ public class Utils
 
         int endingLine = startingLine;
 
-        while(true)
+        while (true)
         {
             if (endingLine == 0)
                 break;
@@ -309,21 +309,24 @@ public class Utils
         String templateFile = ".settings/templates/" + fileName;
         Path p = new Path(templateFile);
 
-        if (project.exists(p))
+        if (project != null)
         {
-
-            try
+            if (project.exists(p))
             {
-                IFile templatePath = project.getFile(templateFile);
-                File f = templatePath.getLocation().toFile();
 
-                String templateSource = Files.readString(Paths.get(f.getAbsolutePath().toString()));
+                try
+                {
+                    IFile templatePath = project.getFile(templateFile);
+                    File f = templatePath.getLocation().toFile();
 
-                return templateSource;
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
+                    String templateSource = Files.readString(Paths.get(f.getAbsolutePath().toString()));
+
+                    return templateSource;
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
 

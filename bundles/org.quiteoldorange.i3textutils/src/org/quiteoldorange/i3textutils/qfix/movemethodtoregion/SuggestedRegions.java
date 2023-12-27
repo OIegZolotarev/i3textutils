@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.quiteoldorange.i3textutils.qfix.movemethodtoregion;
 
@@ -19,14 +19,12 @@ public class SuggestedRegions
 
     void addRecommededRegion(String region)
     {
-        getRecommendedRegions().add(region);
+        mRecommendedRegions.add(region);
     }
 
     void addBadRegion(String region)
     {
-
-
-        getBadRegions().add(region);
+        mBadRegions.add(region);
     }
 
     /**

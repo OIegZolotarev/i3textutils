@@ -37,6 +37,12 @@ public class SuggestedRegionsComputer
         l.add(new TestStrategy("Only event methods can be placed in the \"(.+)\" region", 1, //$NON-NLS-1$
             ScriptVariant.ENGLISH));
 
+        l.add(new TestStrategy("Только экспортные методы могут быть размещены в области \"(.+)\"", 1, //$NON-NLS-1$
+            ScriptVariant.RUSSIAN));
+
+        l.add(new TestStrategy("Only export methods can be placed in the \"(.+)\" region", 1, //$NON-NLS-1$
+            ScriptVariant.ENGLISH));
+
 
 
         mTestsShouldNotBeInThisRegion = l;
@@ -112,8 +118,11 @@ public class SuggestedRegionsComputer
 
         for (var test : tests)
         {
-            if (test.getScriptVariant() != scriptVariant)
+            if (scriptVariant != null)
+            {
+                if (test.getScriptVariant() != scriptVariant)
                 continue;
+            }
 
             String parsedRegion = test.testMessage(message);
 

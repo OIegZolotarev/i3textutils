@@ -24,17 +24,36 @@ public class ModuleRegionQuickFixProvider
 
         List<String> result = new LinkedList<>();
         String issueMessage = issue.getMessage();
-        String regionsList = issueMessage.substring(issueMessage.indexOf(':') + 1);
 
-        String[] suggestedRegions = regionsList.split(","); //$NON-NLS-1$
-
-        for (String item : suggestedRegions)
+        if (issueMessage.indexOf(':') != -1)
         {
-            String trimmed = item.trim();
-            result.add(trimmed);
-        }
 
-        return result;
+            String regionsList = issueMessage.substring(issueMessage.indexOf(':') + 1);
+
+            String[] suggestedRegions = regionsList.split(","); //$NON-NLS-1$
+
+            for (String item : suggestedRegions)
+            {
+                String trimmed = item.trim();
+                result.add(trimmed);
+            }
+
+            return result;
+        }
+        else
+        {
+            String regionsList = issueMessage.substring(issueMessage.indexOf('"') + 1);
+
+            String[] suggestedRegions = regionsList.split(","); //$NON-NLS-1$
+
+            for (String item : suggestedRegions)
+            {
+                String trimmed = item.trim();
+                result.add(trimmed);
+            }
+
+            return result;
+        }
     }
 
     @Fix("DUMMY")
@@ -52,8 +71,11 @@ public class ModuleRegionQuickFixProvider
                 new BadRegionIssueResolver(issue, suggestions.getRecommendedRegions(), suggestions.getBadRegions()));
 
             // TODO: английский вариант
-            acceptor.accept(issue, String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion, Messages.ModuleRegionQuickFixProvider_Private),
-                Messages.ModuleRegionQuickFixProvider_Description, null, new BadRegionIssueResolver(issue, Messages.ModuleRegionQuickFixProvider_Private));
+            acceptor.accept(issue,
+                String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion,
+                    Messages.ModuleRegionQuickFixProvider_Private),
+                Messages.ModuleRegionQuickFixProvider_Description, null,
+                new BadRegionIssueResolver(issue, Messages.ModuleRegionQuickFixProvider_Private));
 
             return;
         }
@@ -68,8 +90,10 @@ public class ModuleRegionQuickFixProvider
 
             String suggestedRegion = recommendedRegions.get(0);
 
-            acceptor.accept(issue, String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion, suggestedRegion), Messages.ModuleRegionQuickFixProvider_Description,
-                null, new BadRegionIssueResolver(issue, suggestedRegion));
+            acceptor.accept(issue,
+                String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion, suggestedRegion),
+                Messages.ModuleRegionQuickFixProvider_Description, null,
+                new BadRegionIssueResolver(issue, suggestedRegion));
 
             return;
         }
@@ -89,8 +113,6 @@ public class ModuleRegionQuickFixProvider
         {
             var suggestedRegions = suggestions.getRecommendedRegions();
 
-            // TODO: fixme
-
             if (suggestedRegions.size() == 0)
                 suggestedRegions.add("СлужебныеПроцедурыИФункции"); //$NON-NLS-1$
 
@@ -99,8 +121,11 @@ public class ModuleRegionQuickFixProvider
                 new BadRegionIssueResolver(issue, suggestedRegions, suggestions.getBadRegions()));
 
             // TODO: английский вариант
-            acceptor.accept(issue, String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion, Messages.ModuleRegionQuickFixProvider_Private),
-                Messages.ModuleRegionQuickFixProvider_Description, null, new BadRegionIssueResolver(issue, Messages.ModuleRegionQuickFixProvider_Private));
+            acceptor.accept(issue,
+                String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion,
+                    Messages.ModuleRegionQuickFixProvider_Private),
+                Messages.ModuleRegionQuickFixProvider_Description, null,
+                new BadRegionIssueResolver(issue, Messages.ModuleRegionQuickFixProvider_Private));
 
             return;
         }
@@ -110,10 +135,29 @@ public class ModuleRegionQuickFixProvider
     @Fix("DUMMY")
     public void fixModuleStructureMethodInRegions(final Issue issue, IssueResolutionAcceptor acceptor)
     {
-        var suggestedRegions = parseSuggestedRegions_ModuleStructureMethodInRegions(issue);
+        var suggestions = SuggestedRegionsComputer.parseIssue(issue,
+            SuggestedRegionsComputer.METHOD_SHOULD_NOT_BE_IN_THIS_REGION, null);
 
-        acceptor.accept(issue, Messages.ModuleRegionQuickFixProvider_MoveMethodToOtherRegion, Messages.ModuleRegionQuickFixProvider_Description, null,
-            new BadRegionIssueResolver(issue, suggestedRegions, new LinkedList<>()));
+        if (suggestions != null)
+        {
+            var suggestedRegions = suggestions.getRecommendedRegions();
+
+            if (suggestedRegions.size() == 0)
+                suggestedRegions.add("СлужебныеПроцедурыИФункции"); //$NON-NLS-1$
+
+
+            acceptor.accept(issue, Messages.ModuleRegionQuickFixProvider_MoveMethodToOtherRegion, "", null, //$NON-NLS-1$
+                new BadRegionIssueResolver(issue, suggestedRegions, suggestions.getBadRegions()));
+
+            // TODO: английский вариант
+            acceptor.accept(issue,
+                String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion,
+                    Messages.ModuleRegionQuickFixProvider_Private),
+                Messages.ModuleRegionQuickFixProvider_Description, null,
+                new BadRegionIssueResolver(issue, Messages.ModuleRegionQuickFixProvider_Private));
+
+            return;
+        }
     }
 
 }

@@ -248,4 +248,34 @@ public class ModuleASTTree
         return null;
     }
 
+    /**
+     * @return
+     */
+    public List<BSLRegionNode> dumpTopRegions()
+    {
+        List<BSLRegionNode> result = new LinkedList<>();
+
+        for(AbsractBSLElementNode child: getChildren())
+        {
+            if (child instanceof BSLRegionNode)
+                result.add((BSLRegionNode)child);
+            else
+                dumpTopRegionsRecursive(result, child, 1);
+        }
+        return result;
+
+    }
+
+    private void dumpTopRegionsRecursive(List<BSLRegionNode> dest, AbsractBSLElementNode node, int level)
+    {
+        for (AbsractBSLElementNode it : node.getChildren())
+        {
+            if (it instanceof BSLRegionNode)
+                dest.add((BSLRegionNode)it);
+
+            else if (level > 0)
+                dumpTopRegionsRecursive(dest, it, level - 1);
+        }
+    }
+
 }

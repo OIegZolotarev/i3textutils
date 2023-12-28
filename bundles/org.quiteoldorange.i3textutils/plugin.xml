@@ -138,6 +138,11 @@
         <externalQuickfixProvider
               class="org.quiteoldorange.i3textutils.qfix.DeleteEmptyRegionQuickFix">
         </externalQuickfixProvider>
+        
+        <externalQuickfixProvider
+              class="org.quiteoldorange.i3textutils.qfix.ModuleRegionsOrderQuickFix">
+        </externalQuickfixProvider>
+        
     </extension>
     <extension
       point="com._1c.g5.wiring.serviceProvider">

@@ -50,7 +50,7 @@ public class DeleteEmptyRegionQuickFix
             if (region == null)
             {
                 GracefullErrorDialog.constructAndShow("Не получилось разобраться где находится область",
-                    "Возможно ошибка исходном тексте модуля");
+                    "Возможно ошибка в исходном тексте модуля");
                 return;
             }
 

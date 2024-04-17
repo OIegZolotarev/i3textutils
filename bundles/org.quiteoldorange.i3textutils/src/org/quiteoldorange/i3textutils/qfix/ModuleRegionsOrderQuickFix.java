@@ -3,6 +3,7 @@
  */
 package org.quiteoldorange.i3textutils.qfix;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -17,6 +18,7 @@ import org.quiteoldorange.i3textutils.refactoring.Utils;
 
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.ui.quickfix.AbstractExternalQuickfixProvider;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
  * @author ozolotarev
@@ -52,6 +54,51 @@ public class ModuleRegionsOrderQuickFix
             List<BSLRegionNode> topRegions = sourceTree.dumpTopRegions();
             List<BSLRegionNode> topRegionsTemplate = templateTree.dumpTopRegions();
 
+            mapIdealOrder(topRegions, topRegionsTemplate);
+
+            for (int i = topRegions.size() - 1; i >= 0; i--)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    BSLRegionNode a = topRegions.get(i);
+                    BSLRegionNode b = topRegions.get(j);
+
+                    if (b.getIdealOrder() > a.getIdealOrder())
+                    {
+                        Collections.swap(topRegions, i, j);
+                        sourceTree.swapNodes(a, b);
+                    }
+                }
+            }
+
+            doc.replace(0, doc.getLength(), sourceTree.serialize(ScriptVariant.RUSSIAN));
+
+        }
+
+        private int getRegionOrder(List<BSLRegionNode> idealRegions, String regionName)
+        {
+            int index = 0;
+
+            for (BSLRegionNode region : idealRegions)
+            {
+                if (region.getName().equals(regionName))
+                {
+                    return index;
+                }
+
+                index++;
+            }
+
+            return -1;
+        }
+
+        private void mapIdealOrder(List<BSLRegionNode> currentRegions, List<BSLRegionNode> idealRegions)
+        {
+            for (BSLRegionNode region : currentRegions)
+            {
+                int regionOrder = getRegionOrder(idealRegions, region.getName());
+                region.setIdealOrder(regionOrder);
+            }
         }
 
     }

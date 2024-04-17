@@ -260,8 +260,13 @@ public class AbsractBSLElementNode
         mParent = node;
     }
 
+    public AbsractBSLElementNode getParent()
+    {
+        return mParent;
+    }
+
     /**
-     * В силу гениальной (сарказм) особеености языка - выражение может заканчиваться как точкой с запятой
+     * В силу гениальной (сарказм) особенности языка - выражение может заканчиваться как точкой с запятой
      * так и концом блоком, приходится городить такой огород.
      *
      * @return допустимый в этой ноде конец выражения
@@ -287,6 +292,25 @@ public class AbsractBSLElementNode
     protected void addNodeEndingToken(Type finisher)
     {
         mNodeEndingTokens.add(finisher);
+    }
+
+    /**
+     * @param b
+     * @return
+     */
+    public int indexOfChild(AbsractBSLElementNode b)
+    {
+        return mChildren.indexOf(b);
+    }
+
+    /**
+     * @param aIndex
+     * @param b
+     */
+    public void insertChildren(int aIndex, AbsractBSLElementNode b)
+    {
+        mChildren.add(aIndex, b);
+        b.setParent(this);
     }
 
 }

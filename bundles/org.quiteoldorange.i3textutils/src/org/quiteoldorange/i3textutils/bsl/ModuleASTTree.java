@@ -266,6 +266,28 @@ public class ModuleASTTree
 
     }
 
+    public void swapNodes(AbsractBSLElementNode a, AbsractBSLElementNode b)
+    {
+        AbsractBSLElementNode parentOfA = a.getParent();
+        AbsractBSLElementNode parentOfB = b.getParent();
+
+        if (parentOfA == null || parentOfB == null)
+        {
+            // throw exception
+            return;
+        }
+
+        int aIndex = parentOfA.indexOfChild(a);
+        int bIndex = parentOfB.indexOfChild(b);
+
+        parentOfA.removeChildren(a);
+        parentOfB.removeChildren(b);
+
+        parentOfA.insertChildren(aIndex, b);
+        parentOfA.insertChildren(bIndex, a);
+
+    }
+
     private void dumpTopRegionsRecursive(List<BSLRegionNode> dest, AbsractBSLElementNode node, int level)
     {
         for (AbsractBSLElementNode it : node.getChildren())

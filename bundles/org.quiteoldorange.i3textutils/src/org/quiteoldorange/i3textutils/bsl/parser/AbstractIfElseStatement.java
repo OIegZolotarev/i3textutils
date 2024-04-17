@@ -162,6 +162,7 @@ public class AbstractIfElseStatement
         {
             super(stream);
 
+            addNodeEndingToken(kind.getEndIfToken());
             mConditionalExpression = conditionExpression;
 
             while (true)

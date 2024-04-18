@@ -32,7 +32,7 @@ public class ModuleRegionsOrderQuickFix
         public void apply(IModificationContext context) throws Exception
         {
             IXtextDocument doc = context.getXtextDocument();
-            ModuleRegionsReorderer.ReorderRegions(doc);
+            ModuleRegionsReorderer.reorderRegions(doc);
         }
 
     }

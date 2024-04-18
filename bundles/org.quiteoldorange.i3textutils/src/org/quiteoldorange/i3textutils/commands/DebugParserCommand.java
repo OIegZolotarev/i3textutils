@@ -8,7 +8,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.text.source.ISourceViewerExtension5;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.xtext.ui.editor.XtextEditor;
@@ -24,7 +23,6 @@ import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.impl.InvocationImpl;
 import com._1c.g5.v8.dt.bsl.model.impl.SimpleStatementImpl;
 import com._1c.g5.v8.dt.bsl.ui.BslDocumentationProvider;
-import com._1c.g5.v8.dt.bsl.ui.editor.BslXtextEditor;
 import com._1c.g5.v8.dt.mcore.Method;
 
 
@@ -44,20 +42,6 @@ public class DebugParserCommand
 
         IWorkbenchPart part = HandlerUtil.getActivePart(event);
         XtextEditor target = part.getAdapter(XtextEditor.class);
-
-        BslXtextEditor ed = (BslXtextEditor)target;
-        var ex = (ISourceViewerExtension5)ed.getInternalSourceViewer();
-        ex.updateCodeMinings();
-
-//        Module m = Utils.getModuleFromXTextDocument(doc);
-//
-//        IResourceServiceProvider resourceProvider =
-//            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(m.eResource().getURI());
-//        BslDocumentationProvider docum = resourceProvider.get(BslDocumentationProvider.class);
-//
-//
-//
-//        debug(m, docum);
 
         Lexer lex = new Lexer(doc.get());
         @SuppressWarnings("unused")

@@ -16,7 +16,6 @@ import org.quiteoldorange.i3textutils.bsl.parser.CommentNode;
 import org.quiteoldorange.i3textutils.bsl.parser.CommentsBlock;
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode;
 import org.quiteoldorange.i3textutils.bsl.parser.expressions.MethodCallNode;
-import org.quiteoldorange.i3textutils.core.i3TextUtilsPlugin;
 
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
@@ -27,6 +26,14 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 public class ModuleASTTree
     extends AbsractBSLElementNode
 {
+
+    boolean mFailedToParse = false;
+    String mParsingError = ""; //$NON-NLS-1$
+
+    boolean isFailedToParse()
+    {
+        return mFailedToParse;
+    }
 
     @Override
     public String serialize(ScriptVariant variant)
@@ -58,7 +65,11 @@ public class ModuleASTTree
             }
             catch (BSLParsingException e)
             {
-                i3TextUtilsPlugin.logError(e);
+                // i3TextUtilsPlugin.logError(e);
+
+                mFailedToParse = true;
+                mParsingError = e.getMessage();
+
                 break;
             }
         }
@@ -109,6 +120,8 @@ public class ModuleASTTree
             {
                 if (methodNode != null)
                     methodNode.addDocumentationBlock((CommentsBlock)childNode);
+                else
+                    newNodes.add(childNode);
             }
             else
             {

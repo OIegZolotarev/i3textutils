@@ -21,7 +21,7 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
  */
 public class ModuleRegionsReorderer
 {
-    public static void ReorderRegions(IXtextDocument doc) throws BadLocationException
+    public static void reorderRegions(IXtextDocument doc) throws BadLocationException
     {
         Module moduleModel = Utils.getModuleFromXTextDocument(doc);
         String templateSource = Utils.getBSLModuleTemplate(moduleModel.getModuleType(), null);

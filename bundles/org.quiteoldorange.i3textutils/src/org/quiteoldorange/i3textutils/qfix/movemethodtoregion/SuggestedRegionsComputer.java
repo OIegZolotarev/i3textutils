@@ -58,6 +58,12 @@ public class SuggestedRegionsComputer
         l.add(new TestStrategy("Обработчик событий \"(.+)\" следует разместить в область \"(.+)\"", 2, //$NON-NLS-1$
             ScriptVariant.RUSSIAN));
 
+
+        // Метод "ЗаполнитьЦену" необходимо разместить в одной из верхнеуровневых областей: ПрограммныйИнтерфейс, СлужебныйПрограммныйИнтерфейс, СлужебныеПроцедурыИФункции
+
+        l.add(new TestStrategy("Метод \"(.+)\" необходимо разместить в одной из верхнеуровневых областей: (.+)", 2,
+            ScriptVariant.RUSSIAN));
+
         mTestsShouldBeInSpecifiedRegion = l;
     }
 
@@ -92,7 +98,15 @@ public class SuggestedRegionsComputer
     private static SuggestedRegions makeGoodRegionsSuggestions(String regionName)
     {
         SuggestedRegions result = new SuggestedRegions();
-        result.addRecommededRegion(regionName);
+
+        var items = regionName.split(",");
+
+        for (var item : items)
+        {
+            result.addRecommededRegion(item);
+        }
+
+        //result.addRecommededRegion(regionName);
         return result;
     }
 

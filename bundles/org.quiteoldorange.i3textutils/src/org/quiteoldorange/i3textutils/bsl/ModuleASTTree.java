@@ -296,8 +296,8 @@ public class ModuleASTTree
         parentOfA.removeChildren(a);
         parentOfB.removeChildren(b);
 
-        parentOfA.insertChildren(aIndex - 1, b);
-        parentOfA.insertChildren(bIndex - 1, a);
+        parentOfA.insertChildren(aIndex, b);
+        parentOfA.insertChildren(bIndex, a);
 
     }
 

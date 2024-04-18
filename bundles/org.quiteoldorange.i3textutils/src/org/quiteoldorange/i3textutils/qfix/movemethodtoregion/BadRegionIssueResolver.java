@@ -12,7 +12,7 @@ import org.eclipse.xtext.ui.editor.model.edit.IModification;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.validation.Issue;
 import org.quiteoldorange.i3textutils.StringUtils;
-import org.quiteoldorange.i3textutils.modulereformatter.ModuleReformatterContext;
+import org.quiteoldorange.i3textutils.modulereformatter.ModuleReformatter;
 import org.quiteoldorange.i3textutils.refactoring.MethodSourceInfo;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
@@ -184,7 +184,7 @@ if (docEdited == doc)
         }
 
         // Причесываем пустые линии
-        String newSource = ModuleReformatterContext.cleanupConsecutiveBlankLines(doc.get());
+        String newSource = ModuleReformatter.cleanupConsecutiveBlankLines(doc.get());
         doc.replace(0, doc.getLength(), newSource);
 
         return targetOffset;

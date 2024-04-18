@@ -11,7 +11,7 @@ import org.eclipse.xtext.validation.Issue;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 import org.quiteoldorange.i3textutils.bsl.parser.AbsractBSLElementNode;
 import org.quiteoldorange.i3textutils.dialogs.GracefullErrorDialog;
-import org.quiteoldorange.i3textutils.modulereformatter.ModuleReformatterContext;
+import org.quiteoldorange.i3textutils.modulereformatter.ModuleReformatter;
 
 import com._1c.g5.v8.dt.bsl.ui.quickfix.AbstractExternalQuickfixProvider;
 
@@ -59,7 +59,7 @@ public class DeleteEmptyRegionQuickFix
 
             // TODO: optimize
             doc.replace(startingOffset, length, ""); //$NON-NLS-1$
-            doc.replace(0, doc.getLength(), ModuleReformatterContext.cleanupConsecutiveBlankLines(doc.get()));
+            doc.replace(0, doc.getLength(), ModuleReformatter.cleanupConsecutiveBlankLines(doc.get()));
 
         }
 

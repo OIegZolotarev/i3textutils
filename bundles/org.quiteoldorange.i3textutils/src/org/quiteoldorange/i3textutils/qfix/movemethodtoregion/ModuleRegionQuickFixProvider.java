@@ -1,8 +1,5 @@
 package org.quiteoldorange.i3textutils.qfix.movemethodtoregion;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.eclipse.xtext.ui.editor.quickfix.Fix;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
@@ -17,43 +14,6 @@ public class ModuleRegionQuickFixProvider
     public ModuleRegionQuickFixProvider()
     {
         // TODO Auto-generated constructor stub
-    }
-
-    private List<String> parseSuggestedRegions_ModuleStructureMethodInRegions(Issue issue)
-    {
-
-        List<String> result = new LinkedList<>();
-        String issueMessage = issue.getMessage();
-
-        if (issueMessage.indexOf(':') != -1)
-        {
-
-            String regionsList = issueMessage.substring(issueMessage.indexOf(':') + 1);
-
-            String[] suggestedRegions = regionsList.split(","); //$NON-NLS-1$
-
-            for (String item : suggestedRegions)
-            {
-                String trimmed = item.trim();
-                result.add(trimmed);
-            }
-
-            return result;
-        }
-        else
-        {
-            String regionsList = issueMessage.substring(issueMessage.indexOf('"') + 1);
-
-            String[] suggestedRegions = regionsList.split(","); //$NON-NLS-1$
-
-            for (String item : suggestedRegions)
-            {
-                String trimmed = item.trim();
-                result.add(trimmed);
-            }
-
-            return result;
-        }
     }
 
     @Fix("DUMMY")
@@ -145,6 +105,29 @@ public class ModuleRegionQuickFixProvider
             if (suggestedRegions.size() == 0)
                 suggestedRegions.add("СлужебныеПроцедурыИФункции"); //$NON-NLS-1$
 
+
+            acceptor.accept(issue, Messages.ModuleRegionQuickFixProvider_MoveMethodToOtherRegion, "", null, //$NON-NLS-1$
+                new BadRegionIssueResolver(issue, suggestedRegions, suggestions.getBadRegions()));
+
+            // TODO: английский вариант
+            acceptor.accept(issue,
+                String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion,
+                    Messages.ModuleRegionQuickFixProvider_Private),
+                Messages.ModuleRegionQuickFixProvider_Description, null,
+                new BadRegionIssueResolver(issue, Messages.ModuleRegionQuickFixProvider_Private));
+
+            return;
+        }
+
+        suggestions = SuggestedRegionsComputer.parseIssue(issue,
+            SuggestedRegionsComputer.METHOD_SHOULD_IN_SPECIFIED_REGION, null);
+
+        if (suggestions != null)
+        {
+            var suggestedRegions = suggestions.getRecommendedRegions();
+
+            if (suggestedRegions.size() == 0)
+                suggestedRegions.add("СлужебныеПроцедурыИФункции"); //$NON-NLS-1$
 
             acceptor.accept(issue, Messages.ModuleRegionQuickFixProvider_MoveMethodToOtherRegion, "", null, //$NON-NLS-1$
                 new BadRegionIssueResolver(issue, suggestedRegions, suggestions.getBadRegions()));

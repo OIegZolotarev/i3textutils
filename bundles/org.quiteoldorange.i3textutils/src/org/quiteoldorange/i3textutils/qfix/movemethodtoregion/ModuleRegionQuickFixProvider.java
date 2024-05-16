@@ -22,41 +22,10 @@ public class ModuleRegionQuickFixProvider
         // TODO: fixme
         ScriptVariant scriptVariant = ScriptVariant.RUSSIAN;
 
-        var suggestions = SuggestedRegionsComputer.parseIssue(issue,
-            SuggestedRegionsComputer.METHOD_SHOULD_NOT_BE_IN_THIS_REGION, scriptVariant);
-
-        if (suggestions != null)
-        {
-            acceptor.accept(issue, Messages.ModuleRegionQuickFixProvider_MoveMethodToOtherRegion, "", null, //$NON-NLS-1$
-                new BadRegionIssueResolver(issue, suggestions.getRecommendedRegions(), suggestions.getBadRegions()));
-
-            // TODO: английский вариант
-            acceptor.accept(issue,
-                String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion,
-                    Messages.ModuleRegionQuickFixProvider_Private),
-                Messages.ModuleRegionQuickFixProvider_Description, null,
-                new BadRegionIssueResolver(issue, Messages.ModuleRegionQuickFixProvider_Private));
-
+        if (addResolutionsForBadCurrentRegion(issue, acceptor, scriptVariant))
             return;
-        }
 
-        suggestions = SuggestedRegionsComputer.parseIssue(issue,
-            SuggestedRegionsComputer.METHOD_SHOULD_IN_SPECIFIED_REGION, scriptVariant);
-
-        if (suggestions != null)
-        {
-            var recommendedRegions = suggestions.getRecommendedRegions();
-            assert (recommendedRegions.size() > 0);
-
-            String suggestedRegion = recommendedRegions.get(0);
-
-            acceptor.accept(issue,
-                String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion, suggestedRegion),
-                Messages.ModuleRegionQuickFixProvider_Description, null,
-                new BadRegionIssueResolver(issue, suggestedRegion));
-
-            return;
-        }
+        addResolutionsForSpecifiedRegion(issue, acceptor, scriptVariant);
 
     }
 
@@ -66,6 +35,26 @@ public class ModuleRegionQuickFixProvider
         // TODO: fixme
         ScriptVariant scriptVariant = ScriptVariant.RUSSIAN;
 
+        addResolutionsForBadCurrentRegion(issue, acceptor, scriptVariant);
+
+    }
+
+    @Fix("DUMMY")
+    public void fixModuleStructureMethodInRegions(final Issue issue, IssueResolutionAcceptor acceptor)
+    {
+        // TODO: fixme
+        ScriptVariant scriptVariant = ScriptVariant.RUSSIAN;
+        addResolutionsForSpecifiedRegion(issue, acceptor, scriptVariant);
+    }
+
+    /**
+     * @param issue
+     * @param acceptor
+     * @param scriptVariant
+     */
+    private boolean addResolutionsForBadCurrentRegion(final Issue issue, IssueResolutionAcceptor acceptor,
+        ScriptVariant scriptVariant)
+    {
         var suggestions = SuggestedRegionsComputer.parseIssue(issue,
             SuggestedRegionsComputer.METHOD_SHOULD_NOT_BE_IN_THIS_REGION, scriptVariant);
 
@@ -87,39 +76,24 @@ public class ModuleRegionQuickFixProvider
                 Messages.ModuleRegionQuickFixProvider_Description, null,
                 new BadRegionIssueResolver(issue, Messages.ModuleRegionQuickFixProvider_Private));
 
-            return;
+            return true;
         }
 
+        return false;
     }
 
-    @Fix("DUMMY")
-    public void fixModuleStructureMethodInRegions(final Issue issue, IssueResolutionAcceptor acceptor)
+    /**
+     * @param issue
+     * @param acceptor
+     * @param scriptVariant
+     */
+    private void addResolutionsForSpecifiedRegion(final Issue issue, IssueResolutionAcceptor acceptor,
+        ScriptVariant scriptVariant)
     {
-        var suggestions = SuggestedRegionsComputer.parseIssue(issue,
-            SuggestedRegionsComputer.METHOD_SHOULD_NOT_BE_IN_THIS_REGION, null);
-
-        if (suggestions != null)
-        {
-            var suggestedRegions = suggestions.getRecommendedRegions();
-
-            if (suggestedRegions.size() == 0)
-                suggestedRegions.add("СлужебныеПроцедурыИФункции"); //$NON-NLS-1$
-
-
-            acceptor.accept(issue, Messages.ModuleRegionQuickFixProvider_MoveMethodToOtherRegion, "", null, //$NON-NLS-1$
-                new BadRegionIssueResolver(issue, suggestedRegions, suggestions.getBadRegions()));
-
-            // TODO: английский вариант
-            acceptor.accept(issue,
-                String.format(Messages.ModuleRegionQuickFixProvider_MoveMethodToRegion,
-                    Messages.ModuleRegionQuickFixProvider_Private),
-                Messages.ModuleRegionQuickFixProvider_Description, null,
-                new BadRegionIssueResolver(issue, Messages.ModuleRegionQuickFixProvider_Private));
-
+        if (addResolutionsForBadCurrentRegion(issue, acceptor, scriptVariant))
             return;
-        }
 
-        suggestions = SuggestedRegionsComputer.parseIssue(issue,
+        var suggestions = SuggestedRegionsComputer.parseIssue(issue,
             SuggestedRegionsComputer.METHOD_SHOULD_IN_SPECIFIED_REGION, null);
 
         if (suggestions != null)

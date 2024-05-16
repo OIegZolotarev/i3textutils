@@ -3,7 +3,6 @@
  */
 package org.quiteoldorange.i3textutils.core;
 
-import java.awt.AWTException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -72,18 +71,6 @@ public class QuickFixAdapter
         // А эта проверка использует старую систему, лол
         //rebindQuickFix(p, "function-should-return-value", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
         //ConvertFunctionToProcedure.class, "run"); //$NON-NLS-1$
-
-
-        TrayIconDemo td = new TrayIconDemo();
-        try
-        {
-            td.displayTray();
-        }
-        catch (AWTException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 
     private static synchronized void rebindQuickFix(IProject dummyProj, String checkId, String checkProviderId,

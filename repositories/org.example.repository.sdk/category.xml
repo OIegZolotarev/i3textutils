@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature id="org.example.sdk">
-      <category name="org.example.sdk.category"/>
+   <feature id="org.quiteoldorange.i3textutils.sdk">
+      <category name="org.quiteoldorange.i3textutils.category"/>
    </feature>
-   <category-def name="org.example.sdk.category" label="Example SDK"/>
+   <category-def name="org.quiteoldorange.i3textutils.category" label="Example SDK"/>
 </site>

@@ -14,7 +14,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.example</groupId>
+    <groupId>org.quiteoldorange.i3textutils</groupId>
     <artifactId>parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
@@ -29,18 +29,9 @@
   </properties>
 
   <modules>
-    <module>org.example.feature</module>
+    <module>org.quiteoldorange.i3textutils.feature</module>
   </modules>
 
-  <profiles>
-    <profile>
-      <id>SDK</id>
 
-      <modules>
-        <module>org.example.sdk.feature</module>
-      </modules>
-
-    </profile>
-  </profiles>
 
 </project>

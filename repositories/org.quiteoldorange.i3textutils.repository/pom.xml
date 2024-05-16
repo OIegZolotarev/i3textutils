@@ -14,11 +14,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.example</groupId>
+    <groupId>org.quiteoldorange.i3textutils</groupId>
     <artifactId>repositories</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.example.repository</artifactId>
+  <artifactId>org.quiteoldorange.i3textutils.repository</artifactId>
   <packaging>eclipse-repository</packaging>
 </project>

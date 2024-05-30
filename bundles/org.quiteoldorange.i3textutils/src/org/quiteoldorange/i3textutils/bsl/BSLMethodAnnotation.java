@@ -11,6 +11,7 @@ public enum BSLMethodAnnotation
     AtServerNoContext,
     AtClientAtServer,
     Before,
+    ChangesAndValidate,
     After,
     Around
 }

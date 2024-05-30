@@ -150,6 +150,7 @@ public class AbsractBSLElementNode
             case AnnotationAtClientAtServerNoContext:
             case AnnotationAfter:
             case AnnotationBefore:
+            case AnnotationChangeAndValidate:
             case AnnotationAround:
                 return new AnnotationNode(stream, this);
             case EmptyLine:

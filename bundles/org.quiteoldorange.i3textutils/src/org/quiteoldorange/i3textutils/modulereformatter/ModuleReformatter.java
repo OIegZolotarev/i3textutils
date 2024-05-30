@@ -10,6 +10,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
+import org.quiteoldorange.i3textutils.Log;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLRegionNode;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
@@ -90,7 +91,23 @@ public class ModuleReformatter
 
     public void run()
     {
-        ModuleASTTree sourceTree = new ModuleASTTree(mDoc.get());
+        String originalSource = mDoc.get();
+
+        ModuleASTTree sourceTree = new ModuleASTTree(originalSource);
+
+        // Fallback когда не смогли распарсить дерево,
+        // чтобы не очищать полностью документ
+        if (sourceTree.isFailedToParse())
+        {
+            Log.Debug("Произошла ошибка при разборе модуля: %s", sourceTree.getParsingError());
+
+            if (mCleanupEmptyLines)
+            {
+                String cleanedUpSource = cleanupConsecutiveBlankLines(originalSource);
+                applyChanges(cleanedUpSource);
+            }
+            return;
+        }
 
         if (mReorderRegions)
             reorderRegions(sourceTree);

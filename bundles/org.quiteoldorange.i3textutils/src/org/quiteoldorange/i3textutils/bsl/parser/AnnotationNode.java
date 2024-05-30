@@ -48,6 +48,10 @@ public class AnnotationNode
             mType = BSLMethodAnnotation.Before;
             ParseMethodName(stream);
             break;
+        case AnnotationChangeAndValidate:
+            mType = BSLMethodAnnotation.ChangesAndValidate;
+            ParseMethodName(stream);
+            break;
         case AnnotationAtClientAtServerNoContext:
             mType = BSLMethodAnnotation.AtClientAtServerNoContext;
             break;
@@ -85,6 +89,9 @@ public class AnnotationNode
             return String.format("%s\n", Token.getKeywordValue(Type.AnnotationAtServerNoContext, scriptVariant)); //$NON-NLS-1$
         case Before:
             return String.format("%s(\"%s\")\n", Token.getKeywordValue(Type.AnnotationBefore, scriptVariant), //$NON-NLS-1$
+                mExtendedMethodName);
+        case ChangesAndValidate:
+            return String.format("%s(\"%s\")\n", Token.getKeywordValue(Type.AnnotationChangeAndValidate, scriptVariant), //$NON-NLS-1$
                 mExtendedMethodName);
         default:
             return ""; //$NON-NLS-1$

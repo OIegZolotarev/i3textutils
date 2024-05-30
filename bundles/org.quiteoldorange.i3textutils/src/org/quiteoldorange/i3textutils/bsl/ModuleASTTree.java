@@ -30,7 +30,7 @@ public class ModuleASTTree
     boolean mFailedToParse = false;
     String mParsingError = ""; //$NON-NLS-1$
 
-    boolean isFailedToParse()
+    public boolean isFailedToParse()
     {
         return mFailedToParse;
     }
@@ -65,8 +65,7 @@ public class ModuleASTTree
             }
             catch (BSLParsingException e)
             {
-                // i3TextUtilsPlugin.logError(e);
-
+                e.printStackTrace();
                 mFailedToParse = true;
                 mParsingError = e.getMessage();
 
@@ -311,6 +310,14 @@ public class ModuleASTTree
             else if (level > 0)
                 dumpTopRegionsRecursive(dest, it, level - 1);
         }
+    }
+
+    /**
+     * @return
+     */
+    public String getParsingError()
+    {
+        return mParsingError;
     }
 
 }

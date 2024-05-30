@@ -86,6 +86,7 @@ public class Token
         AnnotationAtClientAtServerNoContext,
         AnnotationAtServerNoContext,
         AnnotationBefore,
+        AnnotationChangeAndValidate,
         AnnotationAfter,
         AnnotationAround,
         KeywordReturn
@@ -283,6 +284,8 @@ public class Token
         sTokenDictionary.put(Type.AnnotationAtServerNoContext,
             new KeywordDictionaryEntry("&НаСервереБезКонтекста", "&AtServerNoContext")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.AnnotationBefore, new KeywordDictionaryEntry("&Перед", "&Before")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.AnnotationChangeAndValidate,
+            new KeywordDictionaryEntry("&ИзменениеИКонтроль", "&ChangeAndValidate")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.AnnotationAfter, new KeywordDictionaryEntry("&После", "&After")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.AnnotationAround, new KeywordDictionaryEntry("&Вместо", "&Around")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.KeywordReturn, new KeywordDictionaryEntry("Возврат", "Return")); //$NON-NLS-1$ //$NON-NLS-2$

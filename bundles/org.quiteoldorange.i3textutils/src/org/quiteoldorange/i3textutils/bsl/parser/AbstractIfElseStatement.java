@@ -235,7 +235,7 @@ public class AbstractIfElseStatement
     }
 
     @Override
-    public String serialize(ScriptVariant scriptVariant)
+    public String serialize(ScriptVariant scriptVariant) throws Exception
     {
         assert getChildren().size() > 1;
 

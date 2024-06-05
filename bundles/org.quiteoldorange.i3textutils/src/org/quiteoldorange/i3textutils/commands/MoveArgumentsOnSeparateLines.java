@@ -52,15 +52,15 @@ public class MoveArgumentsOnSeparateLines
 
         if (node instanceof MethodCallNode)
         {
-            MethodCallNode methodCallNode = (MethodCallNode)node;
-            String s = methodCallNode.serialize(Utils.getDocScriptVariant(doc), true);
-            s = verticalAlignMethodCall(s, (offset - startOffset) + 1);
-
             try
             {
+                MethodCallNode methodCallNode = (MethodCallNode)node;
+                String s = methodCallNode.serialize(Utils.getDocScriptVariant(doc), true);
+                s = verticalAlignMethodCall(s, (offset - startOffset) + 1);
+
                 doc.replace(offset, length, s);
             }
-            catch (BadLocationException e)
+            catch (Exception e)
             {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

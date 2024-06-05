@@ -17,7 +17,7 @@ public class MethodCallNode
 {
 
     @Override
-    public String serialize(ScriptVariant scriptVariant)
+    public String serialize(ScriptVariant scriptVariant) throws Exception
     {
         return serialize(scriptVariant, false);
     }

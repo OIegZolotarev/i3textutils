@@ -38,7 +38,7 @@ public class ModuleASTTree
     @Override
     public String serialize(ScriptVariant variant) throws Exception
     {
-        if (!isFailedToParse())
+        if (isFailedToParse())
             throw new Exception("Failed to parse");
 
         StringBuilder builder = new StringBuilder();

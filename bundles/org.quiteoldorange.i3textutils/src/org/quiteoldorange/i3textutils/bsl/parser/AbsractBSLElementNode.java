@@ -174,6 +174,8 @@ public class AbsractBSLElementNode
                     }
 
                 }
+            case OperatorWhile:
+                return new WhileLoopNode(stream, this);
             // Какая-то нода недочитала до конца - пропускаем, чтобы упереться
             case ExpressionEnd:
                 return null;
@@ -223,12 +225,12 @@ public class AbsractBSLElementNode
     /**
      * @return
      */
-    public String serialize(ScriptVariant scriptVariant)
+    public String serialize(ScriptVariant scriptVariant) throws Exception
     {
         return ""; //$NON-NLS-1$
     }
 
-    public String serializeChildren(ScriptVariant variant, boolean addNewline)
+    public String serializeChildren(ScriptVariant variant, boolean addNewline) throws Exception
     {
         StringBuilder builder = new StringBuilder();
 

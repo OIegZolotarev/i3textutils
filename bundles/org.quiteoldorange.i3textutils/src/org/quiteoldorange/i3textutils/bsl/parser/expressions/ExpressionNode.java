@@ -398,7 +398,7 @@ public class ExpressionNode
     }
 
     @Override
-    public String serialize(ScriptVariant scriptVariant)
+    public String serialize(ScriptVariant scriptVariant) throws Exception
     {
         StringBuilder builder = new StringBuilder();
 

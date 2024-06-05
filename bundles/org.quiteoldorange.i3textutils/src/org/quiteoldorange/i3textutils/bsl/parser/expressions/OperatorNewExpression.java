@@ -17,7 +17,7 @@ public class OperatorNewExpression
 {
 
     @Override
-    public String serialize(ScriptVariant scriptVariant)
+    public String serialize(ScriptVariant scriptVariant) throws Exception
     {
         // TODO Auto-generated method stub
         return super.serialize(scriptVariant);

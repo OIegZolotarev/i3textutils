@@ -46,7 +46,7 @@ public class MethodNode
     }
 
     @Override
-    public String serialize(ScriptVariant scriptVariant)
+    public String serialize(ScriptVariant scriptVariant) throws Exception
     {
         var iterator = getChildren().iterator();
 

@@ -36,8 +36,11 @@ public class ModuleASTTree
     }
 
     @Override
-    public String serialize(ScriptVariant variant)
+    public String serialize(ScriptVariant variant) throws Exception
     {
+        if (!isFailedToParse())
+            throw new Exception("Failed to parse");
+
         StringBuilder builder = new StringBuilder();
 
         for (AbsractBSLElementNode node : getChildren())

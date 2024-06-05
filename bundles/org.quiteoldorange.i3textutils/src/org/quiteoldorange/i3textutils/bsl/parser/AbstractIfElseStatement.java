@@ -129,7 +129,7 @@ public class AbstractIfElseStatement
         extends AbsractBSLElementNode
     {
 
-        public String serialize(ScriptVariant scriptVariant, int index)
+        public String serialize(ScriptVariant scriptVariant, int index) throws Exception
         {
             StringBuilder r = new StringBuilder();
 

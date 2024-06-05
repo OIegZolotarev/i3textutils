@@ -6,7 +6,6 @@ package org.quiteoldorange.i3textutils.modulereformatter;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLRegionNode;
@@ -21,7 +20,7 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
  */
 public class ModuleRegionsReorderer
 {
-    public static void reorderRegions(IXtextDocument doc) throws BadLocationException
+    public static void reorderRegions(IXtextDocument doc) throws Exception
     {
         Module moduleModel = Utils.getModuleFromXTextDocument(doc);
         String templateSource = Utils.getBSLModuleTemplate(moduleModel.getModuleType(), null);

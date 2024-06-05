@@ -22,7 +22,7 @@ public class MethodCallNode
         return serialize(scriptVariant, false);
     }
 
-    public String serialize(ScriptVariant scriptVariant, boolean putArgsOnNewLines)
+    public String serialize(ScriptVariant scriptVariant, boolean putArgsOnNewLines) throws Exception
     {
         assert (mMethodName != null && mArgs != null);
 

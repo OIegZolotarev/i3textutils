@@ -113,7 +113,15 @@ public class ModuleReformatter
             reorderRegions(sourceTree);
 
         // TODO: fix ScriptVariant hardcoded
-        String source = sourceTree.serialize(ScriptVariant.RUSSIAN);
+        String source;
+        try
+        {
+            source = sourceTree.serialize(ScriptVariant.RUSSIAN);
+        }
+        catch (Exception e)
+        {
+            source = originalSource;
+        }
 
         if (mCleanupEmptyLines)
             source = cleanupConsecutiveBlankLines(source);

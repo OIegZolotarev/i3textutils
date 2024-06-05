@@ -19,7 +19,7 @@ public class BSLRegionNode
     private int mIdealOrder;
 
     @Override
-    public String serialize(ScriptVariant variant)
+    public String serialize(ScriptVariant variant) throws Exception
     {
         StringBuilder builder = new StringBuilder();
         builder.append(String.format("%s %s\n", Token.getKeywordValue(Type.PreprocessorRegion, variant), mRegionName)); //$NON-NLS-1$

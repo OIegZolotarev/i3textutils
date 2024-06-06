@@ -37,15 +37,13 @@ public class QuickFixAdapter
         if (projects.length < 1)
             return;
 
-        // TODO
-        // Если проект является проектом внешней обработки - то getShortUid выдает NULL
-        // Нужно цепляться где-то тут за проект конфигурации (?)
-        // И в целом надо предельно осторожным быть в фазе загрузки ресурсов -
-        // любой экспешн роняет весь проект и делается полный ребилд (очень долго)
-        var p = projects[0];
+        var p = findProjectForSUIDQuerying(projects);
 
-
-        assert (p != null);
+        if (p == null)
+        {
+            Log.Debug("bindQuickFixes(): нет подходящих проектов выполнения, ничего не делаю...");
+            return;
+        }
 
         rebindQuickFix(p, "module-structure-event-regions", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
             ModuleRegionQuickFixProvider.class, "fixModuleStructureEventRegions"); //$NON-NLS-1$
@@ -71,6 +69,30 @@ public class QuickFixAdapter
         // А эта проверка использует старую систему, лол
         //rebindQuickFix(p, "function-should-return-value", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE, //$NON-NLS-1$
         //ConvertFunctionToProcedure.class, "run"); //$NON-NLS-1$
+    }
+
+    private static IProject findProjectForSUIDQuerying(IProject[] projects)
+    {
+        var checksRepo = ServicesAdapter.instance().getChecksRepository();
+
+        CheckUid uid = new CheckUid("module-structure-event-regions", i3TextUtilsPlugin.V8_CODESTYLE_BUNDLE); //$NON-NLS-1$
+
+        for (IProject proj : projects)
+        {
+            try
+            {
+                String suid = checksRepo.getShortUid(uid, proj);
+
+                if (suid != null)
+                    return proj;
+            }
+            catch (Exception e)
+            {
+                continue;
+            }
+        }
+
+        return null;
     }
 
     private static synchronized void rebindQuickFix(IProject dummyProj, String checkId, String checkProviderId,

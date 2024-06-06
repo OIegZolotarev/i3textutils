@@ -59,11 +59,11 @@ class FixVariant
     }
 
     static FixVariant[] fixVariants = { new FixVariant(BSLMethodAnnotation.AtServer, "&НаСервере", "&AtClient"), //$NON-NLS-1$ //$NON-NLS-2$
-        /*new FixVariant(BSLMethodAnnotation.AtClient, "&НаКлиенте", "&AtServer"), //$NON-NLS-1$ //$NON-NLS-2$
+        new FixVariant(BSLMethodAnnotation.AtClient, "&НаКлиенте", "&AtServer"), //$NON-NLS-1$ //$NON-NLS-2$
         new FixVariant(BSLMethodAnnotation.AtServerNoContext, "&НаСервереБезКонтекста", "&AtServerNoContext"), //$NON-NLS-1$ //$NON-NLS-2$
         new FixVariant(BSLMethodAnnotation.AtClientAtServerNoContext, "&НаКлиентеНаСервереБезКонтекста", //$NON-NLS-1$
             "&AtClientAtServerNoContext"), //$NON-NLS-1$
-        new FixVariant(BSLMethodAnnotation.AtClientAtServer, "&НаКлиентеНаСервере", "&AtClientAtServer"), //$NON-NLS-1$ //$NON-NLS-2$ */
+        new FixVariant(BSLMethodAnnotation.AtClientAtServer, "&НаКлиентеНаСервере", "&AtClientAtServer"), //$NON-NLS-1$ //$NON-NLS-2$
     };
 
     public static List<FixVariant> buildResolutions(Issue issue, IssueResolutionAcceptor acceptor)

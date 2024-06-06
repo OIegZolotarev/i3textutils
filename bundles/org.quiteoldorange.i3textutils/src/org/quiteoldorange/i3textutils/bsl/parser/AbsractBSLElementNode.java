@@ -179,6 +179,8 @@ public class AbsractBSLElementNode
             // Какая-то нода недочитала до конца - пропускаем, чтобы упереться
             case ExpressionEnd:
                 return null;
+            case OperatorTry:
+                return new TryCatchNode(stream);
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);
             }

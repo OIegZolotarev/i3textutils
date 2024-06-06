@@ -256,7 +256,7 @@ public class Token
         sTokenDictionary.put(Type.OperatorWhile, new KeywordDictionaryEntry("Пока", "While")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.OperatorEndLoop, new KeywordDictionaryEntry("КонецЦикла", "EndLoop")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.OperatorTry, new KeywordDictionaryEntry("Попытка", "Try")); //$NON-NLS-1$ //$NON-NLS-2$
-        sTokenDictionary.put(Type.OperatorEndTry, new KeywordDictionaryEntry("КонецПопытка", "EndTry")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.OperatorEndTry, new KeywordDictionaryEntry("КонецПопытки", "EndTry")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.PreprocessorIf, new KeywordDictionaryEntry("#Если", "#If")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.PreprocessorThen, new KeywordDictionaryEntry("#Тогда", "#Then")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.PreprocessorElseIf, new KeywordDictionaryEntry("#ИначеЕсли", "#ElseIf")); //$NON-NLS-1$ //$NON-NLS-2$

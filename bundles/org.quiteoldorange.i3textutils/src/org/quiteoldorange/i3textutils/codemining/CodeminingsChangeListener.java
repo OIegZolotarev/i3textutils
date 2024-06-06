@@ -67,11 +67,11 @@ public class CodeminingsChangeListener
                             if (xeditor == null)
                                 continue;
 
-                            var sourceViewer = (ISourceViewerExtension5)xeditor.getInternalSourceViewer();
+                            var sourceViewer = xeditor.getInternalSourceViewer();
 
                             if (sourceViewer instanceof ISourceViewerExtension5)
                             {
-                                ISourceViewerExtension5 svEX5 = sourceViewer;
+                                ISourceViewerExtension5 svEX5 = (ISourceViewerExtension5)sourceViewer;
 
                                 var input = xeditor.getEditorInput();
 

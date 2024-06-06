@@ -32,6 +32,9 @@ public class Token
         EqualsSign,
         OpeningBracket,
         ClosingBracket,
+        OpeningSquareBracket,
+        ClosingSquareBracket,
+
         Export,
         Comma,
         ExpressionEnd,
@@ -229,6 +232,10 @@ public class Token
         sTokenDictionary.put(Type.EqualsSign, new KeywordDictionaryEntry("=", "=")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.OpeningBracket, new KeywordDictionaryEntry("(", "(")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.ClosingBracket, new KeywordDictionaryEntry(")", ")")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        sTokenDictionary.put(Type.OpeningSquareBracket, new KeywordDictionaryEntry("[", "[")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.ClosingSquareBracket, new KeywordDictionaryEntry("]", "]")); //$NON-NLS-1$ //$NON-NLS-2$
+
         sTokenDictionary.put(Type.Export, new KeywordDictionaryEntry("Экспорт", "Export")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.Comma, new KeywordDictionaryEntry(",", ",")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.ExpressionEnd, new KeywordDictionaryEntry(";", ";")); //$NON-NLS-1$ //$NON-NLS-2$

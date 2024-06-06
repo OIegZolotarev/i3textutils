@@ -176,7 +176,9 @@ public class AbstractIfElseStatement
                 }
 
                 AbsractBSLElementNode node = ParseNode(stream);
-                addChildren(node);
+
+                if (node != null)
+                    addChildren(node);
             }
 
         }

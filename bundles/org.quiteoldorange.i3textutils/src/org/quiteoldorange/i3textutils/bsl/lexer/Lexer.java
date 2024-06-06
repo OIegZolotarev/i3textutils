@@ -40,7 +40,7 @@ public class Lexer
 
     private boolean isOneSymbolToken(Character sym)
     {
-        String s = "\"\\/%()-=+;.,<>\""; //$NON-NLS-1$
+        String s = "\"\\/%()-=+;.,<>\"[]"; //$NON-NLS-1$
         return s.indexOf(sym) != -1;
     }
 

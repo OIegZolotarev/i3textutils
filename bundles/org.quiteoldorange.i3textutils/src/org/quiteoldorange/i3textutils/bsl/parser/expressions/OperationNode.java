@@ -68,6 +68,8 @@ public class OperationNode
     public int precedence()
     {
 
+        // https://its.1c.ru/db/v836doc#bookmark:dev:TI000000146
+
         switch (mOperator)
         {
         case LogicalAnd:

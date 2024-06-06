@@ -25,7 +25,7 @@ public class OperatorNewExpression
 
     @Override
     public String toString()
-    {
+    { //
         if (mClass == null)
             return String.format("Новый %s", mArgs.toString()); //$NON-NLS-1$
         else

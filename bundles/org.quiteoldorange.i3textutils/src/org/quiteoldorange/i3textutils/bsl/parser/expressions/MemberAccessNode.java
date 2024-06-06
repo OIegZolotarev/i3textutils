@@ -43,7 +43,7 @@ public class MemberAccessNode
     public int precedence()
     {
         // TODO Auto-generated method stub
-        return 1;
+        return 30;
     }
 
     public void setLeftNode(AbsractBSLElementNode node)

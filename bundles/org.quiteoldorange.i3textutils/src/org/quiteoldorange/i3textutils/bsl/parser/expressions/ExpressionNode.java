@@ -270,6 +270,13 @@ public class ExpressionNode
             case EqualsSign:
                 addChildren(new OperationNode(stream, Operator.Equal));
                 break;
+            case OpeningSquareBracket:
+                {
+                    Set<Token.Type> endTokens = new HashSet<>();
+                    endTokens.add(Token.Type.ClosingSquareBracket);
+                    addChildren(new ExpressionNode(stream, endTokens));
+                }
+                break;
 
             default:
                 throw new BSLParsingException.UnexpectedToken(stream, t);

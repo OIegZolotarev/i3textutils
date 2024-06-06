@@ -8,6 +8,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.xtext.ui.editor.XtextEditor;
@@ -46,6 +49,11 @@ public class DebugParserCommand
         Lexer lex = new Lexer(doc.get());
         @SuppressWarnings("unused")
         ModuleASTTree tree = new ModuleASTTree(lex);
+
+        final MessageBox box = new MessageBox(new Shell(), SWT.OK);
+        box.setMessage("Debug");
+        box.setText(String.format("isFailedToParse=%d", tree.isFailedToParse()));
+        box.open();
 
         return null;
     }

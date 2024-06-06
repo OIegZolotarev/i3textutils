@@ -126,7 +126,7 @@ public class ExpressionNode
 
     public AbsractBSLElementNode findMostPrecdenceOperator(List<AbsractBSLElementNode> nodes)
     {
-        AbsractBSLElementNode best = null;
+        AbsractBSLElementNode best = nodes.get(0);
         int bestPrecedence = 99999;
 
         var iterator = nodes.listIterator(nodes.size());
@@ -272,9 +272,7 @@ public class ExpressionNode
                 break;
             case OpeningSquareBracket:
                 {
-                    Set<Token.Type> endTokens = new HashSet<>();
-                    endTokens.add(Token.Type.ClosingSquareBracket);
-                    addChildren(new ExpressionNode(stream, endTokens));
+                    addChildren(new IndexAccessNode(stream));
                 }
                 break;
 
@@ -370,8 +368,6 @@ public class ExpressionNode
                 var leftNode = children.get(nodeIndex - 1);
                 var rightNode = children.get(nodeIndex + 1);
 
-                // TODO: MemberAccessExpression
-
                 var memberAcessExpression = new MemberAccessExpression(null);
 
                 memberAcessExpression.setLeftNode(leftNode);
@@ -396,9 +392,42 @@ public class ExpressionNode
                 operator.setLeftNode(new ExpressionNode(sliceLeft));
                 operator.setRightNode(new ExpressionNode(sliceRight));
 
-                operator.toString();
+
                 children.clear();
                 children.add(operator);
+            }
+            else if (node instanceof IndexAccessNode)
+            {
+                IndexAccessNode iaNode = (IndexAccessNode)node;
+
+                int nodeIndex = children.indexOf(node);
+
+                if (nodeIndex == 0)
+                    throw new BSLParsingException.UnexpectedMemberRead();
+
+                var leftNode = children.get(nodeIndex - 1);
+
+                iaNode.setCollection(leftNode);
+
+                children.remove(nodeIndex);
+                children.remove(nodeIndex - 1);
+
+                children.add(nodeIndex - 1, iaNode);
+
+            }
+            else if (node instanceof OperatorNewNode)
+            {
+                int nodeIndex = children.indexOf(node);
+
+                if (nodeIndex + 1 >= children.size())
+                    throw new BSLParsingException.UnexpectedMemberRead();
+
+                var classId = children.get(nodeIndex + 1);
+
+                children.remove(nodeIndex + 1);
+                children.remove(nodeIndex);
+                children.add(nodeIndex, new OperatorNewExpression((IdentifierNode)classId, null));
+
             }
 
         }

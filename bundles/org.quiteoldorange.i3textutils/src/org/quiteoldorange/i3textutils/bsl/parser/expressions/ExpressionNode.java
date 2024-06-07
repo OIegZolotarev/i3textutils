@@ -297,6 +297,8 @@ public class ExpressionNode
             if (children.size() < 2)
                 break;
 
+            int sizeBefore = children.size();
+
             AbsractBSLElementNode node = findMostPrecdenceOperator(children);
 
             if (node == null)
@@ -405,14 +407,14 @@ public class ExpressionNode
                 if (nodeIndex == 0)
                     throw new BSLParsingException.UnexpectedMemberRead();
 
-                var leftNode = children.get(nodeIndex - 1);
+                var sliceLeft = children.subList(0, nodeIndex);
+                // var leftNode = children.get(nodeIndex - 1);
 
-                iaNode.setCollection(leftNode);
+                iaNode.setCollection(new ExpressionNode(sliceLeft));
 
-                children.remove(nodeIndex);
-                children.remove(nodeIndex - 1);
+                children.clear();
 
-                children.add(nodeIndex - 1, iaNode);
+                children.add(iaNode);
 
             }
             else if (node instanceof OperatorNewNode)
@@ -429,6 +431,9 @@ public class ExpressionNode
                 children.add(nodeIndex, new OperatorNewExpression((IdentifierNode)classId, null));
 
             }
+
+            if (children.size() == sizeBefore)
+                throw new BSLParsingException();
 
         }
     }

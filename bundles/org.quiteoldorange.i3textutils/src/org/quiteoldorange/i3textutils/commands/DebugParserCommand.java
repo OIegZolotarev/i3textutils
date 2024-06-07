@@ -52,7 +52,7 @@ public class DebugParserCommand
 
         final MessageBox box = new MessageBox(new Shell(), SWT.OK);
         box.setMessage("Debug");
-        box.setText(String.format("isFailedToParse=%d", tree.isFailedToParse()));
+        box.setText(String.format("isFailedToParse=%d", tree.isFailedToParse() ? 1 : 0));
         box.open();
 
         return null;

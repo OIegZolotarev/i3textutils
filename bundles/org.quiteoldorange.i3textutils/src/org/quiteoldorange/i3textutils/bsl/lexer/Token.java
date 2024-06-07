@@ -92,7 +92,8 @@ public class Token
         AnnotationChangeAndValidate,
         AnnotationAfter,
         AnnotationAround,
-        KeywordReturn
+        KeywordReturn,
+        KeywordRaise
 
     }
 
@@ -296,6 +297,7 @@ public class Token
         sTokenDictionary.put(Type.AnnotationAfter, new KeywordDictionaryEntry("&После", "&After")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.AnnotationAround, new KeywordDictionaryEntry("&Вместо", "&Around")); //$NON-NLS-1$ //$NON-NLS-2$
         sTokenDictionary.put(Type.KeywordReturn, new KeywordDictionaryEntry("Возврат", "Return")); //$NON-NLS-1$ //$NON-NLS-2$
+        sTokenDictionary.put(Type.KeywordRaise, new KeywordDictionaryEntry("ВызватьИсключение", "Raise")); //$NON-NLS-1$ //$NON-NLS-2$
 
         sTokenDictionary.put(Type.KeywordTo, new KeywordDictionaryEntry("По", "To")); //$NON-NLS-1$ //$NON-NLS-2$
 

@@ -159,6 +159,8 @@ public class AbsractBSLElementNode
                 return new PrepropcessorIfElseStatementNode(stream, this);
             case OperatorIf:
                 return new IfElseStatementNode(stream, this);
+            case KeywordRaise:
+                return new RaiseStatement(stream, this);
             case KeywordReturn:
                 return new ReturnStatement(stream, this);
             case OperatorFor:

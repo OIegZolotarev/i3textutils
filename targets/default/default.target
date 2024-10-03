@@ -143,5 +143,6 @@
 <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
 <repository location="http://download.eclipse.org/cbi/updates/license/2.0.2.v20181016-2210"/>
 </location>
+    <location path="/home/ozolotarev/1c/edt/v8codestyle" type="Directory"/>
 </locations>
 </target>

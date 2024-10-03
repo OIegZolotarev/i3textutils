@@ -117,18 +117,12 @@
     </extension>
     <!-- <extension point="com.e1c.g5.v8.dt.check.fixes"><fix class="org.quiteoldorange.i3textutils.core.ExecutableExtensionFactory:org.quiteoldorange.i3textutils.qfix.MissingPragmaQFix"/></extension> -->
     <extension
-      point="com._1c.g5.v8.dt.bsl.externalBslValidator">
-        <externalValidator
-         class="org.quiteoldorange.i3textutils.qfix.quickactions.MethodQuickActionsMarkerGenerator"></externalValidator>
-    </extension>
-    <extension
       point="com._1c.g5.v8.dt.bsl.ui.externalQuickfixProvider">
         <externalQuickfixProvider
          class="org.quiteoldorange.i3textutils.qfix.quickactions.MethodQuickActions"></externalQuickfixProvider>
         <externalQuickfixProvider
          class="org.quiteoldorange.i3textutils.qfix.movemethodtoregion.ModuleRegionQuickFixProvider"></externalQuickfixProvider>
-        <externalQuickfixProvider
-         class="org.quiteoldorange.i3textutils.qfix.methodmissingpragmas.MissingMethodPragmaQuickFixProvider"></externalQuickfixProvider>
+        
         <externalQuickfixProvider
               class="org.quiteoldorange.i3textutils.qfix.WrapObjectModuleWithPreprocessorDefinitions">
         </externalQuickfixProvider>
@@ -144,6 +138,14 @@
         </externalQuickfixProvider>
         
     </extension>
+    
+       <extension
+         point="com.e1c.g5.v8.dt.check.fixes">
+      <fix
+            class="org.quiteoldorange.i3textutils.qfix2023.addmethodpragma.AddMethodPragmaFix">
+      </fix>
+      </extension>
+    
     <extension
       point="com._1c.g5.wiring.serviceProvider">
         <bundle symbolicName = "org.quiteoldorange.i3textutils"></bundle>

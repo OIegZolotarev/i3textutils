@@ -37,7 +37,7 @@ public class AddMethodPragmaFix
 
         public String getDescription()
         {
-            return String.format("Добавить директиву \"%s\"", mDescription);
+            return String.format(Messages.AddMethodPragmaFix_PragmaDescriptionTemplate, mDescription);
         }
 
         public String getValue()
@@ -46,15 +46,15 @@ public class AddMethodPragmaFix
         }
     };
 
-    private static final String AddAtServer = "НаСервере";
-    private static final String AddAtClient = "НаКлиенте";
-    private static final String AddAtServerNoContext = "НаСервереБезКонтекста";
+    private static final String AddAtServer = Messages.AddMethodPragmaFix_AtServer;
+    private static final String AddAtClient = Messages.AddMethodPragmaFix_AtClient;
+    private static final String AddAtServerNoContext = Messages.AddMethodPragmaFix_AtServerWithoutContext;
 
 
     static FixVariant[] fixVariants = {
-        new FixVariant(AddAtServer, "&НаСервере"),
-        new FixVariant(AddAtClient, "&НаКлиенте"),
-        new FixVariant(AddAtServerNoContext, "&НаСервереБезКонтекста"),
+        new FixVariant(AddAtServer, "&" + Messages.AddMethodPragmaFix_AtServer), //$NON-NLS-1$
+        new FixVariant(AddAtClient, "&" + Messages.AddMethodPragmaFix_AtClient), //$NON-NLS-1$
+        new FixVariant(AddAtServerNoContext, "&" + Messages.AddMethodPragmaFix_AtServerWithoutContext), //$NON-NLS-1$
     };
 
     private void addPragma(SingleVariantXtextBslModuleFixContext context, IFixSession session, XtextResource state,
@@ -71,7 +71,8 @@ public class AddMethodPragmaFix
             return;
 
         var document = (IXtextDocument)model.getDocument();
-        int realOffset = document.get().indexOf(node.getText().trim());
+        // int realOffset = document.get().indexOf(node.getText().trim());
+        int realOffset = node.getOffset();
 
         try
         {

@@ -31,7 +31,7 @@ public class GroupUIItemsCommand
 extends AbstractHandler
 {
 
-    public FormItem FindNamedItem(Form form, String itemName)
+    private FormItem findNamedItem(Form form, String itemName)
     {
         for (var item : form.getItems())
         {
@@ -109,7 +109,7 @@ extends AbstractHandler
 
             editingContext.execute(tsk);
 
-            var parent = FindNamedItem(f, newGroupNames.getFirst());
+            var parent = findNamedItem(f, newGroupNames.getFirst());
             moveItemsToNewLocation(itemsList, (FormItemContainer)parent, editingContext, moveService);
 
 

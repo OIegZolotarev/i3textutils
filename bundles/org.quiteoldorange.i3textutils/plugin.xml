@@ -28,9 +28,9 @@
                   id="org.quiteoldorange.i3textutils.cleanupemptylines"
                   name="Очистить лишние отступы"></command>
         <command
-                  defaultHandler="org.quiteoldorange.i3textutils.commands.GroupUIItemsCommand"
-                  id="org.quiteoldorange.i3textutils.ui.groupitems"
-                  name="Сгруппировать элементы"></command>
+                  defaultHandler="org.quiteoldorange.i3textutils.commands.DecompileForm"
+                  id="org.quiteoldorange.i3textutils.ui.decompileform"
+                  name="Декомпиляция формы..."></command>
         <command
                   defaultHandler="org.quiteoldorange.i3textutils.commands.DebugParserCommand"
                   id="org.quiteoldorange.i3textutils.debugparser"
@@ -41,6 +41,16 @@
                   name="Расположить аргументы на отдельных строках"></command>
     </extension>
     <extension point="org.eclipse.ui.menus">
+    
+    <menuContribution 
+    allPopups="false" locationURI="toolbar:com._1c.g5.v8.dt.form.ui.formEditor.items?after=wysiwyg">
+       <command
+             commandId="org.quiteoldorange.i3textutils.ui.decompileform"
+             label=""
+             style="push">
+       </command>
+    </menuContribution>
+    
         <menuContribution
         locationURI="popup:#BslEditorContext?endof=group.open">
             <menu
@@ -122,30 +132,20 @@
          class="org.quiteoldorange.i3textutils.qfix.quickactions.MethodQuickActions"></externalQuickfixProvider>
         <externalQuickfixProvider
          class="org.quiteoldorange.i3textutils.qfix.movemethodtoregion.ModuleRegionQuickFixProvider"></externalQuickfixProvider>
-        
         <externalQuickfixProvider
-              class="org.quiteoldorange.i3textutils.qfix.WrapObjectModuleWithPreprocessorDefinitions">
-        </externalQuickfixProvider>
+              class="org.quiteoldorange.i3textutils.qfix.WrapObjectModuleWithPreprocessorDefinitions"></externalQuickfixProvider>
         <externalQuickfixProvider
-              class="org.quiteoldorange.i3textutils.qfix.ConvertMethodTypeQFix">
-        </externalQuickfixProvider>
+              class="org.quiteoldorange.i3textutils.qfix.ConvertMethodTypeQFix"></externalQuickfixProvider>
         <externalQuickfixProvider
-              class="org.quiteoldorange.i3textutils.qfix.DeleteEmptyRegionQuickFix">
-        </externalQuickfixProvider>
-        
+              class="org.quiteoldorange.i3textutils.qfix.DeleteEmptyRegionQuickFix"></externalQuickfixProvider>
         <externalQuickfixProvider
-              class="org.quiteoldorange.i3textutils.qfix.ModuleRegionsOrderQuickFix">
-        </externalQuickfixProvider>
-        
+              class="org.quiteoldorange.i3textutils.qfix.ModuleRegionsOrderQuickFix"></externalQuickfixProvider>
     </extension>
-    
-       <extension
+    <extension
          point="com.e1c.g5.v8.dt.check.fixes">
-      <fix
-            class="org.quiteoldorange.i3textutils.qfix2023.addmethodpragma.AddMethodPragmaFix">
-      </fix>
-      </extension>
-    
+        <fix
+            class="org.quiteoldorange.i3textutils.qfix2023.addmethodpragma.AddMethodPragmaFix"></fix>
+    </extension>
     <extension
       point="com._1c.g5.wiring.serviceProvider">
         <bundle symbolicName = "org.quiteoldorange.i3textutils"></bundle>

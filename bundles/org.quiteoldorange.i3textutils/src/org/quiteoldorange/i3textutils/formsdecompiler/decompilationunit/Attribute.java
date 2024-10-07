@@ -35,7 +35,7 @@ public class Attribute
     }
 
     @Override
-    void Decompile(StringBuilder output, DecompilationContext context)
+    public void Decompile(StringBuilder output, DecompilationContext context)
     {
         DecompilationSettings cfg = context.getDecompilationSettings();
 
@@ -59,7 +59,7 @@ public class Attribute
             // TODO: implement
         }
 
-        String titleStringValue = serializeTitles();
+        String titleStringValue = serializeTitles(cfg);
         String captionProperty = isRussian ? "Заголовок" : "Title"; //$NON-NLS-1$//$NON-NLS-2$
         String captionExpression = String.format("%s.%s = %s;\n", newAttribute, captionProperty, titleStringValue); //$NON-NLS-1$
 
@@ -69,10 +69,14 @@ public class Attribute
     }
 
     /**
+     * @param cfg
      * @return
      */
-    private String serializeTitles()
+    private String serializeTitles(DecompilationSettings cfg)
     {
+        // Если заголовок не указан, то сваливаемся в имя по умолчанию
+        if (mTitles.size() == 0)
+            return String.format("\"%s\"", mName);
 
         // https://its.1c.ru/db/v8std/content/761/hdoc
         // Оказывается НСтр надо лепить везде в интерфейсных текстах.
@@ -91,6 +95,7 @@ public class Attribute
 
         ListIterator<Entry<String, String>> iter = mTitles.listIterator();
 
+
         while (iter.hasNext())
         {
             Entry<String, String> entry = iter.next();
@@ -103,7 +108,7 @@ public class Attribute
 
         }
 
-        return null;
+        return String.format("%s(\"%s\")", cfg.getNStrExpression(), result); //$NON-NLS-1$
 
     }
 

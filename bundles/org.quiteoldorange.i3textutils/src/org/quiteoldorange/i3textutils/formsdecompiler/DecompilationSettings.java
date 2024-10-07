@@ -86,4 +86,15 @@ public class DecompilationSettings
 
         return result;
     }
+
+    /**
+     * @return
+     */
+    public String getNStrExpression()
+    {
+        if (mScriptVariant == ScriptVariant.RUSSIAN)
+            return "НСтр"; //$NON-NLS-1$
+        else
+            return "NStr"; //$NON-NLS-1$
+    }
 }

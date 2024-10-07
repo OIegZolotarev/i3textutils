@@ -11,5 +11,5 @@ import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
  */
 public abstract class DecompilationUnit
 {
-    abstract void Decompile(StringBuilder output, DecompilationContext context);
+    abstract public void Decompile(StringBuilder output, DecompilationContext context);
 }

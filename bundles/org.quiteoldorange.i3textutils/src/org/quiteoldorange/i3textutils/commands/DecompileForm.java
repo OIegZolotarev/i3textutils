@@ -8,6 +8,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.ui.editor.FormEditor;
@@ -32,6 +33,8 @@ public class DecompileForm
         FormEditor formEditor = (FormEditor)part;
 
         Form f = formEditor.getForm();
+
+        DecompilationContext cont = new DecompilationContext(f);
 
         // Реквизиты, пример:
         // f.getAttributes().get(0).getValueType().getTypes()

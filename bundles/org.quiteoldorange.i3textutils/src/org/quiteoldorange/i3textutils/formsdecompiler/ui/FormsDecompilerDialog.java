@@ -5,8 +5,11 @@ package org.quiteoldorange.i3textutils.formsdecompiler.ui;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -34,9 +37,17 @@ public class FormsDecompilerDialog
     protected Control createDialogArea(Composite parent)
     {
         getShell().setText("Декомпиляция элементов формы");
+
         Composite dialogArea = (Composite)super.createDialogArea(parent);
 
         createTabs(dialogArea);
+
+        dialogArea.setSize(800, 600);
+        dialogArea.setLayout(new GridLayout(1, false));
+        dialogArea.layout();
+
+
+
 
         return dialogArea;
     }
@@ -47,16 +58,15 @@ public class FormsDecompilerDialog
     private void createTabs(Composite dialogArea)
     {
         TabFolder mainTabs = new TabFolder(dialogArea, SWT.BORDER);
-        mainTabs.setSize(800, 600);
+        mainTabs.setSize(400, 600);
 
         TabItem tabDecompilation = addTabPage(mainTabs, "Декомпиляция");
-        Composite comp = new Composite(mainTabs, SWT.BORDER);
-        comp.setSize(640, 480);
-        tabDecompilation.setControl(comp);
 
-        populateDecompilationTab(comp);
+        populateDecompilationTab(mainTabs, tabDecompilation);
 
-        TabItem tabSettings = addTabPage(mainTabs, "Настройки");
+
+
+//        TabItem tabSettings = addTabPage(mainTabs, "Настройки");
 
 //            TabItem tabItem = new TabItem(tabFolder, SWT.NULL);
 //            tabItem.setText("Tab " + loopIndex);
@@ -65,14 +75,45 @@ public class FormsDecompilerDialog
 //            text.setText("This is page ");
 //            tabItem.setControl(text);
 
+        mainTabs.layout();
+
+
     }
 
     /**
      * @param tabDecompilation
      */
-    private void populateDecompilationTab(Composite area)
+    private void populateDecompilationTab(TabFolder mainTabs, TabItem tabDecompilation)
     {
-        final Tree tree = new Tree(area, SWT.BORDER);
+        Composite area = new Composite(mainTabs, SWT.BORDER);
+        tabDecompilation.setControl(area);
+
+        // Компоненты
+
+        Label text = new Label(area, SWT.BORDER);
+        text.setText("This is page 3");
+
+        Label text2 = new Label(area, SWT.BORDER);
+        text2.setText("This is page 3");
+        // text.setLayoutData(ne);
+
+        // createTreeControl(area);
+
+        // Настройка зоны диалога
+        RowLayout layout = new RowLayout();
+        layout.type = SWT.HORIZONTAL;
+        area.setLayout(layout);
+        area.layout();
+    }
+
+    /**
+     * @param area
+     */
+    private void createTreeControl(Composite area)
+    {
+        // TreeViewer tv = new TreeViewer(area);
+        final Tree tree = new Tree(area, SWT.NONE);
+        tree.layout();
 
         for (int i = 0; i < 4; i++)
         {
@@ -94,8 +135,6 @@ public class FormsDecompilerDialog
                 }
             }
         }
-
-
     }
 
     private TabItem addTabPage(TabFolder folder, String title)

@@ -32,10 +32,23 @@ public class Attribute
         mName = formAttribute.getName();
         mTitles = formAttribute.getTitle();
         mValueType = formAttribute.getValueType();
+
+        // Объект -> ТабличнаяЧасть -> РеквизитТабличнойЧасти
+        // formAttribute.getAdditionalColumns().get(0).getColumns().get(0).getName();
+
+        // Объект -> ДругаяТабличнаяЧасть -> ДругойРеквизитТабличнойЧасти
+        // formAttribute.getAdditionalColumns().get(1).getColumns().get(0).getName()
+
+        // Путь к реквизиту
+        // formAttribute.getAdditionalColumns().get(1).getTablePath()
+
+
+        // Реквизит формы с колонками
+        // formAttribute.getColumns().get(0).getName()
     }
 
     @Override
-    public void Decompile(StringBuilder output, DecompilationContext context)
+    public void decompile(StringBuilder output, DecompilationContext context)
     {
         DecompilationSettings cfg = context.getDecompilationSettings();
 

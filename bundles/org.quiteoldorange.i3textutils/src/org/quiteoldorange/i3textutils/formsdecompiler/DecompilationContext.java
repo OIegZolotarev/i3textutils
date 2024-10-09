@@ -34,14 +34,6 @@ public class DecompilationContext
             mAttributes.add(new Attribute(attributes.get(i)));
         }
 
-        StringBuilder test = new StringBuilder();
-
-        for (Attribute attr : mAttributes)
-        {
-            attr.Decompile(test, this);
-        }
-
-        String r = test.toString();
     }
 
     /**

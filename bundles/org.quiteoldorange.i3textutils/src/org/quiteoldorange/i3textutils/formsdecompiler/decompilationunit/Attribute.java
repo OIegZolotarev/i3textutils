@@ -126,7 +126,7 @@ public class Attribute
             }
             else
             {
-                Attribute attr = (Attribute)getParent();
+                DecompilationUnit attr = (DecompilationUnit)getParent();
                 pathValue = attr.getName();
             }
 
@@ -141,14 +141,6 @@ public class Attribute
         output.append("\n"); //$NON-NLS-1$
 
 
-    }
-
-    /**
-     * @return
-     */
-    public String getName()
-    {
-        return mName;
     }
 
     /**

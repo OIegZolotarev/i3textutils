@@ -95,4 +95,12 @@ public abstract class DecompilationUnit
         return String.format("%s(\"%s\")", cfg.getNStrExpression(), result); //$NON-NLS-1$
 
     }
+
+    /**
+     * @return
+     */
+    public String getName()
+    {
+        return mName;
+    }
 }

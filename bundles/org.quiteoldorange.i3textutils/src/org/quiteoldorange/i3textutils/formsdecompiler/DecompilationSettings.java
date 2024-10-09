@@ -85,7 +85,7 @@ public class DecompilationSettings
     public String getAppendAttributeToNewAttributeArray()
     {
         // TODO: проверить английский вариант
-        String appendMethod = mScriptVariant == ScriptVariant.RUSSIAN ? "Добавить" : "Append";          //$NON-NLS-1$//$NON-NLS-2$
+        String appendMethod = mScriptVariant == ScriptVariant.RUSSIAN ? "Добавить" : "Append"; //$NON-NLS-1$//$NON-NLS-2$
         String result =
             String.format("%s.%s(%s);\n", getNewAttributesArrayName(), appendMethod, getNewAttributeTemplateName()); //$NON-NLS-1$
 
@@ -147,6 +147,7 @@ public class DecompilationSettings
                 return "Ложь"; //$NON-NLS-1$
             }
         }
+        else
         {
             switch (mScriptVariant)
             {
@@ -157,7 +158,6 @@ public class DecompilationSettings
             default:
                 return "Истина"; //$NON-NLS-1$
             }
-        }
         }
     }
 }

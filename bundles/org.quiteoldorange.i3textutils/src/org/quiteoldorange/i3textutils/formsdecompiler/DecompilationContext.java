@@ -3,16 +3,21 @@
  */
 package org.quiteoldorange.i3textutils.formsdecompiler;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.Attribute;
+import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.DecompilationUnit;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormCommandUnit;
+import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormGroupUnit;
+import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormItemUnit;
 
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormCommand;
+import com._1c.g5.v8.dt.form.model.FormGroup;
+import com._1c.g5.v8.dt.form.model.FormItem;
 
 /**
  * @author ozolotarev
@@ -23,8 +28,9 @@ public class DecompilationContext
     private DecompilationSettings mSettings = new DecompilationSettings();
     private Form mForm;
 
-    private List<Attribute> mAttributes = new ArrayList<>();
-    private List<FormCommandUnit> mCommands = new ArrayList<>();
+    private List<Attribute> mAttributes = new LinkedList<>();
+    private List<FormCommandUnit> mCommands = new LinkedList<>();
+    private List<FormItemUnit> mFormItems = new LinkedList<>();
 
     public DecompilationContext(Form form)
     {
@@ -42,6 +48,15 @@ public class DecompilationContext
         for (FormCommand cmd : commands)
         {
             mCommands.add(new FormCommandUnit(cmd));
+        }
+
+        EList<FormItem> formItems = mForm.getItems();
+
+        for (FormItem item : formItems)
+        {
+
+            if (item instanceof FormGroup)
+                mFormItems.add(new FormGroupUnit((FormGroup)item));
         }
 
     }
@@ -81,7 +96,7 @@ public class DecompilationContext
 
             builder.append(mSettings.getAttributesStartSection() + "\n"); //$NON-NLS-1$
 
-            for (Attribute item : selectedAttributes)
+            for (DecompilationUnit item : selectedAttributes)
             {
                 item.decompile(builder, this);
             }

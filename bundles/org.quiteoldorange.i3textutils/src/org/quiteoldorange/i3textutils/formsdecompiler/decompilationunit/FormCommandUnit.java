@@ -27,7 +27,6 @@ public class FormCommandUnit
     private boolean mModifiesStoredData;
     private DefaultRepresentation mRepresentation;
     private EMap<String, String> mToolTip;
-    private String mName;
 
     @Override
     public void decompile(StringBuilder output, DecompilationContext context)

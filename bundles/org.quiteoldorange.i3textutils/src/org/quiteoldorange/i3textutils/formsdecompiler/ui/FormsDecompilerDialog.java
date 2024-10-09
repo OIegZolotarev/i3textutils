@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.Attribute;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.DecompilationUnit;
+import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormCommandUnit;
 
 /**
  * @author ozolotarev
@@ -30,6 +31,8 @@ import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.Decompil
 public class FormsDecompilerDialog
     extends Dialog
 {
+
+    private final static GridData sFillAll = new GridData(SWT.FILL, SWT.FILL, true, true);
 
     @Override
     protected void cancelPressed()
@@ -69,6 +72,7 @@ public class FormsDecompilerDialog
 
     private Tree mAttributesTree;
     private DecompilationContext mContext;
+    private Tree mCommandsList;
 
     /**
      * @param parentShell
@@ -85,7 +89,7 @@ public class FormsDecompilerDialog
      * @param attribute
      * @param tree
      */
-    private void addAttributeTreeeNode(Attribute attribute, TreeItem tree)
+    private void addAttributeTreeNode(DecompilationUnit attribute, TreeItem tree)
     {
         TreeItem item = new TreeItem(tree, 0);
         item.setText(attribute.getName());
@@ -93,7 +97,7 @@ public class FormsDecompilerDialog
 
         for (DecompilationUnit child : attribute.getChildren())
         {
-            addAttributeTreeeNode((Attribute)child, item);
+            addAttributeTreeNode(child, item);
         }
 
     }
@@ -113,25 +117,37 @@ public class FormsDecompilerDialog
     {
         // TreeViewer tv = new TreeViewer(area);
         mAttributesTree = new Tree(parent, SWT.CHECK);
-
-        mAttributesTree.setSize(320, 240);
-        mAttributesTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
+        mAttributesTree.setLayoutData(sFillAll);
         mAttributesTree.layout();
 
         for (DecompilationUnit attribute : mContext.getAttributes())
         {
             TreeItem item = new TreeItem(mAttributesTree, 0);
-            item.setText(((Attribute)attribute).getName());
+            item.setText(attribute.getName());
             item.setData(attribute);
 
 
             for (DecompilationUnit child : attribute.getChildren())
             {
-                addAttributeTreeeNode((Attribute)child, item);
+                addAttributeTreeNode(child, item);
             }
         }
     }
+
+    private void createCommandsList(Composite parent)
+    {
+        mCommandsList = new Tree(parent, SWT.CHECK);
+        mCommandsList.setLayoutData(sFillAll);
+        mCommandsList.layout();
+
+        for (FormCommandUnit cmdUnit : mContext.getCommands())
+        {
+            TreeItem item = new TreeItem(mCommandsList, 0);
+            item.setText(cmdUnit.getName());
+            item.setData(cmdUnit);
+        }
+    }
+
 
     @Override
     protected Control createDialogArea(Composite parent)
@@ -157,7 +173,7 @@ public class FormsDecompilerDialog
     private void createTabs(Composite dialogArea)
     {
         TabFolder mainTabs = new TabFolder(dialogArea, SWT.BORDER);
-        mainTabs.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        mainTabs.setLayoutData(sFillAll);
 
         TabItem tabDecompilation = addTabPage(mainTabs, Messages.FormsDecompilerDialog_DecompilationPageTitle);
 
@@ -211,6 +227,8 @@ public class FormsDecompilerDialog
 
         // Компоненты
 
+        // Первая колонка
+
         Composite column1 = new Composite(area, SWT.NONE);
 
         Text titleAttributes = new Text(column1, SWT.BORDER);
@@ -219,15 +237,26 @@ public class FormsDecompilerDialog
         createAttributesTree(column1);
 
         column1.setLayout(oneColumn);
-        column1.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, true));
+        column1.setLayoutData(sFillAll);
 
-        // createTreeControl(area);
+        // Вторая колонка
+
+        Composite column2 = new Composite(area, SWT.NONE);
+
+        Text titleCommands = new Text(column2, SWT.BORDER);
+        titleCommands.setText("Команды:");
+
+        createCommandsList(column2);
+
+        column2.setLayout(oneColumn);
+        column2.setLayoutData(sFillAll);
+
 
         // Настройка зоны диалога
         GridLayout layout = new GridLayout(3, false);
 
         area.setLayout(layout);
-        area.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+        area.setLayoutData(sFillAll);
 
     }
 

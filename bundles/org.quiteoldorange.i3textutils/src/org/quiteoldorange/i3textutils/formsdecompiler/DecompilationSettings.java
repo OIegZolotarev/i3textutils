@@ -14,9 +14,14 @@ public class DecompilationSettings
     private String mNewAttributesArrayName = "НовыеРеквизиты"; //$NON-NLS-1$
     private String mModifiedFormName = "ЭтотОбъект"; //$NON-NLS-1$
     private String mNewAttributeTemplateName = "НовыйРеквизит"; //$NON-NLS-1$
+    private String mNewCommandTemplateName = "НоваяКоманда"; //$NON-NLS-1$
+
+    private String mAttributesSectionStart = "/////   РЕКВИЗИТЫ   /////\n"; //$NON-NLS-1$
+    private String mAttributesSectionEnd = "/////   КОНЕЦ РЕКВИЗИТЫ   /////\n"; //$NON-NLS-1$
 
     private ScriptVariant mScriptVariant = ScriptVariant.RUSSIAN;
     private String mNewTypeDescriptionExpression = "Новый ОписаниеТипов"; //$NON-NLS-1$
+    private String mThisFormTemplateName = "ЭтаФорма";
 
     public DecompilationSettings()
     {
@@ -96,5 +101,63 @@ public class DecompilationSettings
             return "НСтр"; //$NON-NLS-1$
         else
             return "NStr"; //$NON-NLS-1$
+    }
+
+    public String getAttributesStartSection()
+    {
+        return mAttributesSectionStart;
+    }
+
+    public String getAttributesEndSection()
+    {
+        return mAttributesSectionEnd;
+    }
+
+    /**
+     * @return
+     */
+    public String getNewCommadTemplateName()
+    {
+        return mNewCommandTemplateName;
+    }
+
+    /**
+     * @return
+     */
+    public String getThisFormTemplateName()
+    {
+        return mThisFormTemplateName;
+    }
+
+    /**
+     * @param modifiesStoredData
+     * @return
+     */
+    public String serializeBoolean(boolean value)
+    {
+        if (!value)
+        {
+            switch (mScriptVariant)
+            {
+            case ENGLISH:
+                return "False"; //$NON-NLS-1$
+            case RUSSIAN:
+                return "Ложь"; //$NON-NLS-1$
+            default:
+                return "Ложь"; //$NON-NLS-1$
+            }
+        }
+        {
+            switch (mScriptVariant)
+            {
+            case ENGLISH:
+                return "True"; //$NON-NLS-1$
+            case RUSSIAN:
+                return "Истина"; //$NON-NLS-1$
+            default:
+                return "Истина"; //$NON-NLS-1$
+            }
+        }
+        }
     }
 }

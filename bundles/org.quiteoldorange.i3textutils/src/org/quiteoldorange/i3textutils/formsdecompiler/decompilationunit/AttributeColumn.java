@@ -4,7 +4,6 @@
 package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
-import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormAttributeColumn;
 
 /**
@@ -20,11 +19,15 @@ public class AttributeColumn
      * @param formAttribute
      * @param string
      */
-    public AttributeColumn(FormAttributeColumn formAttribute, String dataPath)
+    public AttributeColumn(FormAttributeColumn column, String dataPath)
     {
-        super((FormAttribute)formAttribute);
+        mName = column.getName();
+        mTitles = column.getTitle();
+        mValueType = column.getValueType();
 
         mDataPath = dataPath;
+
+        setKind(Kind.Column);
 
     }
 
@@ -34,7 +37,14 @@ public class AttributeColumn
      */
     public AttributeColumn(FormAttributeColumn column, AbstractDataPath tablePath)
     {
-        super((FormAttribute)column);
+        mName = column.getName();
+        mTitles = column.getTitle();
+        mValueType = column.getValueType();
+
+        // TODO: конвертировать в формат предприятия.
+        mDataPath = tablePath.toString();
+
+        setKind(Kind.Column);
     }
 
 }

@@ -4,10 +4,6 @@
 package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 
 
-import java.util.ListIterator;
-import java.util.Map.Entry;
-
-import org.eclipse.emf.common.util.EMap;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 
@@ -16,6 +12,7 @@ import com._1c.g5.v8.dt.form.model.FormAttributeAdditionalColumns;
 import com._1c.g5.v8.dt.form.model.FormAttributeColumn;
 import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.TypeItem;
+import com._1c.g5.v8.dt.metadata.common.FillChecking;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
@@ -25,10 +22,27 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 public class Attribute
     extends DecompilationUnit
 {
-    private String mName;
-    private EMap<String, String> mTitles;
-    private TypeDescription mValueType;
-    private boolean mHasAdditionalColumns = false;
+
+    protected TypeDescription mValueType;
+    protected FillChecking mFillChecking;
+
+    protected FormAttribute mEDTAttribute;
+
+    public enum Kind
+    {
+        Field,
+        Table,
+        TabularSection,
+        Column
+    };
+
+    private Kind mKind;
+
+
+    public Attribute()
+    {
+
+    }
 
     public Attribute(FormAttribute formAttribute)
     {
@@ -36,14 +50,16 @@ public class Attribute
         mTitles = formAttribute.getTitle();
         mValueType = formAttribute.getValueType();
 
-        mHasAdditionalColumns = formAttribute.getAdditionalColumns().size() > 0;
+        mFillChecking = formAttribute.getFillChecking();
+
+        if (formAttribute.getAdditionalColumns().size() > 0)
+            setKind(Kind.TabularSection);
+        else if (formAttribute.getColumns().size() > 0)
+            setKind(Kind.Table);
 
         for (FormAttributeAdditionalColumns set : formAttribute.getAdditionalColumns())
         {
-            for (FormAttributeColumn column : set.getColumns())
-            {
-                addChildren(new AttributeColumn(column, set.getTablePath()));
-            }
+            addChildren(new TabularSectionWrapper(set));
         }
 
         for (FormAttributeColumn column : formAttribute.getColumns())
@@ -51,6 +67,7 @@ public class Attribute
             addChildren(new AttributeColumn(column, formAttribute.getName()));
         }
 
+        mEDTAttribute = formAttribute;
 
         // Объект -> ТабличнаяЧасть -> РеквизитТабличнойЧасти
         // formAttribute.getAdditionalColumns().get(0).getColumns().get(0).getName();
@@ -78,10 +95,10 @@ public class Attribute
         {
             TypeItem type = mValueType.getTypes().get(0);
 
-            String typeDescription = String.format("%s(\"%s\")", cfg.getNewTypeDescriptionExpression(),
+            String typeDescription = String.format("%s(\"%s\")", cfg.getNewTypeDescriptionExpression(), //$NON-NLS-1$
                 isRussian ? type.getNameRu() : type.getName());
 
-            String construction = String.format("%s = %s(\"%s\", %s);\n", newAttribute,
+            String construction = String.format("%s = %s(\"%s\", %s);\n", newAttribute, //$NON-NLS-1$
                 cfg.getNewAttributeExpression(), mName, typeDescription);
 
             output.append(construction);
@@ -91,65 +108,63 @@ public class Attribute
             // TODO: implement
         }
 
-        String titleStringValue = serializeTitles(cfg);
+        String titleStringValue = serializeMultiLangualString(mTitles, cfg);
         String captionProperty = isRussian ? "Заголовок" : "Title"; //$NON-NLS-1$//$NON-NLS-2$
         String captionExpression = String.format("%s.%s = %s;\n", newAttribute, captionProperty, titleStringValue); //$NON-NLS-1$
 
         output.append(captionExpression);
+
+
+        if (getParent() != null)
+        {
+            String pathValue = null;
+
+            if (getParent() instanceof TabularSectionWrapper)
+            {
+                TabularSectionWrapper parent = (TabularSectionWrapper)getParent();
+                pathValue = parent.getPathExpression();
+            }
+            else
+            {
+                Attribute attr = (Attribute)getParent();
+                pathValue = attr.getName();
+            }
+
+            // TODO: проверить английский вариант
+            String pathProperty = isRussian ? "Путь" : "Path"; //$NON-NLS-1$//$NON-NLS-2$
+            String pathExpression = String.format("%s.%s = \"%s\";\n", newAttribute, pathProperty, pathValue); //$NON-NLS-1$
+
+            output.append(pathExpression);
+        }
+
         output.append(cfg.getAppendAttributeToNewAttributeArray());
         output.append("\n"); //$NON-NLS-1$
 
-        for (DecompilationUnit child : getChildren())
-        {
-            if (!child.shouldBeDecompiled())
-                continue;
 
-            child.decompile(output, context);
-        }
     }
 
     /**
-     * @param cfg
      * @return
      */
-    private String serializeTitles(DecompilationSettings cfg)
+    public String getName()
     {
-        // Если заголовок не указан, то сваливаемся в имя по умолчанию
-        if (mTitles.size() == 0)
-            return String.format("\"%s\"", mName);
+        return mName;
+    }
 
-        // https://its.1c.ru/db/v8std/content/761/hdoc
-        // Оказывается НСтр надо лепить везде в интерфейсных текстах.
-        // Поэтому так делать не комильфо.
+    /**
+     * @return the kind
+     */
+    public Kind getKind()
+    {
+        return mKind;
+    }
 
-        //        if (mTitles.size() == 1)
-        //        {
-        //            return mTitles.get(0).getValue();
-        //        }
-
-        // "ru = 'Здравствуйте'; en = 'Hello world'"
-
-        String result = ""; //$NON-NLS-1$
-        boolean firstEntry = true;
-
-
-        ListIterator<Entry<String, String>> iter = mTitles.listIterator();
-
-
-        while (iter.hasNext())
-        {
-            Entry<String, String> entry = iter.next();
-            String langDescr = String.format("%s = '%s'", entry.getKey(), entry.getValue()); //$NON-NLS-1$
-
-            if (!firstEntry)
-                result = result + ";" + langDescr; //$NON-NLS-1$
-            else
-                result = langDescr;
-
-        }
-
-        return String.format("%s(\"%s\")", cfg.getNStrExpression(), result); //$NON-NLS-1$
-
+    /**
+     * @param kind the kind to set
+     */
+    protected void setKind(Kind kind)
+    {
+        mKind = kind;
     }
 
 }

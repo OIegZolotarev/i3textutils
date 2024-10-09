@@ -6,7 +6,6 @@ package org.quiteoldorange.i3textutils.commands;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
@@ -37,7 +36,7 @@ public class DecompileForm
 
         DecompilationContext cont = new DecompilationContext(f);
 
-        FormsDecompilerDialog dlg = new FormsDecompilerDialog(Display.getCurrent().getActiveShell());
+        FormsDecompilerDialog dlg = new FormsDecompilerDialog(cont);
 
         dlg.setBlockOnOpen(true);
         dlg.open();

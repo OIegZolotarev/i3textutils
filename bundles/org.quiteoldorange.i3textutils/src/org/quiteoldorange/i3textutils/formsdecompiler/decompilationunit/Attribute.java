@@ -12,6 +12,8 @@ import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 
 import com._1c.g5.v8.dt.form.model.FormAttribute;
+import com._1c.g5.v8.dt.form.model.FormAttributeAdditionalColumns;
+import com._1c.g5.v8.dt.form.model.FormAttributeColumn;
 import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
@@ -26,12 +28,29 @@ public class Attribute
     private String mName;
     private EMap<String, String> mTitles;
     private TypeDescription mValueType;
+    private boolean mHasAdditionalColumns = false;
 
     public Attribute(FormAttribute formAttribute)
     {
         mName = formAttribute.getName();
         mTitles = formAttribute.getTitle();
         mValueType = formAttribute.getValueType();
+
+        mHasAdditionalColumns = formAttribute.getAdditionalColumns().size() > 0;
+
+        for (FormAttributeAdditionalColumns set : formAttribute.getAdditionalColumns())
+        {
+            for (FormAttributeColumn column : set.getColumns())
+            {
+                addChildren(new AttributeColumn(column, set.getTablePath()));
+            }
+        }
+
+        for (FormAttributeColumn column : formAttribute.getColumns())
+        {
+            addChildren(new AttributeColumn(column, formAttribute.getName()));
+        }
+
 
         // Объект -> ТабличнаяЧасть -> РеквизитТабличнойЧасти
         // formAttribute.getAdditionalColumns().get(0).getColumns().get(0).getName();
@@ -79,6 +98,14 @@ public class Attribute
         output.append(captionExpression);
         output.append(cfg.getAppendAttributeToNewAttributeArray());
         output.append("\n"); //$NON-NLS-1$
+
+        for (DecompilationUnit child : getChildren())
+        {
+            if (!child.shouldBeDecompiled())
+                continue;
+
+            child.decompile(output, context);
+        }
     }
 
     /**
@@ -126,3 +153,4 @@ public class Attribute
     }
 
 }
+

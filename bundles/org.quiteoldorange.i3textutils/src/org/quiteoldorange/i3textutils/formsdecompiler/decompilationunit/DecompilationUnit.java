@@ -14,7 +14,19 @@ import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
  */
 public abstract class DecompilationUnit
 {
+    private boolean mShouldBeDecompiled = false;
+
     private List<DecompilationUnit> mChildren = new LinkedList<>();
+
+    protected void setShouldBeDecompiledFlag(boolean flagValue)
+    {
+        mShouldBeDecompiled = flagValue;
+    }
+
+    protected boolean shouldBeDecompiled()
+    {
+        return mShouldBeDecompiled;
+    }
 
     protected void addChildren(DecompilationUnit unit)
     {

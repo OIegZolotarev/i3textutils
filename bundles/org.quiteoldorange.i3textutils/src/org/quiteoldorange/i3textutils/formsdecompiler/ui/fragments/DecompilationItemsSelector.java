@@ -181,22 +181,40 @@ public class DecompilationItemsSelector
     }
 
     @SuppressWarnings("unchecked")
-    private <T> void grabSelectedItems(List<T> selectedItems, TreeItem itemsTree)
+    private <T> void grabSelectedItemsNode(List<T> selectedItems, TreeItem node)
     {
-        for (TreeItem item : itemsTree.getItems())
+        for (TreeItem item : node.getItems())
         {
             if (item.getChecked())
             {
-                selectedItems.add((T)item);
+                selectedItems.add((T)item.getData());
             }
 
-            grabSelectedItems(selectedItems, item);
+            grabSelectedItemsNode(selectedItems, item);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> void grabSelectedItems(List<T> selectedItems, Tree root)
+    {
+        selectedItems.clear();
+
+        for (TreeItem item : root.getItems())
+        {
+            if (item.getChecked())
+            {
+                selectedItems.add((T)item.getData());
+            }
+
+            grabSelectedItemsNode(selectedItems, item);
         }
     }
 
     public void updateDialogResult(DecompilationDialogResult result)
     {
-        grabSelectedItems(result.getSelectedAttributes(), mAttributesTree.getTopItem());
+        grabSelectedItems(result.getSelectedAttributes(), mAttributesTree);
+        grabSelectedItems(result.getSelectedCommands(), mCommandsList);
+        grabSelectedItems(result.getSelectedFormItems(), mFormItemsTree);
     }
 
 }

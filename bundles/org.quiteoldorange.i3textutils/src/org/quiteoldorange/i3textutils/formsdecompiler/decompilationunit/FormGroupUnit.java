@@ -18,6 +18,12 @@ public class FormGroupUnit
 {
 
     @Override
+    public String toString()
+    {
+        return String.format("Группа формы: %s", getName()); //$NON-NLS-1$
+    }
+
+    @Override
     public void decompile(StringBuilder output, DecompilationContext context)
     {
         // TODO Auto-generated method stub

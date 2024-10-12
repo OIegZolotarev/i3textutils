@@ -11,6 +11,7 @@ import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.Attribut
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.DecompilationUnit;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormCommandUnit;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormItemUnit;
+import org.quiteoldorange.i3textutils.formsdecompiler.ui.DecompilationDialogResult;
 
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
@@ -29,6 +30,7 @@ public class DecompilationContext
     private List<Attribute> mAttributes = new LinkedList<>();
     private List<FormCommandUnit> mCommands = new LinkedList<>();
     private List<FormItemUnit> mFormItems = new LinkedList<>();
+    private DecompilationDialogResult mDialogResult = new DecompilationDialogResult();
 
     public DecompilationContext(Form form)
     {
@@ -80,24 +82,35 @@ public class DecompilationContext
     }
 
     /**
-     * @param selectedAttributes
      * @return
      */
-    public String generateCode(List<Attribute> selectedAttributes)
+    public String generateCode()
     {
         StringBuilder builder = new StringBuilder();
 
-        if (selectedAttributes.size() > 0)
+        List<Attribute> attributes = mDialogResult.getSelectedAttributes();
+        if (attributes.size() > 0)
         {
 
             builder.append(mSettings.getAttributesStartSection() + "\n"); //$NON-NLS-1$
 
-            for (DecompilationUnit item : selectedAttributes)
+            for (DecompilationUnit item : attributes)
             {
                 item.decompile(builder, this);
             }
 
             builder.append(mSettings.getAttributesEndSection());
+        }
+
+        List<FormCommandUnit> commands = mDialogResult.getSelectedCommands();
+
+        if (commands.size() > 0)
+        {
+            for (DecompilationUnit item : commands)
+            {
+                item.decompile(builder, this);
+            }
+
         }
 
         return builder.toString();
@@ -109,5 +122,13 @@ public class DecompilationContext
     public List<FormItemUnit> getFormItems()
     {
         return mFormItems;
+    }
+
+    /**
+     * @return
+     */
+    public DecompilationDialogResult getDecompilationDialogResult()
+    {
+        return mDialogResult;
     }
 }

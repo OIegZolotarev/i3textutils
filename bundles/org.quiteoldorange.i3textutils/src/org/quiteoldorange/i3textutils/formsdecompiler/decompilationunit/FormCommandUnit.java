@@ -53,10 +53,13 @@ public class FormCommandUnit
         line = String.format("%s = %s.%s.%s(\"%s\");\n", newCommand, thisForm, commandsArray, addFunction, mName); //$NON-NLS-1$
         output.append(line);
 
-        line = String.format("%s.%s = \"%s\";\n", newCommand, handlerProperty, mHandler); //$NON-NLS-1$
-        output.append(line);
+        if (mHandler != null)
+        {
+            line = String.format("%s.%s = \"%s\";\n", newCommand, handlerProperty, mHandler); //$NON-NLS-1$
+            output.append(line);
+        }
 
-        line = String.format("%s.%s = \"%s\";\n", newCommand, captionProperty, serializeMultiLangualString(mTitles ,cfg)); //$NON-NLS-1$
+        line = String.format("%s.%s = %s;\n", newCommand, captionProperty, serializeMultiLangualString(mTitles, cfg)); //$NON-NLS-1$
         output.append(line);
 
         line = String.format("%s.%s = \"%s\";\n", newCommand, modifiesStoredDataProperty, //$NON-NLS-1$
@@ -68,7 +71,7 @@ public class FormCommandUnit
         output.append(line);
 
         line =
-            String.format("%s.%s = \"%s\";\n", newCommand, toolTipProperty, serializeMultiLangualString(mToolTip, cfg)); //$NON-NLS-1$
+            String.format("%s.%s = %s;\n", newCommand, toolTipProperty, serializeMultiLangualString(mToolTip, cfg)); //$NON-NLS-1$
         output.append(line);
 
 //      НоваяКоманда.Подсказка = "Заполнить серии по срокам годности";
@@ -136,7 +139,17 @@ public class FormCommandUnit
     {
         CommandHandlerContainer action = formCommand.getAction();
         FormCommandHandlerContainer cont = (FormCommandHandlerContainer)action;
-        return cont.getHandler().getName();
+
+        if (cont != null)
+            return cont.getHandler().getName();
+        else
+            return null;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("Команда: %s", getName()); //$NON-NLS-1$
     }
 
 }

@@ -6,6 +6,7 @@ package org.quiteoldorange.i3textutils.formsdecompiler.ui.wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
+import org.quiteoldorange.i3textutils.formsdecompiler.ui.DecompilationDialogResult;
 import org.quiteoldorange.i3textutils.formsdecompiler.ui.fragments.DecompilationItemsSelector;
 
 /**
@@ -16,9 +17,21 @@ public class PageSelectItems
     extends WizardPage
 {
 
+    @Override
+    public void setVisible(boolean visible)
+    {
+
+        super.setVisible(visible);
+    }
+
     private DecompilationContext mContext;
     private DecompilationItemsSelector mItemsSelector;
     private DecompilationWizard mWizard;
+
+    public void updateDialogResult(DecompilationDialogResult dlgResult)
+    {
+        mItemsSelector.updateDialogResult(dlgResult);
+    }
 
     protected PageSelectItems(DecompilationContext context, DecompilationWizard wizard)
     {

@@ -20,10 +20,24 @@ public class PagePreviewResult
     extends WizardPage
 {
 
+    @Override
+    public void setVisible(boolean visible)
+    {
+
+        if (visible)
+        {
+            mWizard.updateSelectedItemsDialogResult();
+            mEditor.setText(mWizard.generatePreviewSourceCode());
+        }
+
+        super.setVisible(visible);
+    }
+
     private DecompilationContext mContext;
     private DecompilationItemsSelector mItemsSelector;
     private Composite mContainer;
     private DecompilationWizard mWizard;
+    private Text mEditor;
 
     protected PagePreviewResult(DecompilationContext context, DecompilationWizard wizard)
     {
@@ -52,12 +66,12 @@ public class PagePreviewResult
 //        BslXtextEditor editor = new BslXtextEditor();
 //        editor.createPartControl(mContainer);
 
-        Text editor = new Text(mContainer, SWT.MULTI | SWT.BORDER);
+        mEditor = new Text(mContainer, SWT.MULTI | SWT.BORDER);
 
-        editor.setText("Привет мир!");
+        mEditor.setText("Привет мир!");
 
         GridData sFillAll = new GridData(SWT.FILL, SWT.FILL, true, true);
-        editor.setLayoutData(sFillAll);
+        mEditor.setLayoutData(sFillAll);
 
 
         setControl(mContainer);

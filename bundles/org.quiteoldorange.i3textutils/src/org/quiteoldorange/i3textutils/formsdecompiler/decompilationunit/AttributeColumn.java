@@ -15,6 +15,12 @@ public class AttributeColumn
 {
     private String mDataPath;
 
+    @Override
+    public String toString()
+    {
+        return String.format("Колонка реквизита: %s", getName()); //$NON-NLS-1$
+    }
+
     /**
      * @param formAttribute
      * @param string

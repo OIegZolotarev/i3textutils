@@ -23,6 +23,12 @@ public class Attribute
     extends DecompilationUnit
 {
 
+    @Override
+    public String toString()
+    {
+        return String.format("Реквизит: %s", getName()); //$NON-NLS-1$
+    }
+
     protected TypeDescription mValueType;
     protected FillChecking mFillChecking;
 
@@ -126,7 +132,7 @@ public class Attribute
             }
             else
             {
-                DecompilationUnit attr = (DecompilationUnit)getParent();
+                DecompilationUnit attr = getParent();
                 pathValue = attr.getName();
             }
 

@@ -56,4 +56,10 @@ public class TabularSectionWrapper
         result = result.substring(0, result.length() - 1);
         return result;
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format("ТЧ: %s", getName()); //$NON-NLS-1$
+    }
 }

@@ -28,6 +28,7 @@ public class DecompilationSettings
     private ScriptVariant mScriptVariant = ScriptVariant.RUSSIAN;
     private String mNewTypeDescriptionExpression = "Новый ОписаниеТипов"; //$NON-NLS-1$
     private String mThisFormTemplateName = "ЭтаФорма"; //$NON-NLS-1$
+    private String mNewItemTemplateName = "НовыйЭлемент";
 
     public void setRegionDirectiveUsage()
     {
@@ -39,9 +40,10 @@ public class DecompilationSettings
         mCommandsEndSection = "#КонецОбласти\n"; //$NON-NLS-1$
     }
 
-    public DecompilationSettings()
+    public DecompilationSettings(ScriptVariant variant)
     {
-
+        mScriptVariant = variant;
+        P.Init(variant == ScriptVariant.RUSSIAN);
     }
 
     /**
@@ -211,5 +213,22 @@ public class DecompilationSettings
     {
         // TODO Auto-generated method stub
         return mFormItemsEndSection;
+    }
+
+    /**
+     * @return
+     */
+    public String getNewItemTemplateName()
+    {
+        return mNewItemTemplateName;
+    }
+
+    /**
+     * @return
+     */
+    public boolean outputDefaultValues()
+    {
+        // TODO Auto-generated method stub
+        return true;
     }
 }

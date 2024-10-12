@@ -17,6 +17,7 @@ import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormCommand;
 import com._1c.g5.v8.dt.form.model.FormItem;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
  * @author ozolotarev
@@ -24,7 +25,7 @@ import com._1c.g5.v8.dt.form.model.FormItem;
  */
 public class DecompilationContext
 {
-    private DecompilationSettings mSettings = new DecompilationSettings();
+    private DecompilationSettings mSettings = null;
     private Form mForm;
 
     private List<Attribute> mAttributes = new LinkedList<>();
@@ -34,6 +35,8 @@ public class DecompilationContext
 
     public DecompilationContext(Form form)
     {
+        mSettings = new DecompilationSettings(ScriptVariant.RUSSIAN);
+
         mForm = form;
 
         EList<FormAttribute> attributes = mForm.getAttributes();
@@ -101,7 +104,7 @@ public class DecompilationContext
                 item.decompile(b, this);
             }
 
-            b.append(mSettings.getAttributesEndSection());
+            b.append("\n" + mSettings.getAttributesEndSection());
         }
 
         List<FormCommandUnit> commands = mDialogResult.getSelectedCommands();
@@ -117,7 +120,7 @@ public class DecompilationContext
                 item.decompile(b, this);
             }
 
-            b.append(mSettings.getCommandsEndSection() + "\n");
+            b.append("\n" + mSettings.getCommandsEndSection() + "\n");
         }
 
         List<FormItemUnit> formItems = mDialogResult.getSelectedFormItems();
@@ -133,7 +136,7 @@ public class DecompilationContext
                 item.decompile(b, this);
             }
 
-            b.append(mSettings.getFormItemsEndSection() + "\n");
+            b.append("\n" + mSettings.getFormItemsEndSection() + "\n");
         }
 
         return b.toString();

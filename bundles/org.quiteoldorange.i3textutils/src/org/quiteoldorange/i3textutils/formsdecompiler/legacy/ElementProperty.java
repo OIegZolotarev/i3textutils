@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.formsdecompiler;
+package org.quiteoldorange.i3textutils.formsdecompiler.legacy;
 
 import javax.management.openmbean.InvalidKeyException;
 

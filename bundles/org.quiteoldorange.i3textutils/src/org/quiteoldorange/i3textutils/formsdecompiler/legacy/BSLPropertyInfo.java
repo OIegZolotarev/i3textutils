@@ -1,12 +1,12 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.formsdecompiler;
+package org.quiteoldorange.i3textutils.formsdecompiler.legacy;
 
 import java.util.HashMap;
 
-import org.quiteoldorange.i3textutils.formsdecompiler.ElementProperty.FieldDataTypes;
-import org.quiteoldorange.i3textutils.formsdecompiler.ElementProperty.Kind;
+import org.quiteoldorange.i3textutils.formsdecompiler.legacy.ElementProperty.FieldDataTypes;
+import org.quiteoldorange.i3textutils.formsdecompiler.legacy.ElementProperty.Kind;
 
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 

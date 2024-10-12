@@ -144,9 +144,6 @@ public class Attribute
         }
 
         output.append(cfg.getAppendAttributeToNewAttributeArray());
-        output.append("\n"); //$NON-NLS-1$
-
-
     }
 
     /**

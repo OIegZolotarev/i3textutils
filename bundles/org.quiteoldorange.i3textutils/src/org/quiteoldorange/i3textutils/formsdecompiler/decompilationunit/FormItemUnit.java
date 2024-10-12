@@ -5,10 +5,13 @@ package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 
 import org.quiteoldorange.i3textutils.Log;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
+import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
+import org.quiteoldorange.i3textutils.formsdecompiler.P;
 
 import com._1c.g5.v8.dt.form.model.FormField;
 import com._1c.g5.v8.dt.form.model.FormGroup;
 import com._1c.g5.v8.dt.form.model.FormItem;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
  * @author ozolotarev
@@ -22,23 +25,90 @@ public class FormItemUnit
         FormGroup,
         FormTable,
         FormField,
+        FormDecoration,
+        FormButton
     };
 
-    private String mAnchorFormItem;
-    private String mParentFormItem;
+    private String mAnchorFormItem = null;
+    private String mParentFormItem = null;
     private ItemTypes mType;
+
+
 
     @Override
     public void decompile(StringBuilder output, DecompilationContext context)
     {
-        // TODO Auto-generated method stub
+        DecompilationSettings cfg = context.getDecompilationSettings();
+        boolean isRussian = cfg.scriptVariant() == ScriptVariant.RUSSIAN;
 
+        String newItemTemplate = cfg.getNewItemTemplateName();
+
+        String itemTypeExpression = generateItemTypeExpression();
+        String itemParentExpression = generateFormItemExpression(cfg, mParentFormItem);
+        String itemAnchorExpression = generateFormItemExpression(cfg, mAnchorFormItem);
+
+        String line =
+            String.format("%s = %s.%s.%s(\"%s\", %s, %s, %s);\n", newItemTemplate, cfg.getThisFormTemplateName(), //$NON-NLS-1$
+                P.Items, P.Insert, mName,
+            itemTypeExpression,
+            itemParentExpression,
+            itemAnchorExpression);
+
+        output.append(line);
+
+    }
+
+    /**
+     * @param cfg
+     * @param anchorFormItem
+     * @return
+     */
+    private String generateFormItemExpression(DecompilationSettings cfg, String formItem)
+    {
+        if (formItem == null)
+            return P.Undefined;
+
+        return P.Undefined;
+    }
+
+    /**
+     * @param isRussian
+     * @return
+     */
+    private String generateItemTypeExpression()
+    {
+        String itemTypeString = "";
+
+        switch (mType)
+        {
+        case FormButton:
+            itemTypeString = P.FormButton;
+            break;
+        case FormDecoration:
+            itemTypeString = P.FormDecoration;
+            break;
+        case FormField:
+            itemTypeString = P.FormField;
+            break;
+        case FormGroup:
+            itemTypeString = P.FormGroup;
+            break;
+        case FormTable:
+            itemTypeString = P.FormTable;
+            break;
+        default:
+            break;
+
+        }
+
+        return String.format("%s(\"%s\")", P.TypeFunction, itemTypeString);
     }
 
     FormItemUnit(ItemTypes formgroup, FormItem item)
     {
         mType = formgroup;
         mName = item.getName();
+
     }
 
     /**

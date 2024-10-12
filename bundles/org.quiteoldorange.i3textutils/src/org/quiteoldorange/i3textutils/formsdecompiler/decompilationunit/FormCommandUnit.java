@@ -6,6 +6,7 @@ package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 import org.eclipse.emf.common.util.EMap;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
+import org.quiteoldorange.i3textutils.formsdecompiler.P;
 
 import com._1c.g5.v8.dt.form.model.CommandHandlerContainer;
 import com._1c.g5.v8.dt.form.model.DefaultRepresentation;
@@ -31,51 +32,36 @@ public class FormCommandUnit
     @Override
     public void decompile(StringBuilder output, DecompilationContext context)
     {
-        // TODO Auto-generated method stub
-
         DecompilationSettings cfg = context.getDecompilationSettings();
-
-        String newCommand = cfg.getNewCommadTemplateName();
-
         boolean isRussian = cfg.scriptVariant() == ScriptVariant.RUSSIAN;
 
-        String commandsArray = isRussian ? "Команды" : "Commands"; //$NON-NLS-1$//$NON-NLS-2$
-        String addFunction = isRussian ? "Добавить" : "Add"; //$NON-NLS-1$ //$NON-NLS-2$
-        String handlerProperty = isRussian ? "Действие" : "Handler";  //$NON-NLS-1$//$NON-NLS-2$
-        String captionProperty = isRussian ? "Заголовок" : "Title"; //$NON-NLS-1$//$NON-NLS-2$
-        String modifiesStoredDataProperty = isRussian ? "ИзменяетСохраняемыеДанные" : "ModifiesStoredData"; //$NON-NLS-1$//$NON-NLS-2$
-        String representationProperty = isRussian ? "Отображение" : "Representation"; //$NON-NLS-1$//$NON-NLS-2$
-        String toolTipProperty = isRussian ? "Подсказка" : "ToolTip"; //$NON-NLS-1$//$NON-NLS-2$
-
+        String newCommand = cfg.getNewCommadTemplateName();
         String thisForm = cfg.getThisFormTemplateName();
         String line = null;
 
-        line = String.format("%s = %s.%s.%s(\"%s\");\n", newCommand, thisForm, commandsArray, addFunction, mName); //$NON-NLS-1$
+        line = String.format("%s = %s.%s.%s(\"%s\");\n", newCommand, thisForm, P.Commands, P.Add, mName); //$NON-NLS-1$
         output.append(line);
 
         if (mHandler != null)
         {
-            line = String.format("%s.%s = \"%s\";\n", newCommand, handlerProperty, mHandler); //$NON-NLS-1$
+            line = String.format("%s.%s = \"%s\";\n", newCommand, P.Handler, mHandler); //$NON-NLS-1$
             output.append(line);
         }
 
-        line = String.format("%s.%s = %s;\n", newCommand, captionProperty, serializeMultiLangualString(mTitles, cfg)); //$NON-NLS-1$
+        line = String.format("%s.%s = %s;\n", newCommand, P.Caption, serializeMultiLangualString(mTitles, cfg)); //$NON-NLS-1$
         output.append(line);
 
-        line = String.format("%s.%s = %s;\n", newCommand, modifiesStoredDataProperty, //$NON-NLS-1$
+        line = String.format("%s.%s = %s;\n", newCommand, P.ModifiesStoredData, //$NON-NLS-1$
             cfg.serializeBoolean(mModifiesStoredData));
         output.append(line);
 
-        line = String.format("%s.%s = %s;\n", newCommand, representationProperty, //$NON-NLS-1$
+        line = String.format("%s.%s = %s;\n", newCommand, P.Representation, //$NON-NLS-1$
             serializeRepresentationProperty(isRussian));
         output.append(line);
 
         line =
-            String.format("%s.%s = %s;\n", newCommand, toolTipProperty, serializeMultiLangualString(mToolTip, cfg)); //$NON-NLS-1$
+            String.format("%s.%s = %s;\n", newCommand, P.ToolTip, serializeMultiLangualString(mToolTip, cfg)); //$NON-NLS-1$
         output.append(line);
-
-//      НоваяКоманда.Подсказка = "Заполнить серии по срокам годности";
-
     }
 
     /**

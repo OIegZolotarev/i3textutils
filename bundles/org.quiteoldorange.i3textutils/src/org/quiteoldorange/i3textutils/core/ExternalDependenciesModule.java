@@ -59,6 +59,7 @@ public class ExternalDependenciesModule
         bind(IV8Model.class).toService();
         bind(BslDocumentationProvider.class).toService();
 
+
     }
 
 }

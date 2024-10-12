@@ -10,13 +10,11 @@ import org.eclipse.emf.common.util.EList;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.Attribute;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.DecompilationUnit;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormCommandUnit;
-import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormGroupUnit;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormItemUnit;
 
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormCommand;
-import com._1c.g5.v8.dt.form.model.FormGroup;
 import com._1c.g5.v8.dt.form.model.FormItem;
 
 /**
@@ -54,9 +52,7 @@ public class DecompilationContext
 
         for (FormItem item : formItems)
         {
-
-            if (item instanceof FormGroup)
-                mFormItems.add(new FormGroupUnit((FormGroup)item));
+            mFormItems.add(FormItemUnit.construct(item));
         }
 
     }
@@ -105,5 +101,13 @@ public class DecompilationContext
         }
 
         return builder.toString();
+    }
+
+    /**
+     * @return
+     */
+    public List<FormItemUnit> getFormItems()
+    {
+        return mFormItems;
     }
 }

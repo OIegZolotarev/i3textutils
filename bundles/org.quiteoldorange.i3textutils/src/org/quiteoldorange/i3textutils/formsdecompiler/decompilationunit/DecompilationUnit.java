@@ -38,6 +38,12 @@ public abstract class DecompilationUnit
 
     protected void addChildren(DecompilationUnit unit)
     {
+        // TODO: заглушка для недоделанных алгоритмов
+        if (unit == null)
+        {
+            return;
+        }
+
         unit.mParent = this;
         mChildren.add(unit);
     }

@@ -6,6 +6,7 @@ package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 
 import com._1c.g5.v8.dt.form.model.FormGroup;
+import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.model.ManagedFormGroupType;
 
 /**
@@ -35,6 +36,11 @@ public class FormGroupUnit
         super(ItemTypes.FormGroup, group);
         mGroupType = group.getType();
         mTitles = group.getTitle();
+
+        for (FormItem items : group.getItems())
+        {
+            addChildren(FormItemUnit.construct(items));
+        }
     }
 
     private String serializeManagedGroupType(boolean isRussian)

@@ -62,7 +62,7 @@ public class FormCommandUnit
         line = String.format("%s.%s = %s;\n", newCommand, captionProperty, serializeMultiLangualString(mTitles, cfg)); //$NON-NLS-1$
         output.append(line);
 
-        line = String.format("%s.%s = \"%s\";\n", newCommand, modifiesStoredDataProperty, //$NON-NLS-1$
+        line = String.format("%s.%s = %s;\n", newCommand, modifiesStoredDataProperty, //$NON-NLS-1$
             cfg.serializeBoolean(mModifiesStoredData));
         output.append(line);
 

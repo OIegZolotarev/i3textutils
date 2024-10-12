@@ -86,34 +86,57 @@ public class DecompilationContext
      */
     public String generateCode()
     {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder b = new StringBuilder();
+
+        mSettings.setRegionDirectiveUsage();
 
         List<Attribute> attributes = mDialogResult.getSelectedAttributes();
         if (attributes.size() > 0)
         {
 
-            builder.append(mSettings.getAttributesStartSection() + "\n"); //$NON-NLS-1$
+            b.append(mSettings.getAttributesStartSection() + "\n"); //$NON-NLS-1$
 
             for (DecompilationUnit item : attributes)
             {
-                item.decompile(builder, this);
+                item.decompile(b, this);
             }
 
-            builder.append(mSettings.getAttributesEndSection());
+            b.append(mSettings.getAttributesEndSection());
         }
 
         List<FormCommandUnit> commands = mDialogResult.getSelectedCommands();
 
         if (commands.size() > 0)
         {
+            b.append("\n");
+
+            b.append(mSettings.getCommandsStartSection() + "\n");
+
             for (DecompilationUnit item : commands)
             {
-                item.decompile(builder, this);
+                item.decompile(b, this);
             }
 
+            b.append(mSettings.getCommandsEndSection() + "\n");
         }
 
-        return builder.toString();
+        List<FormItemUnit> formItems = mDialogResult.getSelectedFormItems();
+
+        if (formItems.size() > 0)
+        {
+            b.append("\n");
+
+            b.append(mSettings.getFormItemsStartSection() + "\n");
+
+            for (DecompilationUnit item : formItems)
+            {
+                item.decompile(b, this);
+            }
+
+            b.append(mSettings.getFormItemsEndSection() + "\n");
+        }
+
+        return b.toString();
     }
 
     /**

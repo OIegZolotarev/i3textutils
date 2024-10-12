@@ -16,12 +16,28 @@ public class DecompilationSettings
     private String mNewAttributeTemplateName = "НовыйРеквизит"; //$NON-NLS-1$
     private String mNewCommandTemplateName = "НоваяКоманда"; //$NON-NLS-1$
 
-    private String mAttributesSectionStart = "/////   РЕКВИЗИТЫ   /////\n"; //$NON-NLS-1$
-    private String mAttributesSectionEnd = "/////   КОНЕЦ РЕКВИЗИТЫ   /////\n"; //$NON-NLS-1$
+    private String mAttributesSectionStart = "/////   Реквизиты   /////\n"; //$NON-NLS-1$
+    private String mAttributesSectionEnd = "/////   Конец реквизиты   /////\n"; //$NON-NLS-1$
+
+    private String mCommandsStartSection = "/////   Команды   /////\n"; //$NON-NLS-1$
+    private String mCommandsEndSection = "/////   Конец команды   /////\n"; //$NON-NLS-1$
+
+    private String mFormItemsStartSection = "/////   Элементы /////\n"; //$NON-NLS-1$
+    private String mFormItemsEndSection = "/////   Конец элементы /////\n"; //$NON-NLS-1$
 
     private ScriptVariant mScriptVariant = ScriptVariant.RUSSIAN;
     private String mNewTypeDescriptionExpression = "Новый ОписаниеТипов"; //$NON-NLS-1$
-    private String mThisFormTemplateName = "ЭтаФорма";
+    private String mThisFormTemplateName = "ЭтаФорма"; //$NON-NLS-1$
+
+    public void setRegionDirectiveUsage()
+    {
+        // TODO: Английский вариант
+        mAttributesSectionStart = "#Область Реквизиты\n"; //$NON-NLS-1$
+        mAttributesSectionEnd = "#КонецОбласти\n"; //$NON-NLS-1$
+
+        mCommandsStartSection = "#Область Команды\n"; //$NON-NLS-1$
+        mCommandsEndSection = "#КонецОбласти\n"; //$NON-NLS-1$
+    }
 
     public DecompilationSettings()
     {
@@ -159,5 +175,41 @@ public class DecompilationSettings
                 return "Истина"; //$NON-NLS-1$
             }
         }
+    }
+
+    /**
+     * @return
+     */
+    public String getCommandsStartSection()
+    {
+        // TODO Auto-generated method stub
+        return mCommandsStartSection;
+    }
+
+    /**
+     * @return
+     */
+    public String getCommandsEndSection()
+    {
+        // TODO Auto-generated method stub
+        return mCommandsEndSection;
+    }
+
+    /**
+     * @return
+     */
+    public String getFormItemsStartSection()
+    {
+        // TODO Auto-generated method stub
+        return mFormItemsStartSection;
+    }
+
+    /**
+     * @return
+     */
+    public String getFormItemsEndSection()
+    {
+        // TODO Auto-generated method stub
+        return mFormItemsEndSection;
     }
 }

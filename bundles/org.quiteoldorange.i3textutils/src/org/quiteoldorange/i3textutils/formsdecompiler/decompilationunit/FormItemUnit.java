@@ -8,6 +8,7 @@ import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
 
+import com._1c.g5.v8.dt.form.model.Button;
 import com._1c.g5.v8.dt.form.model.FormField;
 import com._1c.g5.v8.dt.form.model.FormGroup;
 import com._1c.g5.v8.dt.form.model.FormItem;
@@ -149,6 +150,9 @@ public class FormItemUnit
             return (new FormGroupUnit((FormGroup)item));
         else if (item instanceof FormField)
             return (new FormFieldUnit(item));
+        else if (item instanceof Button)
+            return (new FormButtonUnit(item));
+
 
         Log.Debug("FormItemUnit.construct: не знаю как работать элементом под именем %s", item.getName());
 

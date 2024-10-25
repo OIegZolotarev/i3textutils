@@ -7,6 +7,7 @@ import org.eclipse.emf.common.util.EMap;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
+import org.quiteoldorange.i3textutils.formsdecompiler.xml.DefaultRepresentationEnum;
 
 import com._1c.g5.v8.dt.form.model.CommandHandlerContainer;
 import com._1c.g5.v8.dt.form.model.DefaultRepresentation;
@@ -56,7 +57,7 @@ public class FormCommandUnit
         output.append(line);
 
         line = String.format("%s.%s = %s;\n", newCommand, P.Representation, //$NON-NLS-1$
-            serializeRepresentationProperty(isRussian));
+            serializeRepresentationProperty(cfg.scriptVariant()));
         output.append(line);
 
         line =
@@ -68,40 +69,9 @@ public class FormCommandUnit
      * @param cfg
      * @return
      */
-    private String serializeRepresentationProperty(boolean isRussian)
+    private String serializeRepresentationProperty(ScriptVariant variant)
     {
-        if (isRussian)
-        {
-            switch (mRepresentation)
-            {
-            case AUTO:
-                return "ОтображениеКнопки.Авто"; //$NON-NLS-1$
-            case PICTURE:
-                return "ОтображениеКнопки.Картинка"; //$NON-NLS-1$
-            case TEXT:
-                return "ОтображениеКнопки.Текст"; //$NON-NLS-1$
-            case TEXT_PICTURE:
-                return "ОтображениеКнопки.КартинкаИТекст"; //$NON-NLS-1$
-            default:
-                break;
-            }
-        }
-        else
-        {
-            switch (mRepresentation)
-            {
-            case AUTO:
-                return "ButtonRepresentation.Auto"; //$NON-NLS-1$
-            case PICTURE:
-                return "ButtonRepresentation.Picture"; //$NON-NLS-1$
-            case TEXT:
-                return "ButtonRepresentation.Text"; //$NON-NLS-1$
-            case TEXT_PICTURE:
-                return "ButtonRepresentation.PictureAndText"; //$NON-NLS-1$
-            }
-        }
-
-        return ""; //$NON-NLS-1$
+        return DefaultRepresentationEnum.Instance.serialize(mRepresentation, variant);
     }
 
     public FormCommandUnit(FormCommand formCommand)

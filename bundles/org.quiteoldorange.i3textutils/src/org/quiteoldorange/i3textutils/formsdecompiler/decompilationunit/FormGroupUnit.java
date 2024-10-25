@@ -7,10 +7,13 @@ import org.eclipse.emf.common.util.EMap;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
+import org.quiteoldorange.i3textutils.formsdecompiler.xml.ManagedGroupTypeEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.xml.TooltipRepresentationEnum;
 
 import com._1c.g5.v8.dt.form.model.FormGroup;
 import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.model.ManagedFormGroupType;
+import com._1c.g5.v8.dt.form.model.TooltipRepresentation;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
@@ -32,6 +35,7 @@ public class FormGroupUnit
     private EMap<String, String> mToolTip;
     private boolean mHorizontalStretch = false;
     private boolean mVerticalStretch = false;
+    private TooltipRepresentation mToolTipRepresentation;
 
     /**
      * @param type
@@ -46,7 +50,9 @@ public class FormGroupUnit
         mReadonly = group.isReadOnly();
         mVisible = group.isVisible();
         mEnableContentChange = group.isEnableContentChange();
+
         mToolTip = group.getToolTip();
+        mToolTipRepresentation = group.getToolTipRepresentation();
 
         mHeight = group.getHeight();
         mWidth = group.getWidth();
@@ -59,6 +65,11 @@ public class FormGroupUnit
 
         if (group.getHorizontalStretch() != null)
             mHorizontalStretch = group.getHorizontalStretch();
+
+//        UsualGroupExtInfoImpl mBehaviour = group.getExtInfo();
+//        mBehaviour.getgr
+
+        mToolTipRepresentation = group.getToolTipRepresentation();
 
         for (FormItem items : group.getItems())
         {
@@ -109,7 +120,7 @@ public class FormGroupUnit
             b.append(line);
         };
 
-        sp.w(P.Type, serializeManagedGroupType(isRussian));
+        sp.w(P.Type, serializeManagedGroupType(cfg.scriptVariant()));
 
         // TODO: Придумать какие-то оболочки для свойствами 1С, или оставить все как есть?
         // Чтобы не писать такой огород, а сделать более красивый код? Или пофигу?
@@ -130,6 +141,9 @@ public class FormGroupUnit
         sp.w(P.ToolTip, serializeMultiLangualString(mToolTip, cfg));
 
         // TODO: СтруктураКопируемыхСвойств.Вставить("ОтображениеПодсказки",ОтображениеПодсказки.Авто);
+
+        sp.w(P.ToolTipRepresentation,
+            TooltipRepresentationEnum.Instance.serialize(mToolTipRepresentation, cfg.scriptVariant()));
 
         bp.w(P.EnableContentChange, mEnableContentChange);
         bp.w(P.VerticalStretch, mVerticalStretch);
@@ -153,50 +167,9 @@ public class FormGroupUnit
         // .append(serializeManagedGroupType(false));
     }
 
-    private String serializeManagedGroupType(boolean isRussian)
+    private String serializeManagedGroupType(ScriptVariant variant)
     {
-        if (isRussian)
-        {
-            switch (mGroupType)
-            {
-            case BUTTON_GROUP:
-                return "ВидГруппыФормы.ГруппаКнопок"; //$NON-NLS-1$
-            case COLUMN_GROUP:
-                return "ВидГруппыФормы.ГруппаКолонок"; //$NON-NLS-1$
-            case COMMAND_BAR:
-                return "ВидГруппыФормы.КоманднаяПанель"; //$NON-NLS-1$
-            case PAGE:
-                return "ВидГруппыФормы.Страница"; //$NON-NLS-1$
-            case PAGES:
-                return "ВидГруппыФормы.Страницы"; //$NON-NLS-1$
-            case POPUP:
-                return "ВидГруппыФормы.Подменю"; //$NON-NLS-1$
-            case USUAL_GROUP:
-                return "ВидГруппыФормы.ОбычнаяГруппа"; //$NON-NLS-1$
-            }
-        }
-        else
-        {
-            switch (mGroupType)
-            {
-            case BUTTON_GROUP:
-                return "FormGroupType.ButtonGroup"; //$NON-NLS-1$
-            case COLUMN_GROUP:
-                return "FormGroupType.ColumnGroup"; //$NON-NLS-1$
-            case COMMAND_BAR:
-                return "FormGroupType.CommandBar"; //$NON-NLS-1$
-            case PAGE:
-                return "FormGroupType.Page"; //$NON-NLS-1$
-            case PAGES:
-                return "FormGroupType.Pages"; //$NON-NLS-1$
-            case POPUP:
-                return "FormGroupType.Popup"; //$NON-NLS-1$
-            case USUAL_GROUP:
-                return "FormGroupType.UsualGroup"; //$NON-NLS-1$
-            }
-        }
-
-        return null;
+        return ManagedGroupTypeEnum.Instance.serialize(mGroupType, variant);
     }
 
     @Override

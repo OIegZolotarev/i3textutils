@@ -16,6 +16,7 @@ public class P
     public static String ModifiesStoredData;
     public static String Representation;
     public static String ToolTip;
+    public static String ToolTipRepresentation;
     public static String Type;
     public static String Visible;
     public static String Height;
@@ -46,6 +47,7 @@ public class P
         ModifiesStoredData = isRussian ? "ИзменяетСохраняемыеДанные" : "ModifiesStoredData"; //$NON-NLS-1$//$NON-NLS-2$
         Representation = isRussian ? "Отображение" : "Representation"; //$NON-NLS-1$//$NON-NLS-2$
         ToolTip = isRussian ? "Подсказка" : "ToolTip"; //$NON-NLS-1$//$NON-NLS-2$
+        ToolTipRepresentation = isRussian ? "ОтображениеПодсказки" : "ToolTipRepresentation"; //$NON-NLS-1$//$NON-NLS-2$
         Enabled = isRussian ? "Доступность" : "Enabled"; //$NON-NLS-1$//$NON-NLS-2$
         Visible = isRussian ? "Видимость" : "Visible"; //$NON-NLS-1$//$NON-NLS-2$
         Height = isRussian ? "Высота" : "Height"; //$NON-NLS-1$//$NON-NLS-2$

@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.formsdecompiler.xml;
+package org.quiteoldorange.i3textutils.formsdecompiler.v8interop;
 
 import com._1c.g5.v8.dt.form.model.TooltipRepresentation;
 

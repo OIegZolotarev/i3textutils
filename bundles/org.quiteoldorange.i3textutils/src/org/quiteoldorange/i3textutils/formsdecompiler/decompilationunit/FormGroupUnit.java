@@ -7,13 +7,16 @@ import org.eclipse.emf.common.util.EMap;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
-import org.quiteoldorange.i3textutils.formsdecompiler.xml.ManagedGroupTypeEnum;
-import org.quiteoldorange.i3textutils.formsdecompiler.xml.TooltipRepresentationEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.ManagedGroupTypeEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.TooltipRepresentationEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.V8Color;
 
 import com._1c.g5.v8.dt.form.model.FormGroup;
 import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.model.ManagedFormGroupType;
 import com._1c.g5.v8.dt.form.model.TooltipRepresentation;
+import com._1c.g5.v8.dt.mcore.Color;
+import com._1c.g5.v8.dt.mcore.Font;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
@@ -36,6 +39,8 @@ public class FormGroupUnit
     private boolean mHorizontalStretch = false;
     private boolean mVerticalStretch = false;
     private TooltipRepresentation mToolTipRepresentation;
+    private Font mTitleFont;
+    private Color mTitleTextColor;
 
     /**
      * @param type
@@ -56,6 +61,9 @@ public class FormGroupUnit
 
         mHeight = group.getHeight();
         mWidth = group.getWidth();
+
+        mTitleFont = group.getTitleFont();
+        mTitleTextColor = group.getTitleTextColor();
 
         // За каким-то чертом эти свойства Boolean вместо boolean
         // С одной стороны неплохо - можно понять что свойства не определены (==null)
@@ -140,8 +148,6 @@ public class FormGroupUnit
         sp.w(P.Caption, serializeMultiLangualString(mTitles, cfg));
         sp.w(P.ToolTip, serializeMultiLangualString(mToolTip, cfg));
 
-        // TODO: СтруктураКопируемыхСвойств.Вставить("ОтображениеПодсказки",ОтображениеПодсказки.Авто);
-
         sp.w(P.ToolTipRepresentation,
             TooltipRepresentationEnum.Instance.serialize(mToolTipRepresentation, cfg.scriptVariant()));
 
@@ -150,8 +156,18 @@ public class FormGroupUnit
         bp.w(P.HorizontalStretch, mHorizontalStretch);
         bp.w(P.Readonly, mReadonly);
 
-//        СтруктураКопируемыхСвойств.Вставить("ОтображениеПодсказки",ОтображениеПодсказки.Авто);//
-//        СтруктураКопируемыхСвойств.Вставить("ЦветТекстаЗаголовка",Новый Цвет());
+        if (mTitleTextColor != null)
+        {
+            sp.w(P.TitleTextColor, V8Color.serialize(mTitleTextColor, cfg));
+        }
+
+        if (mTitleFont != null)
+        {
+            // TODO: implement
+        }
+
+        b.append("\n");
+
 //        СтруктураКопируемыхСвойств.Вставить("ШрифтЗаголовка",Новый Шрифт());
 //
 //        Если ЭлементОбразец.Вид = ВидГруппыФормы.ОбычнаяГруппа Тогда

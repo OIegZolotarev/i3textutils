@@ -37,6 +37,7 @@ public class P
     public static String FormField;
     public static String FormGroup;
     public static String FormTable;
+    public static String TitleTextColor;
 
     public static void Init(boolean isRussian)
     {
@@ -70,6 +71,8 @@ public class P
         FormButton = isRussian ? "КнопкаФормы" : "FormButton"; //$NON-NLS-1$//$NON-NLS-2$
         FormTable = isRussian ? "ТаблицаФормы" : "FormTable"; //$NON-NLS-1$//$NON-NLS-2$
         FormField = isRussian ? "ПолеФормы" : "FormField"; //$NON-NLS-1$//$NON-NLS-2$
+
+        TitleTextColor = isRussian ? "ЦветТекстаЗаголовка" : "TitleTextColor"; //$NON-NLS-1$//$NON-NLS-2$
 
     }
 }

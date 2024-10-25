@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.formsdecompiler.xml;
+package org.quiteoldorange.i3textutils.formsdecompiler.v8interop;
 
 import java.util.HashMap;
 

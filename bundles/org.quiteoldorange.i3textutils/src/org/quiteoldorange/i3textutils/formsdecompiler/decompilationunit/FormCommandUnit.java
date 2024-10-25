@@ -7,7 +7,7 @@ import org.eclipse.emf.common.util.EMap;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
-import org.quiteoldorange.i3textutils.formsdecompiler.xml.DefaultRepresentationEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.DefaultRepresentationEnum;
 
 import com._1c.g5.v8.dt.form.model.CommandHandlerContainer;
 import com._1c.g5.v8.dt.form.model.DefaultRepresentation;

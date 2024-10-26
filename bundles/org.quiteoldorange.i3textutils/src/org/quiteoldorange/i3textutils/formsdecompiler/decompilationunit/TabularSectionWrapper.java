@@ -48,7 +48,7 @@ public class TabularSectionWrapper
      */
     public String getPathExpression()
     {
-        String result = "";
+        String result = ""; //$NON-NLS-1$
 
         for (String segment : mTablePath.getSegments())
             result = result + segment + "."; //$NON-NLS-1$

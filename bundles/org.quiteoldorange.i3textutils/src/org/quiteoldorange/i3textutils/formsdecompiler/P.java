@@ -38,6 +38,11 @@ public class P
     public static String FormGroup;
     public static String FormTable;
     public static String TitleTextColor;
+    public static String TitleFont;
+    public static String Group;
+    public static String ShowTitle;
+    public static String Behavior;
+    public static String TitleDataPath;
 
     public static void Init(boolean isRussian)
     {
@@ -73,6 +78,11 @@ public class P
         FormField = isRussian ? "ПолеФормы" : "FormField"; //$NON-NLS-1$//$NON-NLS-2$
 
         TitleTextColor = isRussian ? "ЦветТекстаЗаголовка" : "TitleTextColor"; //$NON-NLS-1$//$NON-NLS-2$
+        TitleFont = isRussian ? "ШрифтЗаголовка" : "TitleFont"; //$NON-NLS-1$//$NON-NLS-2$
+        Group = isRussian ? "Группировка" : "Group"; //$NON-NLS-1$//$NON-NLS-2$
+        ShowTitle = isRussian ? "ОтображатьЗаголовок" : "ShowTitle"; //$NON-NLS-1$//$NON-NLS-2$
 
+        Behavior = isRussian ? "Поведение" : "Behavior"; //$NON-NLS-1$//$NON-NLS-2$
+        TitleDataPath = isRussian ? "ПутьКДаннымЗаголовка" : "TitleDataPath"; //$NON-NLS-1$//$NON-NLS-2$
     }
 }

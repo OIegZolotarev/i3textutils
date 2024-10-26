@@ -3,6 +3,7 @@
  */
 package org.quiteoldorange.i3textutils.formsdecompiler;
 
+import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
@@ -230,5 +231,19 @@ public class DecompilationSettings
     {
         // TODO Auto-generated method stub
         return true;
+    }
+
+    public String serializeAbstractDataPath(AbstractDataPath p)
+    {
+        // TODO: стандартные реквизиты (например "Проведен") сериализуются в английский вариант
+        // не смотря на то что конфа пишется на русском (проверено на 2023.3.6)
+
+        String result = ""; //$NON-NLS-1$
+
+        for (String segment : p.getSegments())
+            result = result + segment + "."; //$NON-NLS-1$
+
+        result = result.substring(0, result.length() - 1);
+        return result;
     }
 }

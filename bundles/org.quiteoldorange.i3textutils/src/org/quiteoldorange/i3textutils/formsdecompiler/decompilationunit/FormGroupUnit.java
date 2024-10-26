@@ -7,14 +7,20 @@ import org.eclipse.emf.common.util.EMap;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.ChildFormItemsGroupEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.ManagedGroupTypeEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.TooltipRepresentationEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.UsualGroupBehaviorEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.UsualGroupRepresentationEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.V8Color;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.V8Font;
 
 import com._1c.g5.v8.dt.form.model.FormGroup;
 import com._1c.g5.v8.dt.form.model.FormItem;
+import com._1c.g5.v8.dt.form.model.GroupExtInfo;
 import com._1c.g5.v8.dt.form.model.ManagedFormGroupType;
 import com._1c.g5.v8.dt.form.model.TooltipRepresentation;
+import com._1c.g5.v8.dt.form.model.UsualGroupExtInfo;
 import com._1c.g5.v8.dt.mcore.Color;
 import com._1c.g5.v8.dt.mcore.Font;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
@@ -41,6 +47,7 @@ public class FormGroupUnit
     private TooltipRepresentation mToolTipRepresentation;
     private Font mTitleFont;
     private Color mTitleTextColor;
+    private GroupExtInfo mExtInfo;
 
     /**
      * @param type
@@ -77,6 +84,8 @@ public class FormGroupUnit
 //        UsualGroupExtInfoImpl mBehaviour = group.getExtInfo();
 //        mBehaviour.getgr
 
+        mExtInfo = group.getExtInfo();
+
         mToolTipRepresentation = group.getToolTipRepresentation();
 
         for (FormItem items : group.getItems())
@@ -109,8 +118,6 @@ public class FormGroupUnit
         DecompilationSettings cfg = context.getDecompilationSettings();
 
         boolean outputDefaultValues = cfg.outputDefaultValues();
-        boolean isRussian = cfg.scriptVariant() == ScriptVariant.RUSSIAN;
-
         String newItem = cfg.getNewItemTemplateName();
 
         StringPropertyWriter sp = (String p, String v) -> {
@@ -163,18 +170,32 @@ public class FormGroupUnit
 
         if (mTitleFont != null)
         {
-            // TODO: implement
+            sp.w(P.TitleFont, V8Font.serialize(mTitleFont, cfg));
+
+        }
+
+        if (mExtInfo instanceof UsualGroupExtInfo)
+        {
+
+            UsualGroupExtInfo info = (UsualGroupExtInfo)mExtInfo;
+            sp.w(P.Group, ChildFormItemsGroupEnum.Instance.serialize(info.getGroup(), cfg.scriptVariant()));
+            bp.w(P.ShowTitle, info.isShowTitle());
+
+            sp.w(P.Representation,
+                UsualGroupRepresentationEnum.Instance.serialize(info.getRepresentation(), cfg.scriptVariant()));
+
+            sp.w(P.Behavior, UsualGroupBehaviorEnum.Instance.serialize(info.getBehavior(), cfg.scriptVariant()));
+
+            sp.w(P.TitleDataPath, cfg.serializeAbstractDataPath(info.getTitleDataPath()));
+
+            // info.get
         }
 
         b.append("\n");
 
-//        СтруктураКопируемыхСвойств.Вставить("ШрифтЗаголовка",Новый Шрифт());
 //
-//        Если ЭлементОбразец.Вид = ВидГруппыФормы.ОбычнаяГруппа Тогда
-//            СтруктураКопируемыхСвойств.Вставить("Группировка",ГруппировкаПодчиненныхЭлементовФормы.Вертикальная);
-//            СтруктураКопируемыхСвойств.Вставить("ОтображатьЗаголовок",Истина);
-//            СтруктураКопируемыхСвойств.Вставить("Отображение",ОтображениеОбычнойГруппы.ОбычноеВыделение);
-//            СтруктураКопируемыхСвойств.Вставить("Поведение",ПоведениеОбычнойГруппы.Обычное);
+//        Если ЭлементОбразе ц.Вид = ВидГруппыФормы.ОбычнаяГруппа Тогда
+
 //            СтруктураКопируемыхСвойств.Вставить("ПутьКДаннымЗаголовка","");  //Определяется в "ДанныеЭлементов"
 //        Иначе
 //            //Другие виды

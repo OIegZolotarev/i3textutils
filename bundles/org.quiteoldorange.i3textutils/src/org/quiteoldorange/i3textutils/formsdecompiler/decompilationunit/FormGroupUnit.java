@@ -7,13 +7,13 @@ import org.eclipse.emf.common.util.EMap;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.ChildFormItemsGroupEnum;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.ManagedGroupTypeEnum;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.TooltipRepresentationEnum;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.UsualGroupBehaviorEnum;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.UsualGroupRepresentationEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.V8Color;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.V8Font;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.ChildFormItemsGroupEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.ManagedGroupTypeEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.TooltipRepresentationEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.UsualGroupBehaviorEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.UsualGroupRepresentationEnum;
 
 import com._1c.g5.v8.dt.form.model.FormGroup;
 import com._1c.g5.v8.dt.form.model.FormItem;
@@ -174,6 +174,7 @@ public class FormGroupUnit
 
         }
 
+        // TODO: реализовать остальные варианты групп
         if (mExtInfo instanceof UsualGroupExtInfo)
         {
 
@@ -185,23 +186,12 @@ public class FormGroupUnit
                 UsualGroupRepresentationEnum.Instance.serialize(info.getRepresentation(), cfg.scriptVariant()));
 
             sp.w(P.Behavior, UsualGroupBehaviorEnum.Instance.serialize(info.getBehavior(), cfg.scriptVariant()));
-
             sp.w(P.TitleDataPath, cfg.serializeAbstractDataPath(info.getTitleDataPath()));
 
-            // info.get
         }
 
         b.append("\n");
 
-//
-//        Если ЭлементОбразе ц.Вид = ВидГруппыФормы.ОбычнаяГруппа Тогда
-
-//            СтруктураКопируемыхСвойств.Вставить("ПутьКДаннымЗаголовка","");  //Определяется в "ДанныеЭлементов"
-//        Иначе
-//            //Другие виды
-//        КонецЕсли;
-
-        // .append(serializeManagedGroupType(false));
     }
 
     private String serializeManagedGroupType(ScriptVariant variant)

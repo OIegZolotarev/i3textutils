@@ -3,7 +3,7 @@
  */
 package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 
-import com._1c.g5.v8.dt.form.model.FormItem;
+import com._1c.g5.v8.dt.form.model.Button;
 
 /**
  * @author ozolotarev
@@ -17,10 +17,12 @@ public class FormButtonUnit
      * @param formgroup
      * @param item
      */
-    FormButtonUnit(FormItem item)
+    FormButtonUnit(Button item)
     {
         super(ItemTypes.FormButton, item);
-        // TODO Auto-generated constructor stub
+
+
+
     }
 
 }

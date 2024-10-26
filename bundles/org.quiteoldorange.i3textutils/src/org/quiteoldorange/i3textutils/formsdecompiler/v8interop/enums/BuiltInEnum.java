@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.quiteoldorange.i3textutils.formsdecompiler.v8interop;
+package org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums;
 
 import java.util.HashMap;
 

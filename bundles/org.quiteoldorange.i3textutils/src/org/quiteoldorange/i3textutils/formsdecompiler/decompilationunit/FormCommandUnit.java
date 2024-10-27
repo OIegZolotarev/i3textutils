@@ -4,7 +4,7 @@
 package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 
 import org.eclipse.emf.common.util.EMap;
-import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
+import org.quiteoldorange.i3textutils.formsdecompiler.CodeGenerator;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.DefaultRepresentationEnum;
@@ -31,9 +31,9 @@ public class FormCommandUnit
     private EMap<String, String> mToolTip;
 
     @Override
-    public void decompile(StringBuilder output, DecompilationContext context)
+    public void decompile(CodeGenerator b)
     {
-        DecompilationSettings cfg = context.getDecompilationSettings();
+        DecompilationSettings cfg = b.getDecompilationSettings();
         boolean isRussian = cfg.scriptVariant() == ScriptVariant.RUSSIAN;
 
         String newCommand = cfg.getNewCommadTemplateName();
@@ -41,28 +41,28 @@ public class FormCommandUnit
         String line = null;
 
         line = String.format("%s = %s.%s.%s(\"%s\");\n", newCommand, thisForm, P.Commands, P.Add, mName); //$NON-NLS-1$
-        output.append(line);
+        b.append(line);
 
         if (mHandler != null)
         {
             line = String.format("%s.%s = \"%s\";\n", newCommand, P.Handler, mHandler); //$NON-NLS-1$
-            output.append(line);
+            b.append(line);
         }
 
         line = String.format("%s.%s = %s;\n", newCommand, P.Caption, serializeMultiLangualString(mTitles, cfg)); //$NON-NLS-1$
-        output.append(line);
+        b.append(line);
 
         line = String.format("%s.%s = %s;\n", newCommand, P.ModifiesStoredData, //$NON-NLS-1$
             cfg.serializeBoolean(mModifiesStoredData));
-        output.append(line);
+        b.append(line);
 
         line = String.format("%s.%s = %s;\n", newCommand, P.Representation, //$NON-NLS-1$
             serializeRepresentationProperty(cfg.scriptVariant()));
-        output.append(line);
+        b.append(line);
 
         line =
             String.format("%s.%s = %s;\n", newCommand, P.ToolTip, serializeMultiLangualString(mToolTip, cfg)); //$NON-NLS-1$
-        output.append(line);
+        b.append(line);
     }
 
     /**

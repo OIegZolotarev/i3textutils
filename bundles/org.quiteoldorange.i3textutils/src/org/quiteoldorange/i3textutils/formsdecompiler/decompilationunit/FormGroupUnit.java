@@ -4,16 +4,8 @@
 package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 
 import org.eclipse.emf.common.util.EMap;
-import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
-import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
+import org.quiteoldorange.i3textutils.formsdecompiler.CodeGenerator;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.V8Color;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.V8Font;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.ChildFormItemsGroupEnum;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.ManagedGroupTypeEnum;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.TooltipRepresentationEnum;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.UsualGroupBehaviorEnum;
-import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.UsualGroupRepresentationEnum;
 
 import com._1c.g5.v8.dt.form.model.FormGroup;
 import com._1c.g5.v8.dt.form.model.FormItem;
@@ -23,7 +15,6 @@ import com._1c.g5.v8.dt.form.model.TooltipRepresentation;
 import com._1c.g5.v8.dt.form.model.UsualGroupExtInfo;
 import com._1c.g5.v8.dt.mcore.Color;
 import com._1c.g5.v8.dt.mcore.Font;
-import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
  * @author ozolotarev
@@ -95,108 +86,44 @@ public class FormGroupUnit
     }
 
 
-    interface StringPropertyWriter
-    {
-        void w(String property, String value);
-    };
-
-    interface BooleanPropertyWriter
-    {
-        void w(String property, boolean value);
-    };
-
-    interface IntPropertyWriter
-    {
-        void w(String property, int value);
-    }
-
     @Override
-    public void decompile(StringBuilder b, DecompilationContext context)
+    public void decompile(CodeGenerator b)
     {
-        super.decompile(b, context);
+        super.decompile(b);
 
-        DecompilationSettings cfg = context.getDecompilationSettings();
+        b.writeProperty(P.Type, mGroupType);
+        b.writeProperty(P.Visible, mVisible);
+        b.writeProperty(P.Height, mHeight);
+        b.writeProperty(P.Width, mWidth);
+        b.writeProperty(P.Enabled, mEnabled);
 
-        boolean outputDefaultValues = cfg.outputDefaultValues();
-        String newItem = cfg.getNewItemTemplateName();
+        b.writeMultilangString(P.Caption, mTitles);
+        b.writeMultilangString(P.ToolTip, mToolTip);
 
-        StringPropertyWriter sp = (String p, String v) -> {
-            String line = String.format("%s.%s = %s;\n", newItem, p, v); //$NON-NLS-1$
-            b.append(line);
-        };
+        b.writeProperty(P.ToolTipRepresentation, mToolTipRepresentation);
 
-        BooleanPropertyWriter bp = (String p, boolean v) -> {
-            String line = String.format("%s.%s = %s;\n", newItem, p, cfg.serializeBoolean(v)); //$NON-NLS-1$
-            b.append(line);
-        };
+        b.writeProperty(P.EnableContentChange, mEnableContentChange);
+        b.writeProperty(P.VerticalStretch, mVerticalStretch);
+        b.writeProperty(P.HorizontalStretch, mHorizontalStretch);
+        b.writeProperty(P.Readonly, mReadonly);
 
-        IntPropertyWriter ip = (String p, int v) -> {
-            String line = String.format("%s.%s = %d;\n", newItem, p, v); //$NON-NLS-1$
-            b.append(line);
-        };
-
-        sp.w(P.Type, serializeManagedGroupType(cfg.scriptVariant()));
-
-        // TODO: Придумать какие-то оболочки для свойствами 1С, или оставить все как есть?
-        // Чтобы не писать такой огород, а сделать более красивый код? Или пофигу?
-        if (!mVisible || outputDefaultValues)
-            bp.w(P.Visible, mVisible);
-
-        if (mHeight != 0 || outputDefaultValues)
-            ip.w(P.Height, mHeight);
-
-        if (mWidth != 0 || outputDefaultValues)
-            ip.w(P.Width, mWidth);
-
-        if (!mEnabled || outputDefaultValues)
-            bp.w(P.Enabled, mEnabled);
-
-
-        sp.w(P.Caption, serializeMultiLangualString(mTitles, cfg));
-        sp.w(P.ToolTip, serializeMultiLangualString(mToolTip, cfg));
-
-        sp.w(P.ToolTipRepresentation,
-            TooltipRepresentationEnum.Instance.serialize(mToolTipRepresentation, cfg.scriptVariant()));
-
-        bp.w(P.EnableContentChange, mEnableContentChange);
-        bp.w(P.VerticalStretch, mVerticalStretch);
-        bp.w(P.HorizontalStretch, mHorizontalStretch);
-        bp.w(P.Readonly, mReadonly);
-
-        if (mTitleTextColor != null)
-        {
-            sp.w(P.TitleTextColor, V8Color.serialize(mTitleTextColor, cfg));
-        }
-
-        if (mTitleFont != null)
-        {
-            sp.w(P.TitleFont, V8Font.serialize(mTitleFont, cfg));
-
-        }
+        b.writeProperty(P.TitleTextColor, mTitleTextColor);
+        b.writeProperty(P.TitleFont, mTitleFont);
 
         // TODO: реализовать остальные варианты групп
         if (mExtInfo instanceof UsualGroupExtInfo)
         {
-
             UsualGroupExtInfo info = (UsualGroupExtInfo)mExtInfo;
-            sp.w(P.Group, ChildFormItemsGroupEnum.Instance.serialize(info.getGroup(), cfg.scriptVariant()));
-            bp.w(P.ShowTitle, info.isShowTitle());
 
-            sp.w(P.Representation,
-                UsualGroupRepresentationEnum.Instance.serialize(info.getRepresentation(), cfg.scriptVariant()));
-
-            sp.w(P.Behavior, UsualGroupBehaviorEnum.Instance.serialize(info.getBehavior(), cfg.scriptVariant()));
-            sp.w(P.TitleDataPath, cfg.serializeAbstractDataPath(info.getTitleDataPath()));
-
+            b.writeProperty(P.Group, info.getGroup());
+            b.writeProperty(P.ShowTitle, info.isShowTitle());
+            b.writeProperty(P.Representation, info.getRepresentation());
+            b.writeProperty(P.Behavior, info.getBehavior());
+            b.writeProperty(P.TitleDataPath, info.getTitleDataPath());
         }
 
         b.append("\n");
 
-    }
-
-    private String serializeManagedGroupType(ScriptVariant variant)
-    {
-        return ManagedGroupTypeEnum.Instance.serialize(mGroupType, variant);
     }
 
     @Override

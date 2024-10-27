@@ -4,7 +4,7 @@
 package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 
 import org.eclipse.emf.common.util.EList;
-import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
+import org.quiteoldorange.i3textutils.formsdecompiler.CodeGenerator;
 
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.form.model.FormAttributeAdditionalColumns;
@@ -18,7 +18,7 @@ public class TabularSectionWrapper
     extends Attribute
 {
     @Override
-    public void decompile(StringBuilder output, DecompilationContext context)
+    public void decompile(CodeGenerator b)
     {
         return;
     }

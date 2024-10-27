@@ -4,7 +4,7 @@
 package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 
 
-import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
+import org.quiteoldorange.i3textutils.formsdecompiler.CodeGenerator;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 
 import com._1c.g5.v8.dt.form.model.FormAttribute;
@@ -90,9 +90,9 @@ public class Attribute
     }
 
     @Override
-    public void decompile(StringBuilder output, DecompilationContext context)
+    public void decompile(CodeGenerator b)
     {
-        DecompilationSettings cfg = context.getDecompilationSettings();
+        DecompilationSettings cfg = b.getDecompilationSettings();
 
         String newAttribute = cfg.getNewAttributeTemplateName();
         boolean isRussian = cfg.scriptVariant() == ScriptVariant.RUSSIAN;
@@ -107,7 +107,7 @@ public class Attribute
             String construction = String.format("%s = %s(\"%s\", %s);\n", newAttribute, //$NON-NLS-1$
                 cfg.getNewAttributeExpression(), mName, typeDescription);
 
-            output.append(construction);
+            b.append(construction);
         }
         else
         {
@@ -118,7 +118,7 @@ public class Attribute
         String captionProperty = isRussian ? "Заголовок" : "Title"; //$NON-NLS-1$//$NON-NLS-2$
         String captionExpression = String.format("%s.%s = %s;\n", newAttribute, captionProperty, titleStringValue); //$NON-NLS-1$
 
-        output.append(captionExpression);
+        b.append(captionExpression);
 
 
         if (getParent() != null)
@@ -140,10 +140,10 @@ public class Attribute
             String pathProperty = isRussian ? "Путь" : "Path"; //$NON-NLS-1$//$NON-NLS-2$
             String pathExpression = String.format("%s.%s = \"%s\";\n", newAttribute, pathProperty, pathValue); //$NON-NLS-1$
 
-            output.append(pathExpression);
+            b.append(pathExpression);
         }
 
-        output.append(cfg.getAppendAttributeToNewAttributeArray());
+        b.append(cfg.getAppendAttributeToNewAttributeArray());
     }
 
     /**

@@ -9,7 +9,7 @@ import java.util.ListIterator;
 import java.util.Map.Entry;
 
 import org.eclipse.emf.common.util.EMap;
-import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
+import org.quiteoldorange.i3textutils.formsdecompiler.CodeGenerator;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 
 /**
@@ -58,12 +58,18 @@ public abstract class DecompilationUnit
         return mChildren;
     }
 
-    abstract public void decompile(StringBuilder output, DecompilationContext context);
+    abstract public void decompile(CodeGenerator output);
+
 
     /**
-     * @param cfg
      * @return
      */
+    public String getName()
+    {
+        return mName;
+    }
+
+    // TODO: удалить
     protected String serializeMultiLangualString(EMap<String, String> multiLangualString, DecompilationSettings cfg)
     {
         // Если заголовок не указан, то сваливаемся в имя по умолчанию
@@ -102,11 +108,4 @@ public abstract class DecompilationUnit
 
     }
 
-    /**
-     * @return
-     */
-    public String getName()
-    {
-        return mName;
-    }
 }

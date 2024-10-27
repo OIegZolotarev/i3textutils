@@ -89,7 +89,7 @@ public class DecompilationContext
      */
     public String generateCode()
     {
-        StringBuilder b = new StringBuilder();
+        CodeGenerator b = new CodeGenerator(mSettings);
 
         mSettings.setRegionDirectiveUsage();
 
@@ -101,7 +101,7 @@ public class DecompilationContext
 
             for (DecompilationUnit item : attributes)
             {
-                item.decompile(b, this);
+                item.decompile(b);
             }
 
             b.append("\n" + mSettings.getAttributesEndSection());
@@ -117,7 +117,7 @@ public class DecompilationContext
 
             for (DecompilationUnit item : commands)
             {
-                item.decompile(b, this);
+                item.decompile(b);
             }
 
             b.append("\n" + mSettings.getCommandsEndSection() + "\n");
@@ -133,7 +133,7 @@ public class DecompilationContext
 
             for (DecompilationUnit item : formItems)
             {
-                item.decompile(b, this);
+                item.decompile(b);
             }
 
             b.append("\n" + mSettings.getFormItemsEndSection() + "\n");

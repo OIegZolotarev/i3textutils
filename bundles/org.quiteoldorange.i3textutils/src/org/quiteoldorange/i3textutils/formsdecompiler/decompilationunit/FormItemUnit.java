@@ -4,7 +4,7 @@
 package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 
 import org.quiteoldorange.i3textutils.Log;
-import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
+import org.quiteoldorange.i3textutils.formsdecompiler.CodeGenerator;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
 
@@ -37,12 +37,14 @@ public class FormItemUnit
 
 
     @Override
-    public void decompile(StringBuilder output, DecompilationContext context)
+    public void decompile(CodeGenerator b)
     {
-        DecompilationSettings cfg = context.getDecompilationSettings();
+        DecompilationSettings cfg = b.getDecompilationSettings();
         boolean isRussian = cfg.scriptVariant() == ScriptVariant.RUSSIAN;
 
         String newItemTemplate = cfg.getNewItemTemplateName();
+
+        b.beginNewFormItem();
 
         String itemTypeExpression = generateItemTypeExpression();
         String itemParentExpression = generateFormItemExpression(cfg, mParentFormItem);
@@ -55,7 +57,7 @@ public class FormItemUnit
             itemParentExpression,
             itemAnchorExpression);
 
-        output.append(line);
+        b.append(line);
 
     }
 
@@ -149,9 +151,9 @@ public class FormItemUnit
         if (item instanceof FormGroup)
             return (new FormGroupUnit((FormGroup)item));
         else if (item instanceof FormField)
-            return (new FormFieldUnit(item));
+            return (new FormFieldUnit((FormField)item));
         else if (item instanceof Button)
-            return (new FormButtonUnit(item));
+            return (new FormButtonUnit((Button)item));
 
 
         Log.Debug("FormItemUnit.construct: не знаю как работать элементом под именем %s", item.getName());

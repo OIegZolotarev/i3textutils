@@ -107,11 +107,10 @@ public class FormItemUnit
         return String.format("%s(\"%s\")", P.TypeFunction, itemTypeString);
     }
 
-    FormItemUnit(ItemTypes formgroup, FormItem item)
+    FormItemUnit(ItemTypes type, FormItem item)
     {
-        mType = formgroup;
+        mType = type;
         mName = item.getName();
-
     }
 
     /**
@@ -148,6 +147,8 @@ public class FormItemUnit
 
     public static FormItemUnit construct(FormItem item)
     {
+        // TODO: добавить определение якорных элементов сюды.
+
         if (item instanceof FormGroup)
             return (new FormGroupUnit((FormGroup)item));
         else if (item instanceof FormField)

@@ -50,12 +50,17 @@ public class P
     public static String TitleLocation;
     public static String DataPath;
     public static String FooterDataPath;
-    public static String TitleTextColor;
     public static String FooterTextColor;
     public static String TitleBackColor;
     public static String FooterBackColor;
-    public static String TitleFont;
     public static String FooterFont;
+
+    public static String ChoiceButton;
+    public static String ChoiceListButton;
+    public static String OpenButton;
+    public static String ClearButton;
+    public static String SpinButton;
+    public static String CreateButton;
 
 
     public static void Init(boolean isRussian)
@@ -105,11 +110,16 @@ public class P
         TitleLocation = isRussian ? "ПоложениеЗаголовка" : "TitleLocation"; //$NON-NLS-1$//$NON-NLS-2$
         DataPath = isRussian ? "ПутьКДанным" : "DataPath"; //$NON-NLS-1$//$NON-NLS-2$
         FooterDataPath = isRussian ? "ПутьКДаннымПодвала" : "FooterDataPath"; //$NON-NLS-1$//$NON-NLS-2$
-        TitleTextColor = isRussian ? "ЦветТекстаЗаголовка" : "TitleTextColor"; //$NON-NLS-1$//$NON-NLS-2$
         FooterTextColor = isRussian ? "ЦветТекстаПодвала" : "FooterTextColor"; //$NON-NLS-1$//$NON-NLS-2$
         TitleBackColor = isRussian ? "ЦветФонаЗаголовка" : "TitleBackColor"; //$NON-NLS-1$//$NON-NLS-2$
         FooterBackColor = isRussian ? "ЦветФонаПодвала" : "FooterBackColor"; //$NON-NLS-1$//$NON-NLS-2$
-        TitleFont = isRussian ? "ШрифтЗаголовка" : "TitleFont"; //$NON-NLS-1$//$NON-NLS-2$
         FooterFont = isRussian ? "ШрифтПодвала" : "FooterFont"; //$NON-NLS-1$//$NON-NLS-2$
+
+        ChoiceButton = isRussian ? "КнопкаВыбора" : "ChoiceButton"; //$NON-NLS-1$//$NON-NLS-2$
+        ChoiceListButton = isRussian ? "КнопкаВыбораИзСписка" : "ChoiceListButton"; //$NON-NLS-1$//$NON-NLS-2$
+        OpenButton = isRussian ? "КнопкаОткрытия" : "OpenButton"; //$NON-NLS-1$//$NON-NLS-2$
+        ClearButton = isRussian ? "КнопкаОчистки" : "ClearButton"; //$NON-NLS-1$//$NON-NLS-2$
+        SpinButton = isRussian ? "КнопкаРегулирования" : "SpinButton"; //$NON-NLS-1$//$NON-NLS-2$
+        CreateButton = isRussian ? "КнопкаСоздания" : "CreateButton"; //$NON-NLS-1$//$NON-NLS-2$
     }
 }

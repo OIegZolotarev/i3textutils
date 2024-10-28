@@ -20,6 +20,7 @@ import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.UsualGroup
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.UsualGroupRepresentationEnum;
 
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
+import com._1c.g5.v8.dt.form.model.EventHandler;
 import com._1c.g5.v8.dt.form.model.FormChildrenGroup;
 import com._1c.g5.v8.dt.form.model.FormElementTitleLocation;
 import com._1c.g5.v8.dt.form.model.ItemHorizontalAlignment;
@@ -108,18 +109,18 @@ public class CodeGenerator
             if (mOutputDefaultValues || iValue != 0)
             {
                 String line = String.format("%s.%s = %d;\n", mObjectName, propertyName, iValue); //$NON-NLS-1$
-                mStringBuilder.append(line);
+                append(line);
             }
         }
         else if (String.class.isInstance(value))
         {
             String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, value); //$NON-NLS-1$
-            mStringBuilder.append(line);
+            append(line);
         }
         else if (boolean.class.isInstance(value) || Boolean.class.isInstance(value))
         {
             String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, serializeBoolean((boolean)value)); //$NON-NLS-1$
-            mStringBuilder.append(line);
+            append(line);
         }
         else if (ManagedFormGroupType.class.isInstance(value))
         {
@@ -127,7 +128,7 @@ public class CodeGenerator
 
             String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
                 ManagedGroupTypeEnum.Instance.serialize(type, mScriptVariant));
-            mStringBuilder.append(line);
+            append(line);
         }
         else if (TooltipRepresentation.class.isInstance(value))
         {
@@ -135,7 +136,7 @@ public class CodeGenerator
 
             String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
                 TooltipRepresentationEnum.Instance.serialize(repr, mScriptVariant));
-            mStringBuilder.append(line);
+            append(line);
         }
         else if (Color.class.isInstance(value))
         {
@@ -144,7 +145,7 @@ public class CodeGenerator
             String line =
                 String.format("%s.%s = %s;\n", mObjectName, propertyName, V8Color.serialize(col, mDecompilationConfig)); //$NON-NLS-1$
 
-            mStringBuilder.append(line);
+            append(line);
         }
         else if (Font.class.isInstance(value))
         {
@@ -153,7 +154,7 @@ public class CodeGenerator
             String line =
                 String.format("%s.%s = %s;\n", mObjectName, propertyName, V8Font.serialize(font, mDecompilationConfig)); //$NON-NLS-1$
 
-            mStringBuilder.append(line);
+            append(line);
 
         }
         else if (FormChildrenGroup.class.isInstance(value))
@@ -164,7 +165,7 @@ public class CodeGenerator
                 String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
                     ChildFormItemsGroupEnum.Instance.serialize(group, mScriptVariant));
 
-            mStringBuilder.append(line);
+            append(line);
         }
         else if (UsualGroupRepresentation.class.isInstance(value))
         {
@@ -173,7 +174,7 @@ public class CodeGenerator
             String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
                 UsualGroupRepresentationEnum.Instance.serialize(repr, mScriptVariant));
 
-            mStringBuilder.append(line);
+            append(line);
         }
         else if (UsualGroupBehavior.class.isInstance(value))
         {
@@ -182,14 +183,14 @@ public class CodeGenerator
             String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
                 UsualGroupBehaviorEnum.Instance.serialize(behavior, mScriptVariant));
 
-            mStringBuilder.append(line);
+            append(line);
         }
         else if (AbstractDataPath.class.isInstance(value))
         {
             String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
                 serializeAbstractDataPath((AbstractDataPath)value));
 
-            mStringBuilder.append(line);
+            append(line);
         }
         else if (ItemVerticalAlignment.class.isInstance(value))
         {
@@ -198,7 +199,7 @@ public class CodeGenerator
             String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
                 ItemVerticalAlignEnum.Instance.serialize(aligment, mScriptVariant));
 
-            mStringBuilder.append(line);
+            append(line);
 
         }
         else if (ItemHorizontalAlignment.class.isInstance(value))
@@ -208,7 +209,7 @@ public class CodeGenerator
             String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
                 ItemHorizontalAlignEnum.Instance.serialize(aligment, mScriptVariant));
 
-            mStringBuilder.append(line);
+            append(line);
 
         }
         else if (ManagedFormFieldType.class.isInstance(value))
@@ -218,7 +219,7 @@ public class CodeGenerator
             String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
                 FormFieldTypeEnum.Instance.serialize(field_type, mScriptVariant));
 
-            mStringBuilder.append(line);
+            append(line);
 
         }
         else if (FormElementTitleLocation.class.isInstance(value))
@@ -228,7 +229,7 @@ public class CodeGenerator
             String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
                 FormElementTitleLocationEnum.Instance.serialize(titleLocation, mScriptVariant));
 
-            mStringBuilder.append(line);
+            append(line);
 
         }
 
@@ -272,13 +273,12 @@ public class CodeGenerator
 
         String line = String.format("%s.%s = %s;\n", mObjectName, property, //$NON-NLS-1$
             String.format("%s(\"%s\")", mDecompilationConfig.getNStrExpression(), result)); //$NON-NLS-1$
-        mStringBuilder.append(line);
+        append(line);
     }
 
     public void append(String s)
     {
         mStringBuilder.append(s);
-
     }
 
     private String serializeAbstractDataPath(AbstractDataPath p)
@@ -306,7 +306,39 @@ public class CodeGenerator
      */
     public DecompilationSettings getDecompilationSettings()
     {
-        // TODO Auto-generated method stub
         return mDecompilationConfig;
+    }
+
+    /**
+     * @param handler
+     */
+    public void writeEventHandler(EventHandler handler)
+    {
+        // Форма.Элементы.ТоварыСумма.УстановитьДействие("ПриИзменении", "ЦАУ_ТоварыСуммаПриИзменении");
+        String eventName = null;
+        String setEventMethod = null;
+
+        switch (mScriptVariant)
+        {
+        case ENGLISH:
+            eventName = handler.getEvent().getName();
+            setEventMethod = "SetAction"; //$NON-NLS-1$
+            break;
+        case RUSSIAN:
+            eventName = handler.getEvent().getNameRu();
+            setEventMethod = "УстановитьДействие"; //$NON-NLS-1$
+            break;
+        default:
+            eventName = handler.getEvent().getNameRu();
+            setEventMethod = "УстановитьДействие"; //$NON-NLS-1$
+            break;
+        }
+
+        String handlerName = handler.getName();
+
+        String line = String.format("%s.%s(\"%s\", \"%s\");\n", mObjectName, setEventMethod, //$NON-NLS-1$
+            eventName, handlerName);
+
+        append(line);
     }
 }

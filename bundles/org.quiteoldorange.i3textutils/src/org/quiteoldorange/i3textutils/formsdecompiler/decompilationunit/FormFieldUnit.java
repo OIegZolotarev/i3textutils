@@ -3,13 +3,17 @@
  */
 package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.quiteoldorange.i3textutils.formsdecompiler.CodeGenerator;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
 
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
+import com._1c.g5.v8.dt.form.model.EventHandler;
+import com._1c.g5.v8.dt.form.model.FieldExtInfo;
 import com._1c.g5.v8.dt.form.model.FormElementTitleLocation;
 import com._1c.g5.v8.dt.form.model.FormField;
+import com._1c.g5.v8.dt.form.model.InputFieldExtInfo;
 import com._1c.g5.v8.dt.form.model.ItemHorizontalAlignment;
 import com._1c.g5.v8.dt.form.model.ItemVerticalAlignment;
 import com._1c.g5.v8.dt.form.model.ManagedFormFieldType;
@@ -37,6 +41,8 @@ public class FormFieldUnit
     private Color mFooterTextColor;
     private Color mTitleBackColor;
     private Color mTitleTextColor;
+    private EList<EventHandler> mHandlers;
+    private FieldExtInfo mExtInfo;
 
     /**
      * @param formgroup
@@ -64,6 +70,12 @@ public class FormFieldUnit
         mFooterBackColor = item.getFooterBackColor();
         mTitleFont = item.getTitleFont();
         mFooterFont = item.getFooterFont();
+
+        mHandlers = item.getHandlers();
+
+        mExtInfo = item.getExtInfo();
+
+
     }
 
     @Override
@@ -91,30 +103,23 @@ public class FormFieldUnit
         b.writeProperty(P.TitleFont, mTitleFont);
         b.writeProperty(P.FooterFont, mFooterFont);
 
-//
-//        СтруктураОбработчиков.Вставить("ПриИзменении");
-//        СтруктураОбработчиков.Вставить("НачалоВыбора");
-//        СтруктураОбработчиков.Вставить("НачалоВыбораИзСписка");
-//        СтруктураОбработчиков.Вставить("Очистка");
-//        СтруктураОбработчиков.Вставить("Регулирование");
-//        СтруктураОбработчиков.Вставить("Открытие");
-//        СтруктураОбработчиков.Вставить("Создание");
-//        СтруктураОбработчиков.Вставить("ОбработкаВыбора");
-//        СтруктураОбработчиков.Вставить("ИзменениеТекстаРедактирования");
-//        СтруктураОбработчиков.Вставить("АвтоПодбор");
-//        СтруктураОбработчиков.Вставить("ОкончаниеВводаТекста");
-//
-//
-//        Если ЭлементОбразец.Вид = ВидПоляФормы.ПолеВвода Тогда
-//            СтруктураКопируемыхСвойств.Вставить("КнопкаВыбора",Неопределено);
-//            СтруктураКопируемыхСвойств.Вставить("КнопкаВыпадающегоСписка",Неопределено);
-//            СтруктураКопируемыхСвойств.Вставить("КнопкаОткрытия",Неопределено);
-//            СтруктураКопируемыхСвойств.Вставить("КнопкаОчистки",Неопределено);
-//            СтруктураКопируемыхСвойств.Вставить("КнопкаРегулирования",Неопределено);
-//            СтруктураКопируемыхСвойств.Вставить("КнопкаСоздания",Неопределено);
-//        Иначе
-//            //Другие виды
-//        КонецЕсли;
+
+        for (EventHandler handler : mHandlers)
+        {
+            b.writeEventHandler(handler);
+        }
+
+        if (mExtInfo instanceof InputFieldExtInfo)
+        {
+            InputFieldExtInfo input_field_ext_info = (InputFieldExtInfo)mExtInfo;
+
+            b.writeProperty(P.ChoiceButton, input_field_ext_info.getChoiceButton());
+            b.writeProperty(P.ChoiceListButton, input_field_ext_info.getChoiceListButton());
+            b.writeProperty(P.OpenButton, input_field_ext_info.getOpenButton());
+            b.writeProperty(P.ClearButton, input_field_ext_info.getClearButton());
+            b.writeProperty(P.SpinButton, input_field_ext_info.getSpinButton());
+            b.writeProperty(P.CreateButton, input_field_ext_info.getCreateButton());
+        }
 
     }
 

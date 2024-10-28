@@ -122,8 +122,6 @@ public class FormGroupUnit
             b.writeProperty(P.TitleDataPath, info.getTitleDataPath());
         }
 
-        b.append("\n");
-
     }
 
     @Override

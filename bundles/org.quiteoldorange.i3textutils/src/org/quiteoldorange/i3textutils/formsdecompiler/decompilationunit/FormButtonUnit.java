@@ -40,10 +40,11 @@ public class FormButtonUnit
     private boolean mDefaultItem;
 
     private TooltipRepresentation mTooltipRepresentation;
+    private ButtonRepresentation mRepresentation;
+    private ManagedFormButtonType mButtonType;
 
     // TODO: implement
-    private ManagedFormButtonType mButtonType;
-    private ButtonRepresentation mRepresentation;
+
     private Command mCommand;
 
     @Override
@@ -63,6 +64,7 @@ public class FormButtonUnit
         b.writeProperty(P.SkipOnInput, mSkipOnInput);
         b.writeProperty(P.Check, mCheck);
         b.writeProperty(P.IsDefaultButton, mIsDefaultButton);
+
         b.writeProperty(P.Command, mCommand);
         b.writeProperty(P.Enabled, mEnabled);
         b.writeProperty(P.TitleHeight, mTitleHeight);

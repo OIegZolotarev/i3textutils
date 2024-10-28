@@ -102,6 +102,7 @@ public class DecompilationContext
             for (DecompilationUnit item : attributes)
             {
                 item.decompile(b);
+                b.append("\n");
             }
 
             b.append("\n" + mSettings.getAttributesEndSection());
@@ -118,6 +119,7 @@ public class DecompilationContext
             for (DecompilationUnit item : commands)
             {
                 item.decompile(b);
+                b.append("\n");
             }
 
             b.append("\n" + mSettings.getCommandsEndSection() + "\n");
@@ -134,6 +136,7 @@ public class DecompilationContext
             for (DecompilationUnit item : formItems)
             {
                 item.decompile(b);
+                b.append("\n");
             }
 
             b.append("\n" + mSettings.getFormItemsEndSection() + "\n");

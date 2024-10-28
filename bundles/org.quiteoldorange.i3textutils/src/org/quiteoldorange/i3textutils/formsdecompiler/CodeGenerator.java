@@ -9,11 +9,13 @@ import java.util.Map.Entry;
 import org.eclipse.emf.common.util.EMap;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.V8Color;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.V8Font;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.ButtonRepresentationEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.ChildFormItemsGroupEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.FormElementTitleLocationEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.FormFieldTypeEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.ItemHorizontalAlignEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.ItemVerticalAlignEnum;
+import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.ManagedFormButtonTypeEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.ManagedGroupTypeEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.TooltipRepresentationEnum;
 import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.UsualGroupBehaviorEnum;
@@ -22,14 +24,17 @@ import org.quiteoldorange.i3textutils.formsdecompiler.v8interop.enums.UsualGroup
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.form.model.EventHandler;
 import com._1c.g5.v8.dt.form.model.FormChildrenGroup;
+import com._1c.g5.v8.dt.form.model.FormCommand;
 import com._1c.g5.v8.dt.form.model.FormElementTitleLocation;
 import com._1c.g5.v8.dt.form.model.ItemHorizontalAlignment;
 import com._1c.g5.v8.dt.form.model.ItemVerticalAlignment;
+import com._1c.g5.v8.dt.form.model.ManagedFormButtonType;
 import com._1c.g5.v8.dt.form.model.ManagedFormFieldType;
 import com._1c.g5.v8.dt.form.model.ManagedFormGroupType;
 import com._1c.g5.v8.dt.form.model.TooltipRepresentation;
 import com._1c.g5.v8.dt.form.model.UsualGroupBehavior;
 import com._1c.g5.v8.dt.form.model.UsualGroupRepresentation;
+import com._1c.g5.v8.dt.mcore.ButtonRepresentation;
 import com._1c.g5.v8.dt.mcore.Color;
 import com._1c.g5.v8.dt.mcore.Font;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
@@ -231,6 +236,36 @@ public class CodeGenerator
 
             append(line);
 
+        }
+        else if (ManagedFormButtonType.class.isInstance(value))
+        {
+            ManagedFormButtonType buttonType = (ManagedFormButtonType)value;
+
+            String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
+                ManagedFormButtonTypeEnum.Instance.serialize(buttonType, mScriptVariant));
+
+            append(line);
+
+        }
+
+        else if (ButtonRepresentation.class.isInstance(value))
+        {
+            ButtonRepresentation buttonRepr = (ButtonRepresentation)value;
+
+            String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
+                ButtonRepresentationEnum.Instance.serialize(buttonRepr, mScriptVariant));
+
+            append(line);
+
+        }
+        else if (FormCommand.class.isInstance(value))
+        {
+            FormCommand cmd = (FormCommand)value;
+
+            String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
+                cmd.getName());
+
+            append(line);
         }
 
 

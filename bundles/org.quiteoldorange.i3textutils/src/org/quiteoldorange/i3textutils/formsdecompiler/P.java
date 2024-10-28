@@ -61,6 +61,17 @@ public class P
     public static String ClearButton;
     public static String SpinButton;
     public static String CreateButton;
+    public static String Font;
+    public static String BackColor;
+    public static String TextColor;
+    public static String BorderColor;
+    public static String OnlyInAllActions;
+    public static String SkipOnInput;
+    public static String Check;
+    public static String IsDefaultButton;
+    public static String Command;
+    public static String TitleHeight;
+    public static String DefaultItem;
 
 
     public static void Init(boolean isRussian)
@@ -121,5 +132,17 @@ public class P
         ClearButton = isRussian ? "КнопкаОчистки" : "ClearButton"; //$NON-NLS-1$//$NON-NLS-2$
         SpinButton = isRussian ? "КнопкаРегулирования" : "SpinButton"; //$NON-NLS-1$//$NON-NLS-2$
         CreateButton = isRussian ? "КнопкаСоздания" : "CreateButton"; //$NON-NLS-1$//$NON-NLS-2$
+
+        Font = isRussian ? "Шрифт" : "Font"; //$NON-NLS-1$//$NON-NLS-2$;
+        BackColor = isRussian ? "ЦветФона" : "BackColor"; //$NON-NLS-1$//$NON-NLS-2$;
+        TextColor = isRussian ? "ЦветТекста" : "TextColor"; //$NON-NLS-1$//$NON-NLS-2$;
+        BorderColor = isRussian ? "ЦветРамки" : "BorderColor"; //$NON-NLS-1$//$NON-NLS-2$;
+        OnlyInAllActions = isRussian ? "ТолькоВоВсехДействиях" : "OnlyInAllActions"; //$NON-NLS-1$//$NON-NLS-2$;
+        SkipOnInput = isRussian ? "ПропускатьПриВводе" : "SkipOnInput"; //$NON-NLS-1$//$NON-NLS-2$;
+        Check = isRussian ? "Пометка" : "Check"; //$NON-NLS-1$//$NON-NLS-2$;
+        IsDefaultButton = isRussian ? "КнопкаПоУмолчанию" : "DefaultButton"; //$NON-NLS-1$//$NON-NLS-2$;
+        Command = isRussian ? "ИмяКоманды" : "CommandName"; //$NON-NLS-1$//$NON-NLS-2$;
+        TitleHeight = isRussian ? "ВысотаЗаголовка" : "TitleHeight"; //$NON-NLS-1$//$NON-NLS-2$;
+        DefaultItem = isRussian ? "АктивизироватьПоУмолчанию" : "DefaultItem"; //$NON-NLS-1$//$NON-NLS-2$;
     }
 }

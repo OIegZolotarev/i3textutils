@@ -168,4 +168,50 @@
         <initializer
          class="org.quiteoldorange.i3textutils.preferences.PreferenceInitializer"></initializer>
     </extension>
+    
+       <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            category="org.quiteoldorange.i3textutils.projectOptions"
+            class="org.quiteoldorange.i3textutils.preferences.projectoptions.FormsDecompilerOptions"
+            id="org.quiteoldorange.i3textutils.formsDecompilerOptions"
+            name="%formsDecompilerOptions">
+         <enabledWhen>
+            <instanceof
+                  value="org.eclipse.core.resources.IProject">
+            </instanceof>
+         </enabledWhen>
+      </page>
+   </extension>
+   
+          <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            category="org.quiteoldorange.i3textutils.projectOptions"
+            class="org.quiteoldorange.i3textutils.preferences.projectoptions.AutomationScriptsOptions"
+            id="org.quiteoldorange.i3textutils.automationScriptsOptions"
+            name="%automationScripts">
+         <enabledWhen>
+            <instanceof
+                  value="org.eclipse.core.resources.IProject">
+            </instanceof>
+         </enabledWhen>
+      </page>
+   </extension>
+   
+      <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="com._1c.g5.v8.dt.internal.ui.preferences.V8RootPropertyPage"
+            id="org.quiteoldorange.i3textutils.projectOptions"
+            
+            name="%i3ToolsTextGroup">
+         <enabledWhen>
+            <test
+                property="com._1c.g5.v8.dt.ui.isV8Project">
+            </test>
+         </enabledWhen>
+      </page>
+   </extension>
+    
 </plugin>

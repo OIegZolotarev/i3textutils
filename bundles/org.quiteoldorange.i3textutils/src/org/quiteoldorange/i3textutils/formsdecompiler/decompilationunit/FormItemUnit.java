@@ -157,7 +157,7 @@ public class FormItemUnit
             return (new FormButtonUnit((Button)item));
 
 
-        Log.Debug("FormItemUnit.construct: не знаю как работать элементом под именем %s", item.getName());
+        Log.Debug("FormItemUnit.construct: не знаю как работать элементом под именем %s", item.getName()); //$NON-NLS-1$
 
         return null;
     }

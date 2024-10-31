@@ -150,7 +150,7 @@ public class FormItemUnit
         mParentFormItem = parentFormItem;
     }
 
-    public static FormItemUnit construct(FormItem item, String prevItem, String parentItem)
+    public static FormItemUnit construct(FormItem item, String nextItem, String parentItem)
     {
 
 
@@ -165,7 +165,7 @@ public class FormItemUnit
         else
             Log.Debug("FormItemUnit.construct: не знаю как работать элементом под именем %s", item.getName()); //$NON-NLS-1$
 
-        newItem.mAnchorFormItem = prevItem;
+        newItem.mAnchorFormItem = nextItem;
         newItem.mParentFormItem = parentItem;
 
         return newItem;

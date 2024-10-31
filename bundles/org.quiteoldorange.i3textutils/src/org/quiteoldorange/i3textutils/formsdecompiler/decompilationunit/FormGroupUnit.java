@@ -3,6 +3,7 @@
  */
 package org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.quiteoldorange.i3textutils.formsdecompiler.CodeGenerator;
 import org.quiteoldorange.i3textutils.formsdecompiler.P;
@@ -79,12 +80,19 @@ public class FormGroupUnit
 
         mToolTipRepresentation = group.getToolTipRepresentation();
 
-        String prevItem = null;
+        String nextItem = null;
 
-        for (FormItem items : group.getItems())
+        EList<FormItem> formItems = group.getItems();
+
+        for (int index = 0; index < formItems.size(); index++)
         {
-            addChildren(FormItemUnit.construct(items, prevItem, mName));
-            prevItem = items.getName();
+            FormItem item = formItems.get(index);
+
+            if (index < (formItems.size() - 1))
+                nextItem = formItems.get(index + 1).getName();
+
+            addChildren(FormItemUnit.construct(item, nextItem, mName));
+
         }
     }
 

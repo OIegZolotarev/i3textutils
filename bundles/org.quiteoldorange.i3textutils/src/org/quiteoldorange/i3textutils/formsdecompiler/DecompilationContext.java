@@ -55,13 +55,20 @@ public class DecompilationContext
 
         EList<FormItem> formItems = mForm.getItems();
 
-        String prevItem = null;
+        String nextItem = null;
         String parentItem = null;
 
-        for (FormItem item : formItems)
+        for (int index = 0; index < formItems.size(); index++)
         {
-            mFormItems.add(FormItemUnit.construct(item, prevItem, parentItem));
-            prevItem = item.getName();
+            FormItem item = formItems.get(index);
+
+            if (index < (formItems.size() - 1))
+                nextItem = formItems.get(index + 1).getName();
+            else
+                nextItem = null;
+
+            mFormItems.add(FormItemUnit.construct(item, nextItem, parentItem));
+            nextItem = item.getName();
         }
 
     }

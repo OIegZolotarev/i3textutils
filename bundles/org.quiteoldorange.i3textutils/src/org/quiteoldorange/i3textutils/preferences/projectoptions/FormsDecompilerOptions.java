@@ -1,9 +1,8 @@
 package org.quiteoldorange.i3textutils.preferences.projectoptions;
 
-import org.eclipse.swt.SWT;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 
@@ -20,9 +19,14 @@ public class FormsDecompilerOptions
     @Override
     protected Control createContents(Composite parent)
     {
+        String labelAndValues[][] = new String[][] {
+            { "Ничего не делать", "doNothing" }, //$NON-NLS-2$
+            { "В \"ПриСозданииНаСервере\"", "putAtCreateOnServer" }, //$NON-NLS-2$
+            { "В общий модуль", "putAtCommonModule" }, //$NON-NLS-2$
+        };
 
-        Text label = new Text(parent, SWT.NONE);
-        label.setText("Привет мир");
+        RadioGroupFieldEditor codeGeneratorMode =
+            new RadioGroupFieldEditor("codeGeneratorMode", "Режим генерации кода", 1, labelAndValues, parent);
 
         return null;
     }

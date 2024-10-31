@@ -97,6 +97,8 @@ public class DecompilationContext
 
         mSettings.setRegionDirectiveUsage();
 
+        // Реквизиты
+
         List<Attribute> attributes = mDialogResult.getSelectedAttributes();
         if (attributes.size() > 0)
         {
@@ -116,6 +118,8 @@ public class DecompilationContext
             b.append("\n" + mSettings.getAttributesEndSection());
         }
 
+        // Команды
+
         List<FormCommandUnit> commands = mDialogResult.getSelectedCommands();
 
         if (commands.size() > 0)
@@ -132,6 +136,8 @@ public class DecompilationContext
 
             b.append("\n" + mSettings.getCommandsEndSection() + "\n");
         }
+
+        // Элементы формы
 
         List<FormItemUnit> formItems = mDialogResult.getSelectedFormItems();
 

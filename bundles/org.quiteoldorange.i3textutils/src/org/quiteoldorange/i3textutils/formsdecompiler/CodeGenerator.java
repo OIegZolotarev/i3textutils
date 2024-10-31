@@ -192,7 +192,7 @@ public class CodeGenerator
         }
         else if (AbstractDataPath.class.isInstance(value))
         {
-            String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, //$NON-NLS-1$
+            String line = String.format("%s.%s = \"%s\";\n", mObjectName, propertyName, //$NON-NLS-1$
                 serializeAbstractDataPath((AbstractDataPath)value));
 
             append(line);
@@ -375,5 +375,50 @@ public class CodeGenerator
             eventName, handlerName);
 
         append(line);
+    }
+
+    /**
+     *
+     */
+    public void generateNewElementsEpilogue()
+    {
+        String thisFormExpr = mDecompilationConfig.getThisFormTemplateName();
+        String newAttributesArrayExpr = mDecompilationConfig.getNewAttributesArrayName();
+        String changeAttributes = null;
+
+        switch (mScriptVariant)
+        {
+        case ENGLISH:
+            changeAttributes = "ChangeAttributes"; //$NON-NLS-1$
+            break;
+        default:
+            changeAttributes = "ИзменитьРеквизиты"; //$NON-NLS-1$
+            break;
+
+        }
+
+        String line = String.format("%s.%s(%s,);\n", thisFormExpr, changeAttributes, newAttributesArrayExpr); //$NON-NLS-1$
+        mStringBuilder.append(line);
+    }
+
+    /**
+     *
+     */
+    public void generateNewElementsPrologue()
+    {
+        String newItemsArray = mDecompilationConfig.getNewAttributesArrayName();
+        String newItemsArrayCtorExpression = null;
+
+        switch(mScriptVariant)
+        {
+        case ENGLISH:
+            newItemsArrayCtorExpression = "New Array()"; //$NON-NLS-1$
+        default:
+            newItemsArrayCtorExpression = "Новый Массив()"; //$NON-NLS-1$
+            break;
+        }
+
+        String line = String.format("%s = %s;\n", newItemsArray, newItemsArrayCtorExpression); //$NON-NLS-1$
+        mStringBuilder.append(line);
     }
 }

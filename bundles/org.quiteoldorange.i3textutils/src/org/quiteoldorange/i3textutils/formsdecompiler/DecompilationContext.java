@@ -55,9 +55,13 @@ public class DecompilationContext
 
         EList<FormItem> formItems = mForm.getItems();
 
+        String prevItem = null;
+        String parentItem = null;
+
         for (FormItem item : formItems)
         {
-            mFormItems.add(FormItemUnit.construct(item));
+            mFormItems.add(FormItemUnit.construct(item, prevItem, parentItem));
+            prevItem = item.getName();
         }
 
     }
@@ -99,11 +103,15 @@ public class DecompilationContext
 
             b.append(mSettings.getAttributesStartSection() + "\n"); //$NON-NLS-1$
 
+            b.generateNewElementsPrologue();
+
             for (DecompilationUnit item : attributes)
             {
                 item.decompile(b);
                 b.append("\n");
             }
+
+            b.generateNewElementsEpilogue();
 
             b.append("\n" + mSettings.getAttributesEndSection());
         }

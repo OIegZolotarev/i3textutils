@@ -38,6 +38,9 @@ public class DecompilationSettings
 
         mCommandsStartSection = "#Область Команды\n"; //$NON-NLS-1$
         mCommandsEndSection = "#КонецОбласти\n"; //$NON-NLS-1$
+
+        mFormItemsStartSection = "#Область Элементы_формы\n"; //$NON-NLS-1$
+        mFormItemsEndSection = "#КонецОбласти\n"; //$NON-NLS-1$
     }
 
     public DecompilationSettings(ScriptVariant variant)

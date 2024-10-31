@@ -79,9 +79,12 @@ public class FormGroupUnit
 
         mToolTipRepresentation = group.getToolTipRepresentation();
 
+        String prevItem = null;
+
         for (FormItem items : group.getItems())
         {
-            addChildren(FormItemUnit.construct(items));
+            addChildren(FormItemUnit.construct(items, prevItem, mName));
+            prevItem = items.getName();
         }
     }
 

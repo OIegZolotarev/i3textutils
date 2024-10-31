@@ -12,7 +12,6 @@ import com._1c.g5.v8.dt.form.model.Button;
 import com._1c.g5.v8.dt.form.model.FormField;
 import com._1c.g5.v8.dt.form.model.FormGroup;
 import com._1c.g5.v8.dt.form.model.FormItem;
-import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
  * @author ozolotarev
@@ -40,8 +39,6 @@ public class FormItemUnit
     public void decompile(CodeGenerator b)
     {
         DecompilationSettings cfg = b.getDecompilationSettings();
-        boolean isRussian = cfg.scriptVariant() == ScriptVariant.RUSSIAN;
-
         String newItemTemplate = cfg.getNewItemTemplateName();
 
         b.beginNewFormItem();
@@ -71,7 +68,15 @@ public class FormItemUnit
         if (formItem == null)
             return P.Undefined;
 
-        return P.Undefined;
+        String thisFormExpr = cfg.getThisFormTemplateName();
+
+        switch (cfg.scriptVariant())
+        {
+        case ENGLISH:
+            return String.format("%s.Items[\"%s\"]", thisFormExpr, formItem); //$NON-NLS-1$
+        default:
+            return String.format("%s.Элементы[\"%s\"]", thisFormExpr, formItem); //$NON-NLS-1$
+        }
     }
 
     /**
@@ -80,7 +85,7 @@ public class FormItemUnit
      */
     private String generateItemTypeExpression()
     {
-        String itemTypeString = "";
+        String itemTypeString = ""; //$NON-NLS-1$
 
         switch (mType)
         {
@@ -104,7 +109,7 @@ public class FormItemUnit
 
         }
 
-        return String.format("%s(\"%s\")", P.TypeFunction, itemTypeString);
+        return String.format("%s(\"%s\")", P.TypeFunction, itemTypeString); //$NON-NLS-1$
     }
 
     FormItemUnit(ItemTypes type, FormItem item)
@@ -145,21 +150,25 @@ public class FormItemUnit
         mParentFormItem = parentFormItem;
     }
 
-    public static FormItemUnit construct(FormItem item)
+    public static FormItemUnit construct(FormItem item, String prevItem, String parentItem)
     {
-        // TODO: добавить определение якорных элементов сюды.
+
+
+        FormItemUnit newItem = null;
 
         if (item instanceof FormGroup)
-            return (new FormGroupUnit((FormGroup)item));
+            newItem = (new FormGroupUnit((FormGroup)item));
         else if (item instanceof FormField)
-            return (new FormFieldUnit((FormField)item));
+            newItem = (new FormFieldUnit((FormField)item));
         else if (item instanceof Button)
-            return (new FormButtonUnit((Button)item));
+            newItem = (new FormButtonUnit((Button)item));
+        else
+            Log.Debug("FormItemUnit.construct: не знаю как работать элементом под именем %s", item.getName()); //$NON-NLS-1$
 
+        newItem.mAnchorFormItem = prevItem;
+        newItem.mParentFormItem = parentItem;
 
-        Log.Debug("FormItemUnit.construct: не знаю как работать элементом под именем %s", item.getName()); //$NON-NLS-1$
-
-        return null;
+        return newItem;
     }
 
 }

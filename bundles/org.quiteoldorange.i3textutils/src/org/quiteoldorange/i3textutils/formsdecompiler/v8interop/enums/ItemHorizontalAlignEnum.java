@@ -17,7 +17,7 @@ public class ItemHorizontalAlignEnum
      */
     private ItemHorizontalAlignEnum()
     {
-        super("ВертикальноеПоложениеЭлементов", "ItemHorizontalAlign"); //$NON-NLS-1$//$NON-NLS-2$
+        super("ГоризонтальноеПоложениеЭлемента", "ItemHorizontalAlign"); //$NON-NLS-1$//$NON-NLS-2$
 
         addValue(ItemHorizontalAlignment.AUTO, "Авто", "Auto");  //$NON-NLS-1$//$NON-NLS-2$
         addValue(ItemHorizontalAlignment.LEFT, "Лево", "Left");  //$NON-NLS-1$//$NON-NLS-2$

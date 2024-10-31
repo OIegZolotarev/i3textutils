@@ -17,7 +17,7 @@ public class ItemVerticalAlignEnum
      */
     private ItemVerticalAlignEnum()
     {
-        super("ВертикальноеПоложениеЭлементов", "ItemVerticalAlign"); //$NON-NLS-1$//$NON-NLS-2$
+        super("ВертикальноеПоложениеЭлемента", "ItemVerticalAlign"); //$NON-NLS-1$//$NON-NLS-2$
 
         addValue(ItemVerticalAlignment.AUTO, "Авто", "Auto");  //$NON-NLS-1$//$NON-NLS-2$
         addValue(ItemVerticalAlignment.TOP, "Вверх", "Top");  //$NON-NLS-1$//$NON-NLS-2$

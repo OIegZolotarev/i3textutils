@@ -90,6 +90,8 @@ public class FormGroupUnit
 
             if (index < (formItems.size() - 1))
                 nextItem = formItems.get(index + 1).getName();
+            else
+                nextItem = null;
 
             addChildren(FormItemUnit.construct(item, nextItem, mName));
 

@@ -165,8 +165,11 @@ public class FormItemUnit
         else
             Log.Debug("FormItemUnit.construct: не знаю как работать элементом под именем %s", item.getName()); //$NON-NLS-1$
 
-        newItem.mAnchorFormItem = nextItem;
-        newItem.mParentFormItem = parentItem;
+        if (newItem != null)
+        {
+            newItem.mAnchorFormItem = nextItem;
+            newItem.mParentFormItem = parentItem;
+        }
 
         return newItem;
     }

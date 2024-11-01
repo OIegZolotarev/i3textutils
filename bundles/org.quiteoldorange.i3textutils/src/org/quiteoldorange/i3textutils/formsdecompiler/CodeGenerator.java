@@ -119,7 +119,7 @@ public class CodeGenerator
         }
         else if (String.class.isInstance(value))
         {
-            String line = String.format("%s.%s = %s;\n", mObjectName, propertyName, value); //$NON-NLS-1$
+            String line = String.format("%s.%s = \"%s\";\n", mObjectName, propertyName, value); //$NON-NLS-1$
             append(line);
         }
         else if (boolean.class.isInstance(value) || Boolean.class.isInstance(value))

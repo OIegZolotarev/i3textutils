@@ -13,11 +13,11 @@ import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormComm
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormItemUnit;
 import org.quiteoldorange.i3textutils.formsdecompiler.ui.DecompilationDialogResult;
 
+import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormCommand;
 import com._1c.g5.v8.dt.form.model.FormItem;
-import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
  * @author ozolotarev
@@ -33,9 +33,9 @@ public class DecompilationContext
     private List<FormItemUnit> mFormItems = new LinkedList<>();
     private DecompilationDialogResult mDialogResult = new DecompilationDialogResult();
 
-    public DecompilationContext(Form form)
+    public DecompilationContext(Form form, IV8Project v8Project)
     {
-        mSettings = new DecompilationSettings(ScriptVariant.RUSSIAN);
+        mSettings = new DecompilationSettings(v8Project);
 
         mForm = form;
 
@@ -101,8 +101,6 @@ public class DecompilationContext
     public String generateCode()
     {
         CodeGenerator b = new CodeGenerator(mSettings);
-
-        mSettings.setRegionDirectiveUsage();
 
         // Реквизиты
 

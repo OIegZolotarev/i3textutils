@@ -173,7 +173,7 @@
          point="org.eclipse.ui.propertyPages">
       <page
             category="org.quiteoldorange.i3textutils.projectOptions"
-            class="org.quiteoldorange.i3textutils.preferences.projectoptions.FormsDecompilerOptions"
+            class="org.quiteoldorange.i3textutils.preferences.projectoptions.impl.formsdecompiler.FormsDecompilerOptionsPage"
             id="org.quiteoldorange.i3textutils.formsDecompilerOptions"
             name="%formsDecompilerOptions">
          <enabledWhen>

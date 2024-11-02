@@ -13,6 +13,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
 import org.quiteoldorange.i3textutils.formsdecompiler.ui.wizard.DecompilationWizard;
 
+import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.ui.editor.FormEditor;
 import com._1c.g5.v8.dt.form.ui.editor.IFormEditor;
@@ -36,17 +37,14 @@ public class DecompileForm
         FormEditor formEditor = (FormEditor)part;
         Form f = formEditor.getForm();
 
-        DecompilationContext cont = new DecompilationContext(f);
+        IV8Project v8Project = formEditor.getV8projectManager().getProject(f.bmGetEngine().getId());
 
+        DecompilationContext cont = new DecompilationContext(f, v8Project);
         DecompilationWizard wizard = new DecompilationWizard(cont);
 
         WizardDialog wizardDialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
         wizardDialog.open();
 
-        /*
-        FormsDecompilerDialog dlg = new FormsDecompilerDialog(cont);
-        dlg.setBlockOnOpen(true);
-        dlg.open(); */
 
         // TODO Auto-generated method stub
         return null;

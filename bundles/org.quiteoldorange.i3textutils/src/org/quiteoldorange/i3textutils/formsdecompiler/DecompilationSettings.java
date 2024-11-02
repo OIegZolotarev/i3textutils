@@ -3,6 +3,9 @@
  */
 package org.quiteoldorange.i3textutils.formsdecompiler;
 
+import org.quiteoldorange.i3textutils.preferences.projectoptions.impl.formsdecompiler.FormsDecompilerOptionSet;
+
+import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
@@ -43,10 +46,16 @@ public class DecompilationSettings
         mFormItemsEndSection = "#КонецОбласти\n"; //$NON-NLS-1$
     }
 
-    public DecompilationSettings(ScriptVariant variant)
+    public DecompilationSettings(IV8Project v8Project)
     {
-        mScriptVariant = variant;
-        P.Init(variant == ScriptVariant.RUSSIAN);
+        mScriptVariant = v8Project.getScriptVariant();
+        P.Init(mScriptVariant == ScriptVariant.RUSSIAN);
+
+        boolean useRegions = FormsDecompilerOptionSet.useRegions(v8Project.getProject());
+
+        if (useRegions)
+            setRegionDirectiveUsage();
+
     }
 
     /**

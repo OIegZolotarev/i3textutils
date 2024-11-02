@@ -7,6 +7,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.quiteoldorange.i3textutils.ContentAssistColorFix;
 import org.quiteoldorange.i3textutils.ServicesAdapter;
+import org.quiteoldorange.i3textutils.preferences.projectoptions.ProjectOptionsManager;
 
 import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
 import com._1c.g5.wiring.ServiceInitialization;
@@ -21,6 +22,8 @@ public class i3TextUtilsPlugin
     public static final String V8_CODESTYLE_BUNDLE = "com.e1c.v8codestyle.bsl"; //$NON-NLS-1$
 
     private static i3TextUtilsPlugin plugin;
+
+    private static ProjectOptionsManager mProjectOptionsManager = new ProjectOptionsManager();
 
     private BundleContext bundleContext;
     private InjectorAwareServiceRegistrator registrator;
@@ -202,5 +205,12 @@ public class i3TextUtilsPlugin
             imageDescriptorFromPlugin(PLUGIN_ID, "resources/images/gracefull_error.png"));
     }
 
+    /**
+     * @return
+     */
+    public static ProjectOptionsManager getProjectOptionsManager()
+    {
+        return mProjectOptionsManager;
+    }
 
 }

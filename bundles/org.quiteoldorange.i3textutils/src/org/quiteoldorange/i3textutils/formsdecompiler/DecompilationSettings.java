@@ -15,9 +15,14 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 public class DecompilationSettings
 {
     private String mNewAttributesArrayName = "НовыеРеквизиты"; //$NON-NLS-1$
+
+    // TODO: merge these
     private String mModifiedFormName = "ЭтотОбъект"; //$NON-NLS-1$
+    private String mThisFormTemplateName = "ЭтаФорма"; //$NON-NLS-1$
     private String mNewAttributeTemplateName = "НовыйРеквизит"; //$NON-NLS-1$
     private String mNewCommandTemplateName = "НоваяКоманда"; //$NON-NLS-1$
+
+    private String mNewItemTemplateName = "НовыйЭлемент"; //$NON-NLS-1$
 
     private String mAttributesSectionStart = "/////   Реквизиты   /////\n"; //$NON-NLS-1$
     private String mAttributesSectionEnd = "/////   Конец реквизиты   /////\n"; //$NON-NLS-1$
@@ -30,8 +35,7 @@ public class DecompilationSettings
 
     private ScriptVariant mScriptVariant = ScriptVariant.RUSSIAN;
     private String mNewTypeDescriptionExpression = "Новый ОписаниеТипов"; //$NON-NLS-1$
-    private String mThisFormTemplateName = "ЭтаФорма"; //$NON-NLS-1$
-    private String mNewItemTemplateName = "НовыйЭлемент";
+
 
     public void setRegionDirectiveUsage()
     {

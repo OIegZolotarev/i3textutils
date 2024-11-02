@@ -9,6 +9,7 @@ import org.quiteoldorange.i3textutils.preferences.projectoptions.IProjectOption;
 import org.quiteoldorange.i3textutils.preferences.projectoptions.ProjectOptionsSet;
 import org.quiteoldorange.i3textutils.preferences.projectoptions.impl.BooleanProjectOption;
 import org.quiteoldorange.i3textutils.preferences.projectoptions.impl.EnumProjectOption;
+import org.quiteoldorange.i3textutils.preferences.projectoptions.impl.StringProjectOption;
 
 /**
  * @author ozolotarev
@@ -23,6 +24,11 @@ public class FormsDecompilerOptionSet
      */
     private static final String USE_REGIONS = "useRegions"; //$NON-NLS-1$
     private static final String GENERATED_CODE_PLACEMENT = "generatedCodePlacement"; //$NON-NLS-1$
+
+    private static final String NEW_ATTRIBUTES_ARRAY_NAME = "templateNameNewAttributesArray"; //$NON-NLS-1$
+    private static final String NEW_ATTRIBUTE_NAME = "templateNameNewAttribute"; //$NON-NLS-1$
+    private static final String NEW_COMMAND_NAME = "templateNameNewCommand"; //$NON-NLS-1$
+    private static final String NEW_ELEMENT_NAME = "templateNameNewElement"; //$NON-NLS-1$
 
     private static final String PLACE_TO_AT_CREATE_AT_SERVER = "placeToAtCreateAtServer"; //$NON-NLS-1$
     private static final String PLACE_TO_COMMON_MODULE = "placeToCommonModule"; //$NON-NLS-1$
@@ -49,6 +55,13 @@ public class FormsDecompilerOptionSet
             Boolean.FALSE));
         addOption(new GeneratedCodePlacement());
 
+        // Шаблоны имен объектов
+        addOption(new StringProjectOption(NEW_ATTRIBUTES_ARRAY_NAME, "Имя массива новых реквизитов",
+            "НовыеРеквизиты"));
+
+        addOption(new StringProjectOption(NEW_ATTRIBUTE_NAME, "Имя нового реквизита", "НовыйРеквизит"));
+        addOption(new StringProjectOption(NEW_COMMAND_NAME, "Имя новой команды", "НоваяКоманда"));
+        addOption(new StringProjectOption(NEW_ELEMENT_NAME, "Имя нового элемента формы", "НовыйЭлемент"));
     }
 
     public static String ID()

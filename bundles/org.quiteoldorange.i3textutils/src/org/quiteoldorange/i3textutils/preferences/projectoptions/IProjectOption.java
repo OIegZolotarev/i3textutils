@@ -20,6 +20,7 @@ public abstract class IProjectOption
 
     private String mKey;
 
+    private String mGroupName;
     private String mValue;
 
     protected IProjectOption(String key, String descritption, String defaultValue)
@@ -115,7 +116,19 @@ public abstract class IProjectOption
         mValue = node.get(mKey, mDefaultValue);
     }
 
-    abstract public void createWidget(Composite parent);
+    public void setGroupName(String groupName)
+    {
+        mGroupName = groupName;
+    }
 
+    abstract public void createWidget(Composite parent);
     abstract public void updateWidgetState();
+
+    /**
+     * @return
+     */
+    public String getGroupName()
+    {
+        return mGroupName;
+    }
 }

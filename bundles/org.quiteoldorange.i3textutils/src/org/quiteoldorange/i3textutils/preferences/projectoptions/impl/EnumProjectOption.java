@@ -10,7 +10,8 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -118,10 +119,19 @@ public class EnumProjectOption
     private void createRadioGroup(Composite parent)
     {
         Group containingGroup = new Group(parent, SWT.NONE);
-        containingGroup.setLayout(new RowLayout(SWT.VERTICAL));
 
-        Label label = new Label(containingGroup, SWT.NONE);
-        label.setText(getDescription() + ":"); //$NON-NLS-1$
+        GridLayout layout = new GridLayout(1, false);
+        containingGroup.setLayout(layout);
+        containingGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+//        containingGroup.setLayout(new RowLayout(SWT.VERTICAL));
+
+//        Label label = new Label(containingGroup, SWT.NONE);
+//        label.setText(getDescription() + ":"); //$NON-NLS-1$
+
+        containingGroup.setText(getDescription() + ":"); //$NON-NLS-1$
+
+
 
         mRadioButtons = new LinkedList<>();
 
@@ -133,6 +143,8 @@ public class EnumProjectOption
 
             if (val.getSecond().equals(getValue()))
                 button.setSelection(true);
+
+            button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
             button.addSelectionListener(new SelectionAdapter()
             {

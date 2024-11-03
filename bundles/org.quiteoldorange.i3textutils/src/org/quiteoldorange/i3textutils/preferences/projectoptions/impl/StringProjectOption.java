@@ -9,6 +9,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.quiteoldorange.i3textutils.preferences.projectoptions.IProjectOption;
@@ -36,22 +37,31 @@ public class StringProjectOption
     @Override
     public void createWidget(Composite parent)
     {
-        //    GridLayout gridLayout = new GridLayout();
-        //      gridLayout.setColumns(2);
 
-        Composite containingGroup = new Composite(parent, SWT.BORDER);
+        if (getGroupName() == null)
+        {
+            Group containingGroup = new Group(parent, SWT.NONE);
 
-        // Настройка зоны диалога
-        GridLayout layout = new GridLayout(2, false);
+            // Настройка зоны диалога
+            GridLayout layout = new GridLayout(2, false);
 
-        containingGroup.setLayout(layout);
-        containingGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+            containingGroup.setLayout(layout);
+            containingGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-        Label label = new Label(containingGroup, SWT.NONE);
-        label.setText(getDescription() + ":"); //$NON-NLS-1$
+            Label label = new Label(containingGroup, SWT.NONE);
+            label.setText(getDescription() + ":"); //$NON-NLS-1$
 
-        mWidget = new Text(containingGroup, SWT.BORDER | SWT.SINGLE);
-        mWidget.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+            mWidget = new Text(containingGroup, SWT.SINGLE);
+            mWidget.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        }
+        else
+        {
+            Label label = new Label(parent, SWT.NONE);
+            label.setText(getDescription() + ":"); //$NON-NLS-1$
+
+            mWidget = new Text(parent, SWT.SINGLE);
+            mWidget.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        }
 
         mWidget.addModifyListener(new ModifyListener()
         {

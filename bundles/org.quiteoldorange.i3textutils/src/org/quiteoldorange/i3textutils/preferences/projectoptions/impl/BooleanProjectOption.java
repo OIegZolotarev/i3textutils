@@ -6,10 +6,9 @@ package org.quiteoldorange.i3textutils.preferences.projectoptions.impl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.quiteoldorange.i3textutils.preferences.projectoptions.IProjectOption;
 
 /**
@@ -35,11 +34,10 @@ public class BooleanProjectOption
     @Override
     public void createWidget(Composite parent)
     {
-        Group containingGroup = new Group(parent, SWT.NONE);
-        containingGroup.setLayout(new RowLayout(SWT.VERTICAL));
-
         mWidget = new Button(parent, SWT.CHECK);
         mWidget.setText(getDescription());
+
+        mWidget.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         mWidget.addSelectionListener(new SelectionAdapter()
         {

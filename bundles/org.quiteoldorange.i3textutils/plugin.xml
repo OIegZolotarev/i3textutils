@@ -188,7 +188,7 @@
          point="org.eclipse.ui.propertyPages">
       <page
             category="org.quiteoldorange.i3textutils.projectOptions"
-            class="org.quiteoldorange.i3textutils.preferences.projectoptions.AutomationScriptsOptions"
+            class="org.quiteoldorange.i3textutils.preferences.projectoptions.impl.AutomationScriptsOptions"
             id="org.quiteoldorange.i3textutils.automationScriptsOptions"
             name="%automationScripts">
          <enabledWhen>
@@ -202,7 +202,7 @@
       <extension
          point="org.eclipse.ui.propertyPages">
       <page
-            class="com._1c.g5.v8.dt.internal.ui.preferences.V8RootPropertyPage"
+            class="RootProjectPropertiesPage" 
             id="org.quiteoldorange.i3textutils.projectOptions"
             
             name="%i3ToolsTextGroup">

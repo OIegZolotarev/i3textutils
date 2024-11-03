@@ -3,11 +3,16 @@
  */
 package org.quiteoldorange.i3textutils.preferences.projectoptions;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 
 /**
  * @author ozolotarev
@@ -77,9 +82,38 @@ public class ProjectOptionsSet
     {
         // TODO: было бы неплохо заиметь категории опций
 
+        HashMap<String, Composite> mOptionsGroups = new HashMap<>();
+
         for (IProjectOption option : mOptions)
         {
-            option.createWidget(composite);
+            String optionGroup = option.getGroupName();
+            Composite targetComposite = null;
+
+            if (optionGroup != null)
+            {
+                targetComposite = mOptionsGroups.get(optionGroup);
+
+                if (targetComposite == null)
+                {
+                    Group group = new Group(composite, SWT.NONE);
+                    group.setText(optionGroup);
+
+                    GridLayout layout = new GridLayout(2, false);
+                    group.setLayout(layout);
+                    group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+                    targetComposite = group;
+
+
+                    mOptionsGroups.put(optionGroup, targetComposite);
+                }
+            }
+            else
+            {
+                targetComposite = composite;
+            }
+
+            option.createWidget(targetComposite);
         }
     }
 

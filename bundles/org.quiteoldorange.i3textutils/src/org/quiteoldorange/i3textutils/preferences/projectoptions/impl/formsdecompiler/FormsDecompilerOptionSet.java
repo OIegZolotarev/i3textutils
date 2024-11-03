@@ -56,12 +56,18 @@ public class FormsDecompilerOptionSet
         addOption(new GeneratedCodePlacement());
 
         // Шаблоны имен объектов
-        addOption(new StringProjectOption(NEW_ATTRIBUTES_ARRAY_NAME, "Имя массива новых реквизитов",
-            "НовыеРеквизиты"));
 
-        addOption(new StringProjectOption(NEW_ATTRIBUTE_NAME, "Имя нового реквизита", "НовыйРеквизит"));
-        addOption(new StringProjectOption(NEW_COMMAND_NAME, "Имя новой команды", "НоваяКоманда"));
-        addOption(new StringProjectOption(NEW_ELEMENT_NAME, "Имя нового элемента формы", "НовыйЭлемент"));
+        IProjectOption templateNames[] =
+            { new StringProjectOption(NEW_ATTRIBUTES_ARRAY_NAME, "Массив новых реквизитов", "НовыеРеквизиты"),
+                new StringProjectOption(NEW_ATTRIBUTE_NAME, "Нового реквизита", "НовыйРеквизит"),
+                new StringProjectOption(NEW_COMMAND_NAME, "Новой команды", "НоваяКоманда"),
+                new StringProjectOption(NEW_ELEMENT_NAME, "Нового элемента формы", "НовыйЭлемент") };
+
+        for (IProjectOption opt : templateNames)
+        {
+            opt.setGroupName("Имена по умолчанию");
+            addOption(opt);
+        }
     }
 
     public static String ID()
@@ -69,7 +75,7 @@ public class FormsDecompilerOptionSet
         return ID;
     }
 
-    private static class GeneratedCodePlacement
+    public static class GeneratedCodePlacement
         extends EnumProjectOption
     {
         /**
@@ -77,7 +83,7 @@ public class FormsDecompilerOptionSet
          * @param descritption
          * @param defaultValue
          */
-        GeneratedCodePlacement()
+        public GeneratedCodePlacement()
         {
             super(GENERATED_CODE_PLACEMENT, Messages.FormsDecompilerOptionSet_GeneratedCodePlacement, DO_NOTHING);
 

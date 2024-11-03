@@ -3,7 +3,9 @@
  */
 package org.quiteoldorange.i3textutils.formsdecompiler;
 
+import org.eclipse.core.resources.IProject;
 import org.quiteoldorange.i3textutils.preferences.projectoptions.impl.formsdecompiler.FormsDecompilerOptionSet;
+import org.quiteoldorange.i3textutils.preferences.projectoptions.impl.formsdecompiler.FormsDecompilerOptionSet.GeneratedCodePlacementOptions;
 
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
@@ -36,6 +38,8 @@ public class DecompilationSettings
     private ScriptVariant mScriptVariant = ScriptVariant.RUSSIAN;
     private String mNewTypeDescriptionExpression = "Новый ОписаниеТипов"; //$NON-NLS-1$
 
+    private IProject mProject;
+    private GeneratedCodePlacementOptions mGenerateCodePlacement;
 
     public void setRegionDirectiveUsage()
     {
@@ -52,14 +56,16 @@ public class DecompilationSettings
 
     public DecompilationSettings(IV8Project v8Project)
     {
+        mProject = v8Project.getProject();
         mScriptVariant = v8Project.getScriptVariant();
         P.Init(mScriptVariant == ScriptVariant.RUSSIAN);
 
-        boolean useRegions = FormsDecompilerOptionSet.useRegions(v8Project.getProject());
+        boolean useRegions = FormsDecompilerOptionSet.useRegions(mProject);
 
         if (useRegions)
             setRegionDirectiveUsage();
 
+        setGenerateCodePlacement(FormsDecompilerOptionSet.generatedCodePlacement(mProject));
     }
 
     /**
@@ -248,5 +254,20 @@ public class DecompilationSettings
         return true;
     }
 
+    /**
+     * @return
+     */
+    public GeneratedCodePlacementOptions getGenerateCodePlacement()
+    {
+        return mGenerateCodePlacement;
+    }
+
+    /**
+     * @param generateCodePlacement the generateCodePlacement to set
+     */
+    public void setGenerateCodePlacement(GeneratedCodePlacementOptions generateCodePlacement)
+    {
+        mGenerateCodePlacement = generateCodePlacement;
+    }
 
 }

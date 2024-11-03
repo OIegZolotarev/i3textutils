@@ -3,9 +3,11 @@
  */
 package org.quiteoldorange.i3textutils.formsdecompiler.ui.wizard;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
+import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 import org.quiteoldorange.i3textutils.formsdecompiler.ui.DecompilationDialogResult;
 
 /**
@@ -76,6 +78,23 @@ public class DecompilationWizard
     public void updateSelectedItemsDialogResult()
     {
         mPageSelectedItems.updateDialogResult(getDecompilationDialogResult());
+    }
+
+    /**
+     * @return
+     */
+    public IProject getProject()
+    {
+        // TODO Auto-generated method stub
+        return mContext.getProject();
+    }
+
+    /**
+     * @return
+     */
+    public DecompilationSettings getDecompilationSettings()
+    {
+        return mContext.getDecompilationSettings();
     }
 
 }

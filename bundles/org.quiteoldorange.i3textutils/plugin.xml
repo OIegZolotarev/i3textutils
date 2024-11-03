@@ -202,7 +202,7 @@
       <extension
          point="org.eclipse.ui.propertyPages">
       <page
-            class="RootProjectPropertiesPage" 
+            class="org.quiteoldorange.i3textutils.preferences.projectoptions.RootProjectPropertiesPage" 
             id="org.quiteoldorange.i3textutils.projectOptions"
             
             name="%i3ToolsTextGroup">

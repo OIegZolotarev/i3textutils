@@ -30,7 +30,7 @@ public class FormsDecompilerOptionSet
     private static final String NEW_COMMAND_NAME = "templateNameNewCommand"; //$NON-NLS-1$
     private static final String NEW_ELEMENT_NAME = "templateNameNewElement"; //$NON-NLS-1$
 
-    private static final String PLACE_TO_AT_CREATE_AT_SERVER = "placeToAtCreateAtServer"; //$NON-NLS-1$
+    private static final String PLACE_TO_FORM_MODULE = "placeInFormModule"; //$NON-NLS-1$
     private static final String PLACE_TO_COMMON_MODULE = "placeToCommonModule"; //$NON-NLS-1$
     private static final String DO_NOTHING = "doNothing"; //$NON-NLS-1$
 
@@ -39,7 +39,7 @@ public class FormsDecompilerOptionSet
     public static enum GeneratedCodePlacementOptions
     {
         DoNothing,
-        ToAtCreateAtServer,
+        ToFormModule,
         ToCommonModule
     };
 
@@ -90,8 +90,44 @@ public class FormsDecompilerOptionSet
             setWidgetType(WidgetType.RadioGroup);
 
             addValue(Messages.FormsDecompilerOptionSet_Manual, DO_NOTHING);
-            addValue(Messages.FormsDecompilerOptionSet_ToAtCreateAtServer, PLACE_TO_AT_CREATE_AT_SERVER);
+            addValue(Messages.FormsDecompilerOptionSet_ToFormModule, PLACE_TO_FORM_MODULE);
             addValue(Messages.FormsDecompilerOptionSet_ToCommonModule, PLACE_TO_COMMON_MODULE);
+        }
+
+        /**
+         * @param generateCodePlacement
+         */
+        public void setValue(GeneratedCodePlacementOptions generateCodePlacement)
+        {
+            switch (generateCodePlacement)
+            {
+            case DoNothing:
+                setValue(DO_NOTHING);
+                break;
+            case ToCommonModule:
+                setValue(PLACE_TO_COMMON_MODULE);
+                break;
+            case ToFormModule:
+                setValue(PLACE_TO_FORM_MODULE);
+                break;
+            default:
+                break;
+
+            }
+
+            updateWidgetState();
+        }
+
+        public GeneratedCodePlacementOptions generatedCodePlacement()
+        {
+            if (getValue().equals(DO_NOTHING))
+                return GeneratedCodePlacementOptions.DoNothing;
+            else if (getValue().equals(PLACE_TO_FORM_MODULE))
+                return GeneratedCodePlacementOptions.ToFormModule;
+            else if (getValue().equals(PLACE_TO_COMMON_MODULE))
+                return GeneratedCodePlacementOptions.ToCommonModule;
+
+            return null;
         }
 
     }
@@ -109,14 +145,8 @@ public class FormsDecompilerOptionSet
         ProjectOptionsSet options = i3TextUtilsPlugin.getProjectOptionsManager().getProjectOptionsSet(project, ID);
         IProjectOption opt = options.getOption(GENERATED_CODE_PLACEMENT);
 
-        if (opt.getValue().equals(DO_NOTHING))
-            return GeneratedCodePlacementOptions.DoNothing;
-        else if (opt.getValue().equals(PLACE_TO_AT_CREATE_AT_SERVER))
-            return GeneratedCodePlacementOptions.ToAtCreateAtServer;
-        else if (opt.getValue().equals(PLACE_TO_COMMON_MODULE))
-            return GeneratedCodePlacementOptions.ToCommonModule;
-
-        return null;
+        GeneratedCodePlacement optCasted = (GeneratedCodePlacement)opt;
+        return optCasted.generatedCodePlacement();
     }
 
 }

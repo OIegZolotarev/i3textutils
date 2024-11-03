@@ -3,6 +3,9 @@
  */
 package org.quiteoldorange.i3textutils.preferences.projectoptions;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -22,6 +25,8 @@ public abstract class IProjectOption
 
     private String mGroupName;
     private String mValue;
+
+    private List<ProjectOptionObserver> mObservers = null;
 
     protected IProjectOption(String key, String descritption, String defaultValue)
     {
@@ -67,6 +72,7 @@ public abstract class IProjectOption
     protected void setValue(String value)
     {
         mValue = value;
+        notifyObservers();
     }
 
     /**
@@ -75,6 +81,28 @@ public abstract class IProjectOption
     public void setDefault()
     {
         mValue = mDefaultValue;
+        notifyObservers();
+    }
+
+    public void addObserver(ProjectOptionObserver observer)
+    {
+        if (mObservers == null)
+        {
+            mObservers = new LinkedList<>();
+        }
+
+        mObservers.add(observer);
+    }
+
+    private void notifyObservers()
+    {
+        if (mObservers == null)
+            return;
+
+        for (ProjectOptionObserver obs : mObservers)
+        {
+            obs.onValueChanged(this);
+        }
     }
 
     /**

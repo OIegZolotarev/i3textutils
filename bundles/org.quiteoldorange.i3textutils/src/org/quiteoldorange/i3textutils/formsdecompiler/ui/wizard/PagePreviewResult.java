@@ -10,7 +10,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationContext;
+import org.quiteoldorange.i3textutils.formsdecompiler.DecompilationSettings;
 import org.quiteoldorange.i3textutils.formsdecompiler.ui.fragments.DecompilationItemsSelector;
+import org.quiteoldorange.i3textutils.preferences.projectoptions.IProjectOption;
+import org.quiteoldorange.i3textutils.preferences.projectoptions.ProjectOptionObserver;
+import org.quiteoldorange.i3textutils.preferences.projectoptions.impl.formsdecompiler.FormsDecompilerOptionSet;
+import org.quiteoldorange.i3textutils.preferences.projectoptions.impl.formsdecompiler.FormsDecompilerOptionSet.GeneratedCodePlacement;
 
 /**
  * @author ozolotarev
@@ -18,6 +23,7 @@ import org.quiteoldorange.i3textutils.formsdecompiler.ui.fragments.Decompilation
  */
 public class PagePreviewResult
     extends WizardPage
+    implements ProjectOptionObserver
 {
 
     @Override
@@ -27,6 +33,10 @@ public class PagePreviewResult
         if (visible)
         {
             mWizard.updateSelectedItemsDialogResult();
+
+            DecompilationSettings cfg = mWizard.getDecompilationSettings();
+            mGenerationOption.setValue(cfg.getGenerateCodePlacement());
+
             mEditor.setText(mWizard.generatePreviewSourceCode());
         }
 
@@ -38,6 +48,7 @@ public class PagePreviewResult
     private Composite mContainer;
     private DecompilationWizard mWizard;
     private Text mEditor;
+    private GeneratedCodePlacement mGenerationOption;
 
     protected PagePreviewResult(DecompilationContext context, DecompilationWizard wizard)
     {
@@ -62,12 +73,17 @@ public class PagePreviewResult
         GridLayout layout = new GridLayout();
         mContainer.setLayout(layout);
 
+        mGenerationOption = new FormsDecompilerOptionSet.GeneratedCodePlacement();
+        mGenerationOption.createWidget(mContainer);
+
+
+
+        mGenerationOption.addObserver(this);
 //
 //        BslXtextEditor editor = new BslXtextEditor();
 //        editor.createPartControl(mContainer);
 
         mEditor = new Text(mContainer, SWT.MULTI | SWT.BORDER);
-
         mEditor.setText("Привет мир!");
 
         GridData sFillAll = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -76,6 +92,14 @@ public class PagePreviewResult
 
         setControl(mContainer);
 
+    }
+
+    @Override
+    public void onValueChanged(IProjectOption option)
+    {
+        mWizard.getDecompilationSettings().setGenerateCodePlacement(mGenerationOption.generatedCodePlacement());
+
+        mEditor.setText(mWizard.generatePreviewSourceCode());
     }
 
 }

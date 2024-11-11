@@ -39,7 +39,7 @@ public class DecompilationSettings
     private String mNewTypeDescriptionExpression = "Новый ОписаниеТипов"; //$NON-NLS-1$
 
     private IProject mProject;
-    private GeneratedCodePlacementOptions mGenerateCodePlacement;
+    private GeneratedCodePlacementOptions mGeneratedCodePlacement;
 
     public void setRegionDirectiveUsage()
     {
@@ -65,7 +65,7 @@ public class DecompilationSettings
         if (useRegions)
             setRegionDirectiveUsage();
 
-        setGenerateCodePlacement(FormsDecompilerOptionSet.generatedCodePlacement(mProject));
+        setGeneratedCodePlacement(FormsDecompilerOptionSet.generatedCodePlacement(mProject));
     }
 
     /**
@@ -257,17 +257,17 @@ public class DecompilationSettings
     /**
      * @return
      */
-    public GeneratedCodePlacementOptions getGenerateCodePlacement()
+    public GeneratedCodePlacementOptions getGeneratedCodePlacement()
     {
-        return mGenerateCodePlacement;
+        return mGeneratedCodePlacement;
     }
 
     /**
      * @param generateCodePlacement the generateCodePlacement to set
      */
-    public void setGenerateCodePlacement(GeneratedCodePlacementOptions generateCodePlacement)
+    public void setGeneratedCodePlacement(GeneratedCodePlacementOptions generateCodePlacement)
     {
-        mGenerateCodePlacement = generateCodePlacement;
+        mGeneratedCodePlacement = generateCodePlacement;
     }
 
 }

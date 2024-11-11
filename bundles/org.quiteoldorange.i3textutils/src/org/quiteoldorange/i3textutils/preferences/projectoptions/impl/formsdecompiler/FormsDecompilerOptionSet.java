@@ -127,7 +127,7 @@ public class FormsDecompilerOptionSet
             else if (getValue().equals(PLACE_TO_COMMON_MODULE))
                 return GeneratedCodePlacementOptions.ToCommonModule;
 
-            return null;
+            return GeneratedCodePlacementOptions.DoNothing;
         }
 
     }

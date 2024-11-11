@@ -72,7 +72,7 @@ public class DecompilationWizard
      */
     public String generatePreviewSourceCode()
     {
-        return mContext.generateCode();
+        return mContext.generateCodePreview();
     }
 
     public void updateSelectedItemsDialogResult()

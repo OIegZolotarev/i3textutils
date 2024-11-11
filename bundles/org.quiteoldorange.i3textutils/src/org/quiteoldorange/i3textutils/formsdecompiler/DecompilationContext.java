@@ -20,6 +20,7 @@ import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormCommand;
 import com._1c.g5.v8.dt.form.model.FormItem;
+import com._1c.g5.v8.dt.form.ui.editor.FormEditor;
 
 /**
  * @author ozolotarev
@@ -35,13 +36,17 @@ public class DecompilationContext
     private List<FormItemUnit> mFormItems = new LinkedList<>();
     private DecompilationDialogResult mDialogResult = new DecompilationDialogResult();
     private IV8Project mV8Project;
+    private FormEditor mFormEditor;
 
-    public DecompilationContext(Form form, IV8Project v8Project)
+    public DecompilationContext(FormEditor formEditor)
     {
+        mFormEditor = formEditor;
+        mForm = formEditor.getForm();
+        IV8Project v8Project = formEditor.getV8projectManager().getProject(mForm.bmGetEngine().getId());
+
         mV8Project = v8Project;
         mSettings = new DecompilationSettings(v8Project);
 
-        mForm = form;
 
         EList<FormAttribute> attributes = mForm.getAttributes();
 
@@ -102,9 +107,9 @@ public class DecompilationContext
     /**
      * @return
      */
-    public String generateCode()
+    public String generateCodePreview()
     {
-        GeneratedCodePlacementOptions codePlacement = mSettings.getGenerateCodePlacement();
+        GeneratedCodePlacementOptions codePlacement = mSettings.getGeneratedCodePlacement();
 
         switch (codePlacement)
         {
@@ -113,7 +118,7 @@ public class DecompilationContext
         case ToCommonModule:
             break;
         case ToFormModule:
-            break;
+            return generateCodeToFormModule();
         default:
             break;
 
@@ -121,6 +126,29 @@ public class DecompilationContext
         return "";
 
 
+    }
+
+    /**
+     * @return
+     */
+    private String generateCodeToFormModule()
+    {
+
+        // Шайтан-код чтобы достать модуль формы из редактора.
+        //        FormEditorModulePage mp = (FormEditorModulePage)mFormEditor.findPage("editors.form.pages.module");
+        //        XtextEditor editor = mp.getAdapter(XtextEditor.class);
+        //
+        //        String formModuleSrc = editor.getDocument().get();
+
+        // 1) Достать текст "ПриСозданииНаСервере"
+        // 2) Вставить туда вызов генерации формы
+        // 3) Вставить следом процедуру генерации формы
+
+
+        // 4) При внесении изменении обновить "ПриСозданииНаСервере" и добавить процедуру генерации
+        // 5) (Опционально) удалить элементы?
+
+        return "";
     }
 
     private String generateCodeForManualEditing()

@@ -35,7 +35,7 @@ public class PagePreviewResult
             mWizard.updateSelectedItemsDialogResult();
 
             DecompilationSettings cfg = mWizard.getDecompilationSettings();
-            mGenerationOption.setValue(cfg.getGenerateCodePlacement());
+            mGenerationOption.setValue(cfg.getGeneratedCodePlacement());
 
             mEditor.setText(mWizard.generatePreviewSourceCode());
         }
@@ -97,7 +97,7 @@ public class PagePreviewResult
     @Override
     public void onValueChanged(IProjectOption option)
     {
-        mWizard.getDecompilationSettings().setGenerateCodePlacement(mGenerationOption.generatedCodePlacement());
+        mWizard.getDecompilationSettings().setGeneratedCodePlacement(mGenerationOption.generatedCodePlacement());
 
         mEditor.setText(mWizard.generatePreviewSourceCode());
     }

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.Attribute;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.DecompilationUnit;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormCommandUnit;
@@ -16,11 +17,14 @@ import org.quiteoldorange.i3textutils.formsdecompiler.ui.DecompilationDialogResu
 import org.quiteoldorange.i3textutils.preferences.projectoptions.impl.formsdecompiler.FormsDecompilerOptionSet.GeneratedCodePlacementOptions;
 
 import com._1c.g5.v8.dt.core.platform.IV8Project;
+import com._1c.g5.v8.dt.form.model.EventHandler;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormCommand;
 import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.ui.editor.FormEditor;
+import com._1c.g5.v8.dt.form.ui.editor.FormEditorModulePage;
+import com._1c.g5.v8.dt.mcore.Event;
 
 /**
  * @author ozolotarev
@@ -118,7 +122,7 @@ public class DecompilationContext
         case ToCommonModule:
             break;
         case ToFormModule:
-            return generateCodeToFormModule();
+            return generateCodePreviewToFormModule();
         default:
             break;
 
@@ -131,7 +135,7 @@ public class DecompilationContext
     /**
      * @return
      */
-    private String generateCodeToFormModule()
+    private String generateCodePreviewToFormModule()
     {
 
         // Шайтан-код чтобы достать модуль формы из редактора.
@@ -148,7 +152,78 @@ public class DecompilationContext
         // 4) При внесении изменении обновить "ПриСозданииНаСервере" и добавить процедуру генерации
         // 5) (Опционально) удалить элементы?
 
-        return "";
+
+        FormEditorModulePage mp = (FormEditorModulePage)mFormEditor.findPage("editors.form.pages.module");
+
+        if (mp == null)
+        {
+            // TODO: как-то внятно поругаться?
+        }
+
+        XtextEditor editor = mp.getAdapter(XtextEditor.class);
+        String formModuleSrc = editor.getDocument().get();
+
+        // "ПриСозданииНаСервере" помимо того что может называться по английский
+        // так еще и произвольно, а может и не быть вовсе, правильно будет достать из обработчиков событий формы
+
+        Event onCreateAtServer = findFormEvent("OnCreateAtServer");
+
+        if (onCreateAtServer == null)
+        {
+            // WTF?
+            return "У формы нет события \"ПриСозданииНаСервере\"";
+        }
+
+        EventHandler handler = findEventHandler(onCreateAtServer);
+
+        String onCreateAtServerSubroutine = null;
+
+        if (handler == null)
+        {
+            onCreateAtServerSubroutine = defaultOnCreateAtServerSubroutine();
+            // mForm.getHandlers().add(handler);
+        }
+        else
+            onCreateAtServerSubroutine = handler.getName();
+
+
+        return handler.getName();
+    }
+
+    private String defaultOnCreateAtServerSubroutine()
+    {
+        switch (mSettings.scriptVariant())
+        {
+        case ENGLISH:
+            return "OnCreateAtServer"; //$NON-NLS-1$
+        case RUSSIAN:
+            return "ПриСозданииНаСервере"; //$NON-NLS-1$
+        default:
+            return "ПриСозданииНаСервере"; //$NON-NLS-1$
+        }
+
+    }
+
+    private Event findFormEvent(String eventName)
+    {
+        for (Event ev : mForm.getFormEvents())
+        {
+            if (ev.getName().equals(eventName))
+                return ev;
+        }
+
+        return null;
+    }
+
+    private EventHandler findEventHandler(Event event)
+    {
+        for (EventHandler evh : mForm.getHandlers())
+        {
+            if (evh.getEvent() == event)
+                return evh;
+        }
+
+        return null;
     }
 
     private String generateCodeForManualEditing()

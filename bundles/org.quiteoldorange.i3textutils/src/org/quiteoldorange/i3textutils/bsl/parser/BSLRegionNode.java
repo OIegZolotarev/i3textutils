@@ -22,7 +22,7 @@ public class BSLRegionNode
     public String serialize(ScriptVariant variant) throws Exception
     {
         StringBuilder builder = new StringBuilder();
-        builder.append(String.format("%s %s\n", Token.getKeywordValue(Type.PreprocessorRegion, variant), mRegionName)); //$NON-NLS-1$
+        builder.append(String.format("%s %s", Token.getKeywordValue(Type.PreprocessorRegion, variant), mRegionName)); //$NON-NLS-1$
 
         for (AbsractBSLElementNode node : getChildren())
         {
@@ -51,6 +51,7 @@ public class BSLRegionNode
         mRegionName = token.getValue();
 
         ParseUntilEndingToken(stream, Type.PreprocessorEndRegion);
+
     }
 
     public int getIdealOrder()

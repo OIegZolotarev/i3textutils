@@ -93,12 +93,14 @@ public class Lexer
                 }
                 else
                 {
-                    mOffset++;
-                    mRow++;
-                    mColumn = 1;
+
 
                     if (accumulator.isEmpty())
                     {
+                        mOffset++;
+                        mRow++;
+                        mColumn = 1;
+
                         accumulator += curChar;
                         Token.Type type = Token.CalculateTokenType(accumulator);
                         mTokensStack.push(new Token(type, accumulator, tokenStart, startingRow, mColumn));

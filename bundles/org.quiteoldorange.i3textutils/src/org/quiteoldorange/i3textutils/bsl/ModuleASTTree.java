@@ -14,6 +14,7 @@ import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLRegionNode;
 import org.quiteoldorange.i3textutils.bsl.parser.CommentNode;
 import org.quiteoldorange.i3textutils.bsl.parser.CommentsBlock;
+import org.quiteoldorange.i3textutils.bsl.parser.EmptyLineNode;
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode;
 import org.quiteoldorange.i3textutils.bsl.parser.expressions.MethodCallNode;
 
@@ -99,9 +100,31 @@ public class ModuleASTTree
         var children = node.getChildren();
         MethodNode methodNode = null;
 
+        for (int i = children.size() - 1; i >= 1; i--)
+        {
+            var node1 = children.get(i);
+            var node2 = children.get(i - 1);
+
+            if (node1 instanceof EmptyLineNode && node2 instanceof CommentsBlock)
+            {
+                CommentsBlock cb = (CommentsBlock)node2;
+                cb.addChildren(node1);
+
+                children.remove(i);
+            }
+            else if (node1 instanceof EmptyLineNode && node2 instanceof AnnotationNode)
+            {
+                AnnotationNode cb = (AnnotationNode)node2;
+                cb.addChildren(node1);
+
+                children.remove(i);
+            }
+        }
+
         for (var iterator = children.listIterator(children.size()); iterator.hasPrevious();)
         {
             var childNode = iterator.previous();
+            AbsractBSLElementNode childNode2 = null;
 
             if (childNode instanceof MethodNode)
             {
@@ -116,7 +139,9 @@ public class ModuleASTTree
             else if (childNode instanceof AnnotationNode)
             {
                 if (methodNode != null)
+                {
                     methodNode.addAnnotation((AnnotationNode)childNode);
+                }
             }
             else if (childNode instanceof CommentsBlock)
             {

@@ -68,34 +68,53 @@ public class AnnotationNode
     }
 
     @Override
-    public String serialize(ScriptVariant scriptVariant)
+    public String serialize(ScriptVariant scriptVariant) throws Exception
     {
+        String r = ""; //$NON-NLS-1$
+
         switch (mType)
         {
         case After:
-            return String.format("%s(\"%s\")\n", Token.getKeywordValue(Type.AnnotationAfter, scriptVariant), //$NON-NLS-1$
+            r = String.format("%s(\"%s\")", Token.getKeywordValue(Type.AnnotationAfter, scriptVariant), //$NON-NLS-1$
                 mExtendedMethodName);
+            break;
         case Around:
-            return String.format("%s(\"%s\")\n", Token.getKeywordValue(Type.AnnotationAround, scriptVariant), //$NON-NLS-1$
+            r = String.format("%s(\"%s\")", Token.getKeywordValue(Type.AnnotationAround, scriptVariant), //$NON-NLS-1$
                 mExtendedMethodName);
+            break;
         case AtClient:
-            return String.format("%s\n", Token.getKeywordValue(Type.AnnotationAtClient, scriptVariant)); //$NON-NLS-1$
+            r = String.format("%s", Token.getKeywordValue(Type.AnnotationAtClient, scriptVariant)); //$NON-NLS-1$
+            break;
         case AtClientAtServerNoContext:
-            return String.format("%s\n", //$NON-NLS-1$
+            r = String.format("%s", //$NON-NLS-1$
                 Token.getKeywordValue(Type.AnnotationAtClientAtServerNoContext, scriptVariant));
+            break;
         case AtServer:
-            return String.format("%s\n", Token.getKeywordValue(Type.AnnotationAtServer, scriptVariant)); //$NON-NLS-1$
+            r = String.format("%s", Token.getKeywordValue(Type.AnnotationAtServer, scriptVariant)); //$NON-NLS-1$
+            break;
         case AtServerNoContext:
-            return String.format("%s\n", Token.getKeywordValue(Type.AnnotationAtServerNoContext, scriptVariant)); //$NON-NLS-1$
+            r = String.format("%s", Token.getKeywordValue(Type.AnnotationAtServerNoContext, scriptVariant)); //$NON-NLS-1$
+            break;
         case Before:
-            return String.format("%s(\"%s\")\n", Token.getKeywordValue(Type.AnnotationBefore, scriptVariant), //$NON-NLS-1$
+            r = String.format("%s(\"%s\")", Token.getKeywordValue(Type.AnnotationBefore, scriptVariant), //$NON-NLS-1$
                 mExtendedMethodName);
+            break;
         case ChangesAndValidate:
-            return String.format("%s(\"%s\")\n", Token.getKeywordValue(Type.AnnotationChangeAndValidate, scriptVariant), //$NON-NLS-1$
+            r = String.format("%s(\"%s\")", Token.getKeywordValue(Type.AnnotationChangeAndValidate, scriptVariant), //$NON-NLS-1$
                 mExtendedMethodName);
+            break;
         default:
-            return ""; //$NON-NLS-1$
+            r = ""; //$NON-NLS-1$
         }
+
+        StringBuilder b = new StringBuilder();
+
+        b.append(r);
+
+        for(var child: getChildren())
+            b.append(child.serialize(scriptVariant));
+
+        return b.toString();
     }
 
     /**

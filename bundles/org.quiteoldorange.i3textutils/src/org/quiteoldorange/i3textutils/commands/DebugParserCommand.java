@@ -8,9 +8,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.xtext.ui.editor.XtextEditor;
@@ -27,6 +25,7 @@ import com._1c.g5.v8.dt.bsl.model.impl.InvocationImpl;
 import com._1c.g5.v8.dt.bsl.model.impl.SimpleStatementImpl;
 import com._1c.g5.v8.dt.bsl.ui.BslDocumentationProvider;
 import com._1c.g5.v8.dt.mcore.Method;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 
 public class DebugParserCommand
@@ -47,13 +46,24 @@ public class DebugParserCommand
         XtextEditor target = part.getAdapter(XtextEditor.class);
 
         Lexer lex = new Lexer(doc.get());
-        @SuppressWarnings("unused")
+        lex.setLazyMode(true);
+
         ModuleASTTree tree = new ModuleASTTree(lex);
 
-        final MessageBox box = new MessageBox(new Shell(), SWT.OK);
-        box.setMessage("Debug");
-        box.setText(String.format("isFailedToParse=%d", tree.isFailedToParse() ? 1 : 0));
-        box.open();
+        try
+        {
+            doc.replace(0, doc.getLength(), tree.serialize(ScriptVariant.RUSSIAN));
+        }
+        catch (BadLocationException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         return null;
     }

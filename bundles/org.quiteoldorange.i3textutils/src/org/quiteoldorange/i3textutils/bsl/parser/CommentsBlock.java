@@ -18,7 +18,7 @@ public class CommentsBlock
     @Override
     public String serialize(ScriptVariant scriptVariant) throws Exception
     {
-        return serializeChildren(scriptVariant, true);
+        return serializeChildren(scriptVariant, false);
     }
 
     /**

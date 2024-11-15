@@ -63,13 +63,11 @@ public class MethodNode
 
             var node = iterator.next();
 
-            if (!(node instanceof CommentsBlock || node instanceof AnnotationNode))
+            if (!(node instanceof CommentsBlock || node instanceof AnnotationNode || node instanceof EmptyLineNode))
                 break;
 
             builder.append(node.serialize(scriptVariant));
         }
-
-
 
         if (lazyMode)
         {

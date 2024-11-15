@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
+import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLRegionNode;
 import org.quiteoldorange.i3textutils.refactoring.Utils;
 
@@ -26,7 +27,11 @@ public class ModuleRegionsReorderer
         String templateSource = Utils.getBSLModuleTemplate(moduleModel.getModuleType(), null);
 
         ModuleASTTree templateTree = new ModuleASTTree(templateSource);
-        ModuleASTTree sourceTree = new ModuleASTTree(doc.get());
+
+        Lexer lexer = new Lexer(doc.get());
+        lexer.setLazyMode(true);
+
+        ModuleASTTree sourceTree = new ModuleASTTree(lexer);
 
         List<BSLRegionNode> topRegions = sourceTree.dumpTopRegions();
         List<BSLRegionNode> topRegionsTemplate = templateTree.dumpTopRegions();

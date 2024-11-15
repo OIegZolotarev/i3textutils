@@ -69,48 +69,52 @@ public class MethodNode
             builder.append(node.serialize(scriptVariant));
         }
 
-        // Формирование объявления
-        switch (mType)
-        {
-        case Function:
-            builder.append(Token.getKeywordValue(Type.BeginFunction, scriptVariant));
-            break;
-        case Procedure:
-            builder.append(Token.getKeywordValue(Type.BeginProcedure, scriptVariant));
-            break;
-        default:
-            break;
-        }
 
-        builder.append(" "); //$NON-NLS-1$
-        builder.append(mMethodName);
-
-        builder.append("("); //$NON-NLS-1$
-
-        ArgumentDefinition firstArg = mArguments.get(0);
-
-        for (ArgumentDefinition def : mArguments)
-        {
-            if (def != firstArg)
-                builder.append(", "); //$NON-NLS-1$
-
-            builder.append(def.serialize(scriptVariant));
-        }
-
-        builder.append(")"); //$NON-NLS-1$
-
-        if (isExported())
-        {
-            builder.append(" "); //$NON-NLS-1$
-            builder.append(Token.getKeywordValue(Type.Export, scriptVariant));
-        }
-
-        builder.append("\n"); //$NON-NLS-1$
 
         if (lazyMode)
         {
             builder.append(getLazySource());
             return builder.toString();
+        }
+        else
+        {
+            // Формирование объявления
+            switch (mType)
+            {
+            case Function:
+                builder.append(Token.getKeywordValue(Type.BeginFunction, scriptVariant));
+                break;
+            case Procedure:
+                builder.append(Token.getKeywordValue(Type.BeginProcedure, scriptVariant));
+                break;
+            default:
+                break;
+            }
+
+            builder.append(" "); //$NON-NLS-1$
+            builder.append(mMethodName);
+
+            builder.append("("); //$NON-NLS-1$
+
+            ArgumentDefinition firstArg = mArguments.get(0);
+
+            for (ArgumentDefinition def : mArguments)
+            {
+                if (def != firstArg)
+                    builder.append(", "); //$NON-NLS-1$
+
+                builder.append(def.serialize(scriptVariant));
+            }
+
+            builder.append(")"); //$NON-NLS-1$
+
+            if (isExported())
+            {
+                builder.append(" "); //$NON-NLS-1$
+                builder.append(Token.getKeywordValue(Type.Export, scriptVariant));
+            }
+
+            builder.append("\n"); //$NON-NLS-1$
         }
 
         while (true)

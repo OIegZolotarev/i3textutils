@@ -11,30 +11,33 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
  * @author ozolotarev
  *
  */
-public class EmptyLineNode
+public class InjectionNode
     extends AbsractBSLElementNode
 {
+
+    private String mInjectedCode;
 
     @Override
     public String serialize(ScriptVariant scriptVariant) throws Exception
     {
-        return "\n"; //$NON-NLS-1$
-    }
-
-    @Override
-    public String toString()
-    {
-        return "<Пустая строка>"; //$NON-NLS-1$
+        return mInjectedCode;
     }
 
     /**
      * @param stream
-     * @param parent TODO
      */
-    public EmptyLineNode(Lexer stream, AbsractBSLElementNode parent)
+    private InjectionNode(Lexer stream)
     {
         super(stream);
-        // TODO Auto-generated constructor stub
+    }
+
+    /**
+     * @param stream
+     */
+    public InjectionNode(String code)
+    {
+        super(null);
+        mInjectedCode = code;
     }
 
 }

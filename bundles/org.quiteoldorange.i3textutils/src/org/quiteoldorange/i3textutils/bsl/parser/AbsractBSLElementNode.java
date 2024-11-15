@@ -14,6 +14,7 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedToken;
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode.MethodTypes;
+import org.quiteoldorange.i3textutils.bsl.parser.expressions.ExpressionEndNode;
 import org.quiteoldorange.i3textutils.bsl.parser.expressions.ExpressionNode;
 
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
@@ -178,9 +179,9 @@ public class AbsractBSLElementNode
                 }
             case OperatorWhile:
                 return new WhileLoopNode(stream, this);
-            // Какая-то нода недочитала до конца - пропускаем, чтобы упереться
             case ExpressionEnd:
-                return null;
+                addChildren(new ExpressionEndNode(stream));
+                break;
             case OperatorTry:
                 return new TryCatchNode(stream);
             default:
@@ -231,7 +232,7 @@ public class AbsractBSLElementNode
      */
     public String serialize(ScriptVariant scriptVariant) throws Exception
     {
-        return ""; //$NON-NLS-1$
+        return "";
     }
 
     public String serializeChildren(ScriptVariant variant, boolean addNewline) throws Exception

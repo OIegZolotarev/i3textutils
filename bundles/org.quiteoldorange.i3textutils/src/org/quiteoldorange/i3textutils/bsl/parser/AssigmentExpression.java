@@ -11,6 +11,8 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
 import org.quiteoldorange.i3textutils.bsl.parser.expressions.ExpressionNode;
 
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+
 /**
  * @author ozolotarev
  *
@@ -19,9 +21,15 @@ public class AssigmentExpression
     extends AbsractBSLElementNode
 {
     @Override
-    public String toString()
+    public String serialize(ScriptVariant scriptVariant) throws Exception
     {
         // TODO Auto-generated method stub
+        return String.format("%s = %s", mVariableName, getChildren().get(0).serialize(scriptVariant)); //$NON-NLS-1$
+    }
+
+    @Override
+    public String toString()
+    {
         return String.format("%s = %s", mVariableName, getChildren().get(0).toString()); //$NON-NLS-1$
     }
 

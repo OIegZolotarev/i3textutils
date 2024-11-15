@@ -9,6 +9,9 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.ui.editor.XtextEditor;
+import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
+import org.quiteoldorange.i3textutils.bsl.parser.InjectionNode;
+import org.quiteoldorange.i3textutils.bsl.parser.MethodNode;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.Attribute;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.DecompilationUnit;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormCommandUnit;
@@ -122,7 +125,15 @@ public class DecompilationContext
         case ToCommonModule:
             break;
         case ToFormModule:
-            return generateCodePreviewToFormModule();
+            try
+            {
+                return generateCodePreviewToFormModule();
+            }
+            catch (Exception e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         default:
             break;
 
@@ -134,8 +145,9 @@ public class DecompilationContext
 
     /**
      * @return
+     * @throws Exception
      */
-    private String generateCodePreviewToFormModule()
+    private String generateCodePreviewToFormModule() throws Exception
     {
 
         // Шайтан-код чтобы достать модуль формы из редактора.
@@ -158,6 +170,7 @@ public class DecompilationContext
         if (mp == null)
         {
             // TODO: как-то внятно поругаться?
+            return "";
         }
 
         XtextEditor editor = mp.getAdapter(XtextEditor.class);
@@ -166,12 +179,12 @@ public class DecompilationContext
         // "ПриСозданииНаСервере" помимо того что может называться по английский
         // так еще и произвольно, а может и не быть вовсе, правильно будет достать из обработчиков событий формы
 
-        Event onCreateAtServer = findFormEvent("OnCreateAtServer");
+        Event onCreateAtServer = findFormEvent("OnCreateAtServer"); //$NON-NLS-1$
 
         if (onCreateAtServer == null)
         {
             // WTF?
-            return "У формы нет события \"ПриСозданииНаСервере\"";
+            return "У формы нет события \"ПриСозданииНаСервере\""; //$NON-NLS-1$
         }
 
         EventHandler handler = findEventHandler(onCreateAtServer);
@@ -186,8 +199,25 @@ public class DecompilationContext
         else
             onCreateAtServerSubroutine = handler.getName();
 
+        ModuleASTTree tree = new ModuleASTTree(formModuleSrc);
 
-        return handler.getName();
+        MethodNode onCreateAtServerSource = tree.findMethodDefinition(onCreateAtServerSubroutine);
+
+        if (onCreateAtServerSource == null)
+        {
+            return "<Назначенный обработчик \"ПриСозданииНаСервере\" не найден в модуле формы>";
+        }
+
+        StringBuilder injectedBuilder = new StringBuilder();
+
+        injectedBuilder.append("\n//{{I3_TEXUTILS_FORMS_DECOMPILER\n");
+        injectedBuilder.append("ДобавитьЭлементыФормы();\n");
+        injectedBuilder.append("//}}I3_TEXUTILS_FORMS_DECOMPILER\n");
+
+        InjectionNode subroutineCall = new InjectionNode(injectedBuilder.toString());
+        onCreateAtServerSource.addChildren(subroutineCall);
+
+        return onCreateAtServerSource.serialize(mSettings.scriptVariant());
     }
 
     private String defaultOnCreateAtServerSubroutine()
@@ -230,9 +260,63 @@ public class DecompilationContext
     {
         CodeGenerator b = new CodeGenerator(mSettings);
 
-        // Реквизиты
+        generateAttributesBlock(b, mDialogResult.getSelectedAttributes());
+        generateCommandsBlock(b, mDialogResult.getSelectedCommands());
+        generateItemsBlock(b, mDialogResult.getSelectedFormItems());
 
-        List<Attribute> attributes = mDialogResult.getSelectedAttributes();
+        return b.toString();
+    }
+
+    /**
+     * @param b
+     * @param formItems
+     */
+    private void generateItemsBlock(CodeGenerator b, List<FormItemUnit> formItems)
+    {
+        if (formItems.size() > 0)
+        {
+            b.append("\n");
+
+            b.append(mSettings.getFormItemsStartSection() + "\n");
+
+            for (DecompilationUnit item : formItems)
+            {
+                item.decompile(b);
+                b.append("\n");
+            }
+
+            b.append("\n" + mSettings.getFormItemsEndSection() + "\n");
+        }
+    }
+
+    /**
+     * @param b
+     * @param commands
+     */
+    private void generateCommandsBlock(CodeGenerator b, List<FormCommandUnit> commands)
+    {
+        if (commands.size() > 0)
+        {
+            b.append("\n");
+
+            b.append(mSettings.getCommandsStartSection() + "\n");
+
+            for (DecompilationUnit item : commands)
+            {
+                item.decompile(b);
+                b.append("\n");
+            }
+
+            b.append("\n" + mSettings.getCommandsEndSection() + "\n");
+        }
+    }
+
+    /**
+     * @param b
+     * @param attributes
+     */
+    private void generateAttributesBlock(CodeGenerator b, List<Attribute> attributes)
+    {
         if (attributes.size() > 0)
         {
 
@@ -250,46 +334,6 @@ public class DecompilationContext
 
             b.append("\n" + mSettings.getAttributesEndSection());
         }
-
-        // Команды
-
-        List<FormCommandUnit> commands = mDialogResult.getSelectedCommands();
-
-        if (commands.size() > 0)
-        {
-            b.append("\n");
-
-            b.append(mSettings.getCommandsStartSection() + "\n");
-
-            for (DecompilationUnit item : commands)
-            {
-                item.decompile(b);
-                b.append("\n");
-            }
-
-            b.append("\n" + mSettings.getCommandsEndSection() + "\n");
-        }
-
-        // Элементы формы
-
-        List<FormItemUnit> formItems = mDialogResult.getSelectedFormItems();
-
-        if (formItems.size() > 0)
-        {
-            b.append("\n");
-
-            b.append(mSettings.getFormItemsStartSection() + "\n");
-
-            for (DecompilationUnit item : formItems)
-            {
-                item.decompile(b);
-                b.append("\n");
-            }
-
-            b.append("\n" + mSettings.getFormItemsEndSection() + "\n");
-        }
-
-        return b.toString();
     }
 
     /**

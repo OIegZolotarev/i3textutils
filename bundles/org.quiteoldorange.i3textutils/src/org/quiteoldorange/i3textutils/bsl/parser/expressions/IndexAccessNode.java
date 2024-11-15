@@ -11,6 +11,8 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.parser.AbsractBSLElementNode;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException;
 
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+
 /**
  * @author ozolotarev
  *
@@ -20,6 +22,12 @@ public class IndexAccessNode
     implements IOperationNode
 {
 
+
+    @Override
+    public String serialize(ScriptVariant scriptVariant) throws Exception
+    {
+        return String.format("%s[%s]", mCollection.serialize(scriptVariant), mExpression.serialize(scriptVariant)); //$NON-NLS-1$
+    }
 
     private ExpressionNode mExpression;
     private AbsractBSLElementNode mCollection;

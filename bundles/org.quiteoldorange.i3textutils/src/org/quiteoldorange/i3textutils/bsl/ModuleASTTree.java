@@ -323,4 +323,31 @@ public class ModuleASTTree
         return mParsingError;
     }
 
+    /**
+     * @param name
+     * @return
+     */
+    public MethodNode findMethodDefinition(String name)
+    {
+        for (AbsractBSLElementNode it : getChildren())
+        {
+            if (it instanceof BSLRegionNode)
+            {
+                BSLRegionNode region = (BSLRegionNode)it;
+                MethodNode node = region.findMethodDefinition(name);
+
+                if (node != null)
+                    return node;
+            }
+            else if (it instanceof MethodNode)
+            {
+                MethodNode node = (MethodNode)(it);
+                if (name.equals(node.getMethodName()))
+                    return node;
+            }
+        }
+
+        return null;
+    }
+
 }

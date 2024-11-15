@@ -196,7 +196,7 @@ public class ExpressionNode
             {
 
                 // Костыль для того чтобы корректно отпарсить "КонецФункции" и подобное без точки с запятой
-                if (t.getType() == Token.Type.ExpressionEnd || t.getType() == Token.Type.OperatorThen)
+                if (t.getType() == Token.Type.OperatorThen)
                     readTokenTracked(stream);
 
                 break;
@@ -453,10 +453,14 @@ public class ExpressionNode
                 builder.append(", "); //$NON-NLS-1$
         }
 
+        String result = null;
+
         if (mCompound)
-            return "(" + builder.toString() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+            result = "(" + builder.toString() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
         else
-            return builder.toString();
+            result = builder.toString();
+
+        return result;
     }
 
     private List<List<AbsractBSLElementNode>> splitMultipleExpressions(List<AbsractBSLElementNode> input)

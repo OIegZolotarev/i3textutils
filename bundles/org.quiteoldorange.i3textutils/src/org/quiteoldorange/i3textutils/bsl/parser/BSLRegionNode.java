@@ -26,7 +26,7 @@ public class BSLRegionNode
 
         for (AbsractBSLElementNode node : getChildren())
         {
-            builder.append(node.serialize(variant) + "\n"); //$NON-NLS-1$
+            builder.append(node.serialize(variant));
         }
 
         // TODO: проверить что у области нет комментария, иначе будет двоить
@@ -76,6 +76,33 @@ public class BSLRegionNode
     {
 
         return String.format("[Область: %s]", mRegionName);
+    }
+
+    /**
+     * @param name
+     * @return
+     */
+    public MethodNode findMethodDefinition(String name)
+    {
+        for (AbsractBSLElementNode it : getChildren())
+        {
+            if (it instanceof BSLRegionNode)
+            {
+                BSLRegionNode region = (BSLRegionNode)it;
+                MethodNode node = region.findMethodDefinition(name);
+
+                if (node != null)
+                    return node;
+            }
+            else if (it instanceof MethodNode)
+            {
+                MethodNode node = (MethodNode)(it);
+                if (name.equals(node.getMethodName()))
+                    return node;
+            }
+        }
+
+        return null;
     }
 
 }

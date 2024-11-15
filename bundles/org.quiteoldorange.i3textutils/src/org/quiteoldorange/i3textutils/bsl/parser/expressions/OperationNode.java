@@ -130,6 +130,9 @@ public class OperationNode
         case Multiplication:
             opRepresentation = "*";//$NON-NLS-1$
             break;
+        case Equal:
+            opRepresentation = "=";//$NON-NLS-1$
+            break;
         default:
             return "Unknown op"; //$NON-NLS-1$
         }

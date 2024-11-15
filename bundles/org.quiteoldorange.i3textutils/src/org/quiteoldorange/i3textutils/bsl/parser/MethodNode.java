@@ -9,6 +9,7 @@ import org.quiteoldorange.i3textutils.bsl.lexer.Lexer;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token;
 import org.quiteoldorange.i3textutils.bsl.lexer.Token.Type;
 import org.quiteoldorange.i3textutils.bsl.parser.BSLParsingException.UnexpectedEndOfStream;
+import org.quiteoldorange.i3textutils.bsl.parser.expressions.ExpressionEndNode;
 
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
@@ -52,6 +53,9 @@ public class MethodNode
 
         StringBuilder builder = new StringBuilder();
 
+        boolean lazyMode = getLazySource() != null;
+
+        // Формирование заголовка
         while (true)
         {
             if (!iterator.hasNext())
@@ -65,13 +69,79 @@ public class MethodNode
             builder.append(node.serialize(scriptVariant));
         }
 
-        if (!getLazySource().isEmpty())
+        // Формирование объявления
+        switch (mType)
+        {
+        case Function:
+            builder.append(Token.getKeywordValue(Type.BeginFunction, scriptVariant));
+            break;
+        case Procedure:
+            builder.append(Token.getKeywordValue(Type.BeginProcedure, scriptVariant));
+            break;
+        default:
+            break;
+        }
+
+        builder.append(" "); //$NON-NLS-1$
+        builder.append(mMethodName);
+
+        builder.append("("); //$NON-NLS-1$
+
+        ArgumentDefinition firstArg = mArguments.get(0);
+
+        for (ArgumentDefinition def : mArguments)
+        {
+            if (def != firstArg)
+                builder.append(", "); //$NON-NLS-1$
+
+            builder.append(def.serialize(scriptVariant));
+        }
+
+        builder.append(")"); //$NON-NLS-1$
+
+        if (isExported())
+        {
+            builder.append(" "); //$NON-NLS-1$
+            builder.append(Token.getKeywordValue(Type.Export, scriptVariant));
+        }
+
+        builder.append("\n"); //$NON-NLS-1$
+
+        if (lazyMode)
         {
             builder.append(getLazySource());
             return builder.toString();
         }
 
-        return ""; //$NON-NLS-1$
+        while (true)
+        {
+            if (!iterator.hasNext())
+                break;
+
+            var node = iterator.next();
+
+            if (!(node instanceof BSLRegionNode || node instanceof ExpressionEndNode))
+            {
+                builder.append("\t"); //$NON-NLS-1$
+            }
+
+
+            builder.append(node.serialize(scriptVariant));
+        }
+
+        switch (mType)
+        {
+        case Function:
+            builder.append(Token.getKeywordValue(Type.EndFunction, scriptVariant));
+            break;
+        case Procedure:
+            builder.append(Token.getKeywordValue(Type.EndProcedure, scriptVariant));
+            break;
+        default:
+            break;
+        }
+
+        return builder.toString();
     }
 
     /**
@@ -151,7 +221,6 @@ public class MethodNode
                     throw new BSLParsingException.UnexpectedToken(stream, token, Type.Identifier);
                 }
 
-
                 getArguments().add(new ArgumentDefinition(argName, defaultValue, byValue));
 
                 token = stream.peekNext();
@@ -207,7 +276,8 @@ public class MethodNode
         else
             ParseUntilEndingToken(stream, finisher);
 
-        mLazySource = stream.getTokensSource(mTokens);
+        if (stream.isLazyMode())
+            mLazySource = stream.getTokensSource(mTokens);
     }
 
 
@@ -242,6 +312,30 @@ public class MethodNode
             mName = name;
             mByValue = byValue;
             mDefaultValue = defaultValue;
+        }
+
+        /**
+         * @return
+         */
+        public String serialize(ScriptVariant v)
+        {
+            StringBuilder r = new StringBuilder();
+
+            if (mByValue)
+            {
+                r.append(Token.getKeywordValue(Type.KeywordVal, v));
+                r.append(" "); //$NON-NLS-1$
+            }
+
+            r.append(mName);
+
+            if (mDefaultValue != null && !mDefaultValue.isBlank())
+            {
+                r.append(" = "); //$NON-NLS-1$
+                r.append(mDefaultValue);
+            }
+
+            return r.toString();
         }
 
         public boolean hasDefaultValue()

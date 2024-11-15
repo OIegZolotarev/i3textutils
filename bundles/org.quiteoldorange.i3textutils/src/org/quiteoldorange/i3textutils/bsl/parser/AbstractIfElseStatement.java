@@ -135,23 +135,22 @@ public class AbstractIfElseStatement
 
             if (index == 0)
             {
-                r.append(String.format("%s %s %s", mKind.serializeIfToken(scriptVariant), //$NON-NLS-1$
+                r.append(String.format("%s %s %s\n", mKind.serializeIfToken(scriptVariant), //$NON-NLS-1$
                     getConditionalExpression().serialize(scriptVariant),
                     mKind.serializeThenToken(scriptVariant)));
             }
             else if (getConditionalExpression() != null)
             {
-                r.append(String.format("%s %s %s", mKind.serializeElseIfToken(scriptVariant), //$NON-NLS-1$
+                r.append(String.format("%s %s %s\n", mKind.serializeElseIfToken(scriptVariant), //$NON-NLS-1$
                     getConditionalExpression().serialize(scriptVariant),
                         mKind.serializeThenToken(scriptVariant)));
             }
             else
             {
-                r.append(String.format("%s", mKind.serializeElseToken(scriptVariant))); //$NON-NLS-1$
+                r.append(String.format("%s\n", mKind.serializeElseToken(scriptVariant))); //$NON-NLS-1$
             }
 
-            r.append("\n"); //$NON-NLS-1$
-            r.append(serializeChildren(scriptVariant, true));
+            r.append(serializeChildren(scriptVariant, false));
 
             return r.toString();
         }
@@ -254,7 +253,7 @@ public class AbstractIfElseStatement
         }
 
 
-        result.append(String.format("%s", mKind.serializeEndIfToken(scriptVariant))); //$NON-NLS-1$
+        result.append(mKind.serializeEndIfToken(scriptVariant));
 
         return result.toString();
     }

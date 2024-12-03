@@ -94,14 +94,17 @@ public class MethodNode
 
             builder.append("("); //$NON-NLS-1$
 
-            ArgumentDefinition firstArg = mArguments.get(0);
+            // ArgumentDefinition firstArg = mArguments.get(0);
+            boolean firstArg = true;
 
             for (ArgumentDefinition def : mArguments)
             {
-                if (def != firstArg)
+                if (!firstArg)
                     builder.append(", "); //$NON-NLS-1$
 
                 builder.append(def.serialize(scriptVariant));
+
+                firstArg = false;
             }
 
             builder.append(")"); //$NON-NLS-1$

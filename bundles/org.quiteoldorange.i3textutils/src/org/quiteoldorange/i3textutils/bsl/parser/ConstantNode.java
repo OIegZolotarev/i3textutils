@@ -51,6 +51,7 @@ public class ConstantNode
 
             b.append("\""); //$NON-NLS-1$
 
+            return b.toString();
 //                return "\"" + t.getValue() + "\""; //$NON-NLS-1$//$NON-NLS-2$
         }
         else

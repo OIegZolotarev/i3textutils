@@ -55,8 +55,9 @@ public class DecompilationWizard
     @Override
     public boolean performFinish()
     {
-        // TODO Auto-generated method stub
-        return false;
+        mContext.onWizardDialogFinished();
+
+        return true;
     }
 
     /**

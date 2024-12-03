@@ -9,6 +9,7 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.ui.editor.XtextEditor;
+import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.quiteoldorange.i3textutils.bsl.ModuleASTTree;
 import org.quiteoldorange.i3textutils.bsl.parser.InjectionNode;
 import org.quiteoldorange.i3textutils.bsl.parser.MethodNode;
@@ -138,9 +139,7 @@ public class DecompilationContext
             break;
 
         }
-        return "";
-
-
+        return ""; //$NON-NLS-1$
     }
 
     /**
@@ -165,16 +164,9 @@ public class DecompilationContext
         // 5) (Опционально) удалить элементы?
 
 
-        FormEditorModulePage mp = (FormEditorModulePage)mFormEditor.findPage("editors.form.pages.module");
+        IXtextDocument doc = getFormModuleDocument();
 
-        if (mp == null)
-        {
-            // TODO: как-то внятно поругаться?
-            return "";
-        }
-
-        XtextEditor editor = mp.getAdapter(XtextEditor.class);
-        String formModuleSrc = editor.getDocument().get();
+        String formModuleSrc = doc.get();
 
         // "ПриСозданииНаСервере" помимо того что может называться по английский
         // так еще и произвольно, а может и не быть вовсе, правильно будет достать из обработчиков событий формы
@@ -212,12 +204,30 @@ public class DecompilationContext
 
         injectedBuilder.append("\n//{{I3_TEXUTILS_FORMS_DECOMPILER\n");
         injectedBuilder.append("ДобавитьЭлементыФормы();\n");
-        injectedBuilder.append("//}}I3_TEXUTILS_FORMS_DECOMPILER\n");
+        injectedBuilder.append("//I3_TEXUTILS_FORMS_DECOMPILER}}\n");
 
         InjectionNode subroutineCall = new InjectionNode(injectedBuilder.toString());
         onCreateAtServerSource.addChildren(subroutineCall);
 
         return onCreateAtServerSource.serialize(mSettings.scriptVariant());
+    }
+
+    /**
+     * @return
+     */
+    private IXtextDocument getFormModuleDocument()
+    {
+        FormEditorModulePage mp = (FormEditorModulePage)mFormEditor.findPage("editors.form.pages.module");
+
+        if (mp == null)
+        {
+            // TODO: как-то внятно поругаться?
+            return null;
+        }
+
+        XtextEditor editor = mp.getAdapter(XtextEditor.class);
+        IXtextDocument doc = editor.getDocument();
+        return doc;
     }
 
     private String defaultOnCreateAtServerSubroutine()
@@ -361,5 +371,89 @@ public class DecompilationContext
             return mV8Project.getProject();
         else
             return null;
+    }
+
+    /**
+     *
+     */
+    public void onWizardDialogFinished()
+    {
+        GeneratedCodePlacementOptions codePlacement = mSettings.getGeneratedCodePlacement();
+
+        switch (codePlacement)
+        {
+        case DoNothing:
+            return;
+        case ToCommonModule:
+            break;
+        case ToFormModule:
+            decompileToFormModule();
+        default:
+            break;
+
+        }
+
+    }
+
+    /**
+     *
+     */
+    private void decompileToFormModule()
+    {
+        IXtextDocument doc = getFormModuleDocument();
+
+        String formModuleSrc = doc.get();
+
+        // "ПриСозданииНаСервере" помимо того что может называться по английский
+        // так еще и произвольно, а может и не быть вовсе, правильно будет достать из обработчиков событий формы
+
+        Event onCreateAtServer = findFormEvent("OnCreateAtServer"); //$NON-NLS-1$
+
+        if (onCreateAtServer == null)
+        {
+            // WTF?
+            return;
+        }
+
+        EventHandler handler = findEventHandler(onCreateAtServer);
+
+        String onCreateAtServerSubroutine = null;
+
+        if (handler == null)
+        {
+            onCreateAtServerSubroutine = defaultOnCreateAtServerSubroutine();
+            // mForm.getHandlers().add(handler);
+        }
+        else
+            onCreateAtServerSubroutine = handler.getName();
+
+        ModuleASTTree tree = new ModuleASTTree(formModuleSrc);
+
+        MethodNode onCreateAtServerSource = tree.findMethodDefinition(onCreateAtServerSubroutine);
+
+        if (onCreateAtServerSource == null)
+        {
+            return;
+        }
+
+        StringBuilder injectedBuilder = new StringBuilder();
+
+        injectedBuilder.append("\n//{{I3_TEXUTILS_FORMS_DECOMPILER\n");
+        injectedBuilder.append("ДобавитьЭлементыФормы();\n");
+        injectedBuilder.append("//I3_TEXUTILS_FORMS_DECOMPILER}}\n");
+
+        InjectionNode subroutineCall = new InjectionNode(injectedBuilder.toString());
+        onCreateAtServerSource.addChildren(subroutineCall);
+
+        try
+        {
+            doc.replace(0, 0, tree.serialize(mSettings.scriptVariant()));
+        }
+        catch (Exception e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 }

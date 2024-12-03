@@ -34,6 +34,7 @@ public class ModuleReformatter
     boolean mReorderRegions = false;
     boolean mAddAtServerPragma = false;
     boolean mRemoveEmptyRegions = false;
+    private ScriptVariant mScriptVariant;
 
     public void scheduleTask(ReformatterTask task, boolean perform)
     {
@@ -72,6 +73,9 @@ public class ModuleReformatter
         mDoc = doc;
         mModule = Utils.getModuleFromXTextDocument(doc);
         mProject = project;
+
+        // FIXME
+        mScriptVariant = ScriptVariant.RUSSIAN;
     }
 
     public static ModuleReformatter construct(ExecutionEvent event)
@@ -112,11 +116,10 @@ public class ModuleReformatter
         if (mReorderRegions)
             reorderRegions(sourceTree);
 
-        // TODO: fix ScriptVariant hardcoded
         String source;
         try
         {
-            source = sourceTree.serialize(ScriptVariant.RUSSIAN);
+            source = sourceTree.serialize(mScriptVariant);
         }
         catch (Exception e)
         {

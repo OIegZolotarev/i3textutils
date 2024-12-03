@@ -13,4 +13,5 @@ public enum ReformatterTask
     ReorderRegions,
     AddAtServerPragam,
     RemoveEmptyRegions,
+    FormatIdentation
 }

@@ -125,7 +125,7 @@ public class QuickFixAdapter
 
         try
         {
-            Log.Debug("Binding %s to SUID %s", uid.toString(), suid); //$NON-NLS-1$
+            //Log.Debug("Binding %s to SUID %s", uid.toString(), suid); //$NON-NLS-1$
             changeFixBinding(suid, fixProvider, fixMethodName);
         }
         catch (NoSuchFieldException e)

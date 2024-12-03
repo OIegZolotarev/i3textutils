@@ -22,7 +22,7 @@ public class WhileLoopNode
     {
         StringBuilder b = new StringBuilder();
 
-        String prologue = String.format("%s %s %s\n", Token.getKeywordValue(Type.OperatorWhile, scriptVariant), //$NON-NLS-1$
+        String prologue = String.format("%s %s %s", Token.getKeywordValue(Type.OperatorWhile, scriptVariant), //$NON-NLS-1$
             mConditionExpression.serialize(scriptVariant), Token.getKeywordValue(Type.KeywordLoop, scriptVariant));
 
         b.append(prologue);

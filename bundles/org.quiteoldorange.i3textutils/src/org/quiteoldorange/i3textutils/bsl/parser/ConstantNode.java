@@ -31,7 +31,28 @@ public class ConstantNode
         var t = mTokens.get(0);
 
         if (t.getType() == Type.StringConstant)
-            return "\"" + t.getValue() + "\""; //$NON-NLS-1$//$NON-NLS-2$
+        {
+
+            StringBuilder b = new StringBuilder();
+
+            b.append("\""); //$NON-NLS-1$
+
+            String val = t.getValue();
+            int l = val.length();
+
+            for (int i = 0; i < l; i++)
+            {
+                char c = val.charAt(i);
+                b.append(c);
+
+                if (c == '\n')
+                    b.append("|"); //$NON-NLS-1$
+            }
+
+            b.append("\""); //$NON-NLS-1$
+
+//                return "\"" + t.getValue() + "\""; //$NON-NLS-1$//$NON-NLS-2$
+        }
         else
             return t.getValue();
     }

@@ -180,8 +180,7 @@ public class AbsractBSLElementNode
             case OperatorWhile:
                 return new WhileLoopNode(stream, this);
             case ExpressionEnd:
-                addChildren(new ExpressionEndNode(stream));
-                break;
+                return new ExpressionEndNode(stream);
             case OperatorTry:
                 return new TryCatchNode(stream);
             default:
@@ -209,6 +208,15 @@ public class AbsractBSLElementNode
             AbsractBSLElementNode newNode = ParseNode(stream);
             if (newNode != null)
                 addChildren(newNode);
+
+            token = stream.peekNext();
+
+            if (token.getType() == type)
+            {
+                readTokenTracked(stream);
+                break;
+            }
+
         }
     }
 

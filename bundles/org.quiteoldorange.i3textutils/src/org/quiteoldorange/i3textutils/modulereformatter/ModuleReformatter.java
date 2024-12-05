@@ -34,6 +34,8 @@ public class ModuleReformatter
     boolean mReorderRegions = false;
     boolean mAddAtServerPragma = false;
     boolean mRemoveEmptyRegions = false;
+    boolean mFormatIndentation = false;
+
     private ScriptVariant mScriptVariant;
 
     public void scheduleTask(ReformatterTask task, boolean perform)
@@ -52,6 +54,9 @@ public class ModuleReformatter
         case ReorderRegions:
             mReorderRegions = perform;
             break;
+        case FormatIdentation:
+            mFormatIndentation = perform;
+            break;
         default:
             break;
         }
@@ -66,6 +71,7 @@ public class ModuleReformatter
         mReorderRegions = true;
         mAddAtServerPragma = true;
         mRemoveEmptyRegions = true;
+        mFormatIndentation = true;
     }
 
     public ModuleReformatter(IProject project, IXtextDocument doc)
@@ -129,7 +135,20 @@ public class ModuleReformatter
         if (mCleanupEmptyLines)
             source = cleanupConsecutiveBlankLines(source);
 
+        if (mFormatIndentation)
+            source = formatIndentation(originalSource);
+
         applyChanges(source);
+    }
+
+    /**
+     * @param source
+     * @return
+     */
+    private String formatIndentation(String source)
+    {
+        IndentationFormatter f = new IndentationFormatter(4, true);
+        return f.format(source);
     }
 
     private void applyChanges(String source)

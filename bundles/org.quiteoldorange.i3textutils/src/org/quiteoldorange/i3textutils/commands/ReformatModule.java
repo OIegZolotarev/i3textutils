@@ -7,6 +7,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.quiteoldorange.i3textutils.modulereformatter.ModuleReformatter;
+import org.quiteoldorange.i3textutils.modulereformatter.ReformatterTask;
 
 /**
  * @author ozolotarev
@@ -24,7 +25,7 @@ public class ReformatModule
         if (reformatter == null)
             return null;
 
-        reformatter.scheduleAll();
+        reformatter.scheduleTask(ReformatterTask.FormatIdentation, true);
         reformatter.run();
 
         return null;

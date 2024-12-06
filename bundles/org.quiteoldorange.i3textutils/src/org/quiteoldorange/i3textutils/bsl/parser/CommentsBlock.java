@@ -16,6 +16,20 @@ public class CommentsBlock
 {
 
     @Override
+    public String toString()
+    {
+        // TODO Auto-generated method stub
+        try
+        {
+            return serialize(ScriptVariant.RUSSIAN);
+        }
+        catch (Exception e)
+        {
+            return ""; //$NON-NLS-1$
+        }
+    }
+
+    @Override
     public String serialize(ScriptVariant scriptVariant) throws Exception
     {
         return serializeChildren(scriptVariant, false);

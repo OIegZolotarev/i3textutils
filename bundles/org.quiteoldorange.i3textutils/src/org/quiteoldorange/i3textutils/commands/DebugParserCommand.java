@@ -46,7 +46,7 @@ public class DebugParserCommand
         XtextEditor target = part.getAdapter(XtextEditor.class);
 
         Lexer lex = new Lexer(doc.get());
-        lex.setLazyMode(true);
+        lex.setLazyMode(false);
 
         ModuleASTTree tree = new ModuleASTTree(lex);
 

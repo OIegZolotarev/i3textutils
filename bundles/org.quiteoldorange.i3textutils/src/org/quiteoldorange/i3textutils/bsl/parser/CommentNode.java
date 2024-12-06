@@ -15,6 +15,12 @@ public class CommentNode
     extends AbsractBSLElementNode
 {
     @Override
+    public String toString()
+    {
+        return mTokens.get(0).getValue();
+    }
+
+    @Override
     public String serialize(ScriptVariant scriptVariant)
     {
         return mTokens.get(0).getValue();

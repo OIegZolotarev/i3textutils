@@ -18,6 +18,7 @@ import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.Decompil
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormCommandUnit;
 import org.quiteoldorange.i3textutils.formsdecompiler.decompilationunit.FormItemUnit;
 import org.quiteoldorange.i3textutils.formsdecompiler.ui.DecompilationDialogResult;
+import org.quiteoldorange.i3textutils.modulereformatter.IndentationFormatter;
 import org.quiteoldorange.i3textutils.preferences.projectoptions.impl.formsdecompiler.FormsDecompilerOptionSet.GeneratedCodePlacementOptions;
 
 import com._1c.g5.v8.dt.core.platform.IV8Project;
@@ -200,16 +201,7 @@ public class DecompilationContext
             return "<Назначенный обработчик \"ПриСозданииНаСервере\" не найден в модуле формы>";
         }
 
-        StringBuilder injectedBuilder = new StringBuilder();
-
-        injectedBuilder.append("\n//{{I3_TEXUTILS_FORMS_DECOMPILER\n");
-        injectedBuilder.append("ДобавитьЭлементыФормы();\n");
-        injectedBuilder.append("//I3_TEXUTILS_FORMS_DECOMPILER}}\n");
-
-        InjectionNode subroutineCall = new InjectionNode(injectedBuilder.toString());
-        onCreateAtServerSource.addChildren(subroutineCall);
-
-        return onCreateAtServerSource.serialize(mSettings.scriptVariant());
+        return injectDecompilerCall(onCreateAtServerSource);
     }
 
     /**
@@ -436,6 +428,28 @@ public class DecompilationContext
             return;
         }
 
+
+
+        try
+        {
+            String formatted = injectDecompilerCall(onCreateAtServerSource);
+            doc.replace(onCreateAtServerSource.getStartingOffset(), onCreateAtServerSource.getLength(), formatted);
+        }
+        catch (Exception e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * @param onCreateAtServerSource
+     * @return
+     * @throws Exception
+     */
+    private String injectDecompilerCall(MethodNode onCreateAtServerSource) throws Exception
+    {
         StringBuilder injectedBuilder = new StringBuilder();
 
         injectedBuilder.append("\n//{{I3_TEXUTILS_FORMS_DECOMPILER\n");
@@ -445,15 +459,8 @@ public class DecompilationContext
         InjectionNode subroutineCall = new InjectionNode(injectedBuilder.toString());
         onCreateAtServerSource.addChildren(subroutineCall);
 
-        try
-        {
-            doc.replace(0, 0, tree.serialize(mSettings.scriptVariant()));
-        }
-        catch (Exception e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
+        IndentationFormatter fmt = new IndentationFormatter(4, true);
+        String formatted = fmt.format(onCreateAtServerSource.serialize(mSettings.scriptVariant()));
+        return formatted;
     }
 }

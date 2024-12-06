@@ -55,16 +55,20 @@ public class MethodNode
 
         boolean lazyMode = getLazySource() != null;
 
+        AbsractBSLElementNode node = null;
+
         // Формирование заголовка
         while (true)
         {
             if (!iterator.hasNext())
                 break;
 
-            var node = iterator.next();
+            node = iterator.next();
 
             if (!(node instanceof CommentsBlock || node instanceof AnnotationNode || node instanceof EmptyLineNode))
+            {
                 break;
+            }
 
             builder.append(node.serialize(scriptVariant));
         }
@@ -118,12 +122,9 @@ public class MethodNode
             builder.append("\n"); //$NON-NLS-1$
         }
 
-        while (true)
+        while (node != null)
         {
-            if (!iterator.hasNext())
-                break;
 
-            var node = iterator.next();
 
             if (!(node instanceof BSLRegionNode || node instanceof ExpressionEndNode))
             {
@@ -132,6 +133,12 @@ public class MethodNode
 
 
             builder.append(node.serialize(scriptVariant));
+
+            if (!iterator.hasNext())
+                break;
+
+            node = iterator.next();
+
         }
 
         switch (mType)

@@ -53,9 +53,10 @@ public class PluginPreferencePage
         var p = getFieldEditorParent();
 
 
-        addField(
+        // В edt 2024 починил, ура!
+        /*addField(
             new BooleanFieldEditor(PreferenceConstants.FORCE_CONTENT_ASSIST_COLOR_HACK,
-                Messages.Pref_ForceContentAssistColorFix, p));
+                Messages.Pref_ForceContentAssistColorFix, p));*/
 
         addField(new ColorFieldEditor(PreferenceConstants.FORCE_CONTENT_ASSIST_COLOR_HACK_VALUE,
             Messages.Pref_ContentAssistForcedColorFix, p));

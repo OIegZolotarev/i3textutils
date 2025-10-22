@@ -5,7 +5,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.quiteoldorange.i3textutils.ContentAssistColorFix;
 import org.quiteoldorange.i3textutils.ServicesAdapter;
 import org.quiteoldorange.i3textutils.preferences.projectoptions.ProjectOptionsManager;
 
@@ -124,7 +123,8 @@ public class i3TextUtilsPlugin
         ServiceInitialization.schedule(() -> {
             registrator.managedService(ServicesAdapter.class).activateBeforeRegistration().registerInjected();
 
-            ContentAssistColorFix.fixContentAssistColors();
+            // В 2024 какой-то EDT починили! Ура товарищи!
+            // ContentAssistColorFix.fixContentAssistColors();
         });
 
     }

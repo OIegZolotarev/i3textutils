@@ -68,7 +68,7 @@
 <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
 <repository location="http://download.eclipse.org/cbi/updates/license/2.0.2.v20181016-2210"/>
 </location>
-
+    <location path="/home/ozolotarev/projects/v8codestyle-repo/plugins/" type="Directory"/>
 </locations>
     <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/zulu17.44.53-ca-fx-jdk17.0.8.1-linux_x64"/>
 </target>

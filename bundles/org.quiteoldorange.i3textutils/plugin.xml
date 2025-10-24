@@ -145,6 +145,9 @@
          point="com.e1c.g5.v8.dt.check.fixes">
         <fix
             class="org.quiteoldorange.i3textutils.qfix2023.addmethodpragma.AddMethodPragmaFix"></fix>
+            
+           <fix
+            class="org.quiteoldorange.i3textutils.qfix2023.movemethodtoregion.ModuleStructureEventRegionsFix"></fix>
     </extension>
     <extension
       point="com._1c.g5.wiring.serviceProvider">
